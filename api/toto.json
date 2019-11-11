@@ -1,0 +1,12 @@
+{
+  "users": {
+    "create": {
+      "method": "PUT",
+      "path": "/users"
+    },
+    "login": {
+      "method": "POST",
+      "path": "/login"
+    }
+  }
+}
