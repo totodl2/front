@@ -10,6 +10,8 @@ import withReduxStore from '../lib/withReduxStore';
 import ApiProvider from '../lib/api/provider';
 import TokenProvider from '../lib/token/provider';
 
+import '../styles/app.scss';
+
 class TotoApp extends App {
   render() {
     const { Component, pageProps, reduxStore } = this.props;

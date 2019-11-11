@@ -2,6 +2,9 @@ import React from 'react';
 import Head from 'next/head';
 import Nav from '../components/nav';
 
+import styles from './test.module.scss';
+import './test.scss';
+
 const Home = () => (
   <div>
     <Head>
@@ -17,7 +20,12 @@ const Home = () => (
       </h1>
       <p className="description">
         To get <a href="/test">started</a>, edit <code>pages/index.js</code> and
-        save to reload.
+        <span className="test-noprefix">save</span> to{' '}
+        <span className={styles.test}>reload</span>.
+        <br />
+        <button type="button" className="btn btn-primary">
+          Test
+        </button>
       </p>
 
       <div className="row">
