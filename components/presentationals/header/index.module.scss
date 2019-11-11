@@ -1,0 +1,5 @@
+.header {
+  background-color: $white;
+  border-bottom: 1px solid $gray-400;
+  padding: map-get($spacers, 2) map-get($spacers, 3);
+}

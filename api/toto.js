@@ -5,7 +5,10 @@ export default token => {
   const defaultHeaders = {};
   const api = createApi({
     endpoints,
-    axiosDefault: { headers: defaultHeaders },
+    axiosDefault: {
+      headers: defaultHeaders,
+      baseURL: process.env.API_URL,
+    },
   });
 
   api.setToken = newToken => {

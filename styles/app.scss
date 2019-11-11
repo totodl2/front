@@ -1,5 +1,5 @@
 @import 'bootstrap';
-
+@import "nprogress";
 
 .bg-gray-100 {
   background-color: $gray-100 !important;
@@ -56,7 +56,6 @@
 .text-gray-900 {
   color: $gray-900;
 }
-
 
 /* - Internet Explorer 10–11
    - Internet Explorer Mobile 10-11 */

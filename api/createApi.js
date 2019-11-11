@@ -47,7 +47,7 @@ function extractParameters(endpoint) {
 const createCaller = (fetcher, { path: routePath, ...endpoint }, fullName) => {
   const parameters = extractParameters(endpoint.path);
 
-  return ({ routeParams, ...axiosConf }) => {
+  return (data, { routeParams, ...axiosConf } = {}) => {
     let path = routePath;
     for (let i = 0; i < parameters.length; i++) {
       const parameter = routeParams[parameters[i]];
@@ -58,7 +58,7 @@ const createCaller = (fetcher, { path: routePath, ...endpoint }, fullName) => {
       }
       path = path.replace(`{${parameters[i]}}`, parameter.toString());
     }
-    return fetcher(path, endpoint, axiosConf);
+    return fetcher(path, endpoint, { ...axiosConf, data });
   };
 };
 

@@ -6,7 +6,7 @@
     },
     "login": {
       "method": "POST",
-      "path": "/login"
+      "path": "/users/login"
     }
   }
 }

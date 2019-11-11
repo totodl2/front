@@ -42,5 +42,10 @@ $label-margin-bottom: 0.1rem;
 
 $card-border-width: 0px;
 //$card-border-color: $gray-400;
+$card-cap-bg: $white;
+$card-spacer-x: 2rem;
 
-@import "~bootstrap/scss/variables";
+$alert-border-width: 0px;
+
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/variables';

@@ -10,6 +10,7 @@ module.exports = {
   ...withSass({
     cssModules: true,
     cssLoaderOptions: {
+      camelCase: true,
       getLocalIdent: (loaderContext, localIdentName, localName, options) => {
         const fileName = path.basename(loaderContext.resourcePath);
         const shoudTransform = /.module.(scss|sass)+$/i.test(fileName);
