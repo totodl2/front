@@ -1,5 +1,11 @@
 @import '~bootstrap/scss/functions';
 
+$font-family-sans-serif: $font-family;
+
+$theme-colors: (
+  white: $white,
+);
+
 $grid-breakpoints: (
   xxs: 0,
   xs: 400,
@@ -17,3 +23,24 @@ $container-max-widths: (
   xl: 1140px,
   xxl: 1200px,
 );
+
+$font-weight-lighter: $font-weight-light;
+$font-weight-bolder: $font-weight-bold;
+
+$headings-font-weight: $font-weight-light;
+
+$dark: $gray-900;
+$body-bg: $gray-100;
+
+$input-color: $gray-900;
+$input-focus-color: $gray-900;
+$input-placeholder-color: $gray-600;
+$input-border-color: $gray-400;
+$input-bg: $gray-100;
+
+$label-margin-bottom: 0.1rem;
+
+$card-border-width: 0px;
+//$card-border-color: $gray-400;
+
+@import "~bootstrap/scss/variables";

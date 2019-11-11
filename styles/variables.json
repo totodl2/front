@@ -1,3 +1,23 @@
 {
-  "primary": "#f00"
+  "primary": "#2e5bff",
+  "success": "#33ac2e",
+  "danger": "#e84a50",
+  "white": "#fff",
+  "info": "#00c1d4",
+  "box-shadow-sm": "0 5px 5px 0 rgba(224,231,255,.4), 0 5px 10px 0 rgba(166,173,201,.22)",
+  "box-shadow": "0 5px 5px 0 rgba(224,231,255,.4), 0 5px 15px 0 rgba(166,173,201,.22)",
+  "box-shadow-lg": "0 5px 5px 0 rgba(224,231,255,.4), 0 5px 30px 0 rgba(166,173,201,.3)",
+  "font-family": "Rubik, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+  "font-weight-light": "300",
+  "font-weight-normal": "400",
+  "font-weight-bold": "500",
+  "gray-100": "#f9faff",
+  "gray-200": "#f4f6fc",
+  "gray-300": "#e4e8f0",
+  "gray-400": "#e0e7ff",
+  "gray-500": "#bfc5d2",
+  "gray-600": "#b0bac9",
+  "gray-700": "#8798ad",
+  "gray-800": "#8097b1",
+  "gray-900": "#2e384d"
 }

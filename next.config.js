@@ -40,17 +40,14 @@ module.exports = {
           loader: '@epegzz/sass-vars-loader',
           options: {
             syntax: 'scss',
-            files: [
-              // Option 3) Load vars from JavaScript file
-              path.resolve(__dirname, 'styles/variables.json'),
-            ],
+            files: [path.resolve(__dirname, 'styles/variables.json')],
           },
         });
 
         rule.use.push({
           loader: require.resolve('sass-resources-loader'),
           options: {
-            resources: [path.resolve(__dirname, '/src/styles/_variables.scss')],
+            resources: [path.resolve(__dirname, 'styles/_variables.scss')],
           },
         });
       });

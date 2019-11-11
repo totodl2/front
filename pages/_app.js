@@ -5,7 +5,7 @@ import { compose } from 'redux';
 
 import withApiContext from '../lib/api/withApiContext';
 import withTokenContext from '../lib/token/withTokenContext';
-import withReduxStore from '../lib/withReduxStore';
+import withReduxStoreContext from '../lib/withReduxStoreContext';
 
 import ApiProvider from '../lib/api/provider';
 import TokenProvider from '../lib/token/provider';
@@ -30,5 +30,5 @@ class TotoApp extends App {
 export default compose(
   withApiContext,
   withTokenContext,
-  withReduxStore,
+  withReduxStoreContext,
 )(TotoApp);
