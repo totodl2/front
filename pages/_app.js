@@ -22,10 +22,10 @@ Router.events.on('routeChangeError', () => NProgress.done());
 
 class TotoApp extends App {
   render() {
-    const { Component, pageProps, reduxStore } = this.props;
+    const { Component, pageProps, reduxStore, jwt, refreshToken } = this.props;
     return (
       <ApiProvider>
-        <TokenProvider>
+        <TokenProvider jwt={jwt} refreshToken={refreshToken}>
           <Provider store={reduxStore}>
             <Layout>
               <Component {...pageProps} />

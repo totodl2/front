@@ -9,9 +9,9 @@ export const TYPE_MOBILE = 'mobile';
 
 class MenuContainer extends PureComponent {
   static propTypes = {
-    children: PropTypes.func,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     mobileWidth: PropTypes.number,
-    view: PropTypes.element,
+    view: PropTypes.any,
     tabletWidth: PropTypes.number,
   };
 
