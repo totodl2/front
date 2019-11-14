@@ -1,0 +1,12 @@
+.menu-align {
+  margin-left: 0px;
+  transition: margin-left $transition-presentational-timing ease-in-out;
+
+  &--desktop-opened {
+    margin-left: 300px;
+  }
+
+  &--tablet {
+    margin-left: 4rem;
+  }
+}

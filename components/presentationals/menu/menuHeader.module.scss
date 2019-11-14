@@ -1,0 +1,15 @@
+@import "variables";
+
+.header {
+  height: $headerHeight;
+  width: $headerHeight;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  box-shadow: none !important;
+  background-color: transparent !important;
+  border: none !important;
+}

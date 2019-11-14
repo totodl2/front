@@ -5,6 +5,8 @@ import { compose } from 'redux';
 import NProgress from 'nprogress';
 import Router from 'next/router';
 
+import Layout from '../components/site/layout';
+
 import withApiContext from '../lib/api/withApiContext';
 import withTokenContext from '../lib/token/withTokenContext';
 import withReduxStoreContext from '../lib/withReduxStoreContext';
@@ -25,7 +27,9 @@ class TotoApp extends App {
       <ApiProvider>
         <TokenProvider>
           <Provider store={reduxStore}>
-            <Component {...pageProps} />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
           </Provider>
         </TokenProvider>
       </ApiProvider>

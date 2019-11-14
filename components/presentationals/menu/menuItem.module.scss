@@ -1,0 +1,33 @@
+@import 'variables';
+
+.menu-item {
+  width: 100%;
+  border-left: 0px solid transparent;
+  padding: map-get($spacers, 3) 0px map-get($spacers, 3) 3px;
+  display: flex;
+  position: relative;
+  transition: all $transition-presentational-timing ease-in;
+  color: $text-muted;
+
+  &:hover,
+  &--active {
+    color: $primary;
+    padding-left: 0px;
+    text-decoration: none;
+    border-left: 3px solid $primary;
+    background-color: lighten($primary, 38%);
+  }
+
+  &-icon {
+    width: calc(#{$headerHeight} - 3px);
+    display: flex;
+    min-width: calc(#{$headerHeight} - 3px);
+    justify-content: center;
+  }
+
+  &-text {
+    &--iconless {
+      padding-left: $headerHeight;
+    }
+  }
+}

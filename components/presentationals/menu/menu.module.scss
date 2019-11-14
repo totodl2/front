@@ -1,5 +1,25 @@
+@import 'variables';
+
 .menu {
-  background-color: $white;
-  min-height: 100vh;
+  position: fixed;
+  top: -1px; // compensating border bottom
+  left: 0px;
   overflow-y: auto;
+  overflow-x: hidden;
+  width: $width;
+  background-color: $bgColors;
+  border-right: 1px solid $borderColor;
+  border-bottom: 1px solid $borderColor;
+  border-bottom-style: inset;
+  transition: width $transition-presentational-timing ease-in-out;
+  z-index: $zindex-fixed;
+
+  &--mobile {
+    width: $mobileWidth;
+  }
+
+  &--closed {
+    width: $headerHeight;
+    overflow: hidden;
+  }
 }
