@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import Router from 'next/router';
+import Link from 'next/link';
 
 import withApi from '../lib/api/withApi';
 import withToken from '../lib/token/withToken';
@@ -12,7 +13,6 @@ import { handleResponseErrors } from '../lib/form/processApiErrors';
 import WaveLoader from '../components/presentationals/waveLoader';
 import withRedirectTo from '../lib/withRedirectTo';
 import redirectLogged from '../lib/redirection/redirectLogged';
-import Link from 'next/link';
 
 class Login extends PureComponent {
   static propTypes = {

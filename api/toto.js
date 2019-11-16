@@ -13,7 +13,7 @@ export default token => {
 
   api.setToken = newToken => {
     if (newToken) {
-      defaultHeaders['x-authorization'] = newToken;
+      defaultHeaders['x-authorization'] = `Bearer ${newToken}`;
     } else {
       delete defaultHeaders['x-authorization'];
     }

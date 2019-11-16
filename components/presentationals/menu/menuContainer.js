@@ -17,19 +17,17 @@ class MenuContainer extends PureComponent {
 
   static defaultProps = { mobileWidth: 576, tabletWidth: 1200 };
 
-  constructor(props) {
-    super(props);
-    const type = this.detectDeviceType();
-    this.state = {
-      opened: type === TYPE_DESKTOP,
-      type,
-    };
-  }
+  state = {};
 
   componentDidMount() {
     if (!isServer) {
       window.addEventListener('resize', this.onWindowResize);
     }
+    const type = this.detectDeviceType();
+    this.setState({
+      opened: type === TYPE_DESKTOP,
+      type,
+    });
   }
 
   componentWillUnmount() {

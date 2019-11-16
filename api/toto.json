@@ -8,5 +8,11 @@
       "method": "POST",
       "path": "/users/login"
     }
+  },
+  "torrents": {
+    "getAll": {
+      "method": "GET",
+      "path": "/torrents"
+    }
   }
 }

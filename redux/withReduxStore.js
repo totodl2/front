@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { initializeStore } from '../store';
+
+import { initializeStore } from './store';
 
 const isServer = typeof window === 'undefined';
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__';
@@ -18,7 +19,7 @@ function getOrCreateStore(api, initialState) {
   return window[__NEXT_REDUX_STORE__];
 }
 
-const withReduxStoreContext = App =>
+const withReduxStore = App =>
   class AppWithRedux extends React.Component {
     static propTypes = {
       initialReduxState: PropTypes.object,
@@ -55,4 +56,4 @@ const withReduxStoreContext = App =>
     }
   };
 
-export default withReduxStoreContext;
+export default withReduxStore;

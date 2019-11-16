@@ -56,11 +56,6 @@ const getClassNames = (className, meta) =>
     'is-invalid': isInvalid(meta),
   });
 
-// const AUTO_DISPLAYED = 1;
-const MANUALLY_DISPLAYED = 2;
-const AUTO_CLOSED = 0;
-const MANUALLY_CLOSED = -1;
-
 class FieldWrapperContainer extends PureComponent {
   static propTypes = {
     ...fieldPropTypes,

@@ -9,7 +9,7 @@ import Layout from '../components/site/layout';
 
 import withApiContext from '../lib/api/withApiContext';
 import withTokenContext from '../lib/token/withTokenContext';
-import withReduxStoreContext from '../lib/withReduxStoreContext';
+import withReduxStore from '../redux/withReduxStore';
 
 import ApiProvider from '../lib/api/provider';
 import TokenProvider from '../lib/token/provider';
@@ -22,10 +22,10 @@ Router.events.on('routeChangeError', () => NProgress.done());
 
 class TotoApp extends App {
   render() {
-    const { Component, pageProps, reduxStore, jwt, refreshToken } = this.props;
+    const { api, Component, pageProps, reduxStore, token } = this.props;
     return (
-      <ApiProvider>
-        <TokenProvider jwt={jwt} refreshToken={refreshToken}>
+      <ApiProvider api={api}>
+        <TokenProvider api={api} token={token}>
           <Provider store={reduxStore}>
             <Layout>
               <Component {...pageProps} />
@@ -40,5 +40,5 @@ class TotoApp extends App {
 export default compose(
   withApiContext,
   withTokenContext,
-  withReduxStoreContext,
+  withReduxStore,
 )(TotoApp);
