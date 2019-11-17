@@ -9,6 +9,12 @@
       "path": "/users/login"
     }
   },
+  "tokens": {
+    "renew": {
+      "method": "POST",
+      "path": "/tokens/renew"
+    }
+  },
   "torrents": {
     "getAll": {
       "method": "GET",

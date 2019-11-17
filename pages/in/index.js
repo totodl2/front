@@ -24,9 +24,11 @@ class Index extends PureComponent {
       <div>
         <h2>Liste des torrents</h2>
 
-        {torrents.map(torrent => (
+        {torrents.map((torrent, i) => (
           <div className="row" key={torrent.hash}>
-            <div className="col">{torrent.name}</div>
+            <div className="col">
+              {i} -- {torrent.name}
+            </div>
           </div>
         ))}
       </div>
