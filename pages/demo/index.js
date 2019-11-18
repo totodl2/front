@@ -15,8 +15,70 @@ import {
   CardHeader,
 } from 'reactstrap';
 import cl from 'classnames';
-import { ChevronRight, Calendar, Search } from 'react-feather';
+import { ChevronRight, Calendar } from 'react-feather';
 import React, { Component } from 'react';
+
+import Active from '../../components/presentationals/icons/Active';
+import Add from '../../components/presentationals/icons/Add';
+import AddMini from '../../components/presentationals/icons/AddMini';
+import All from '../../components/presentationals/icons/All';
+import ArrowIcon from '../../components/presentationals/icons/ArrowIcon';
+import CalendarCreatedIcon from '../../components/presentationals/icons/CalendarCreatedIcon';
+import CalendarIcon from '../../components/presentationals/icons/CalendarIcon';
+import Checkmark from '../../components/presentationals/icons/Checkmark';
+import ChevronLeftIcon from '../../components/presentationals/icons/ChevronLeftIcon';
+import ChevronRightIcon from '../../components/presentationals/icons/ChevronRightIcon';
+import CircleCheckmarkIcon from '../../components/presentationals/icons/CircleCheckmarkIcon';
+import CircleExclamationIcon from '../../components/presentationals/icons/CircleExclamationIcon';
+import CircleIcon from '../../components/presentationals/icons/CircleIcon';
+import ClipboardIcon from '../../components/presentationals/icons/ClipboardIcon';
+import ClockIcon from '../../components/presentationals/icons/ClockIcon';
+import Close from '../../components/presentationals/icons/Close';
+import CommentIcon from '../../components/presentationals/icons/CommentIcon';
+import Completed from '../../components/presentationals/icons/Completed';
+import DetailNotAvailableIcon from '../../components/presentationals/icons/DetailNotAvailableIcon';
+import DiskIcon from '../../components/presentationals/icons/DiskIcon';
+import Disk from '../../components/presentationals/icons/Disk';
+import DotsMini from '../../components/presentationals/icons/DotsMini';
+import Download from '../../components/presentationals/icons/Download';
+import DownloadSmall from '../../components/presentationals/icons/DownloadSmall';
+import DownloadThickIcon from '../../components/presentationals/icons/DownloadThickIcon';
+import Edit from '../../components/presentationals/icons/Edit';
+import ErrorIcon from '../../components/presentationals/icons/ErrorIcon';
+import ETA from '../../components/presentationals/icons/ETA';
+import FeedIcon from '../../components/presentationals/icons/FeedIcon';
+import File from '../../components/presentationals/icons/File';
+import Files from '../../components/presentationals/icons/Files';
+import FolderClosedOutlined from '../../components/presentationals/icons/FolderClosedOutlined';
+import FolderClosedSolid from '../../components/presentationals/icons/FolderClosedSolid';
+import FolderOpenOutlined from '../../components/presentationals/icons/FolderOpenOutlined';
+import FolderOpenSolid from '../../components/presentationals/icons/FolderOpenSolid';
+import HashIcon from '../../components/presentationals/icons/HashIcon';
+import Inactive from '../../components/presentationals/icons/Inactive';
+import InfinityIcon from '../../components/presentationals/icons/InfinityIcon';
+import InformationIcon from '../../components/presentationals/icons/InformationIcon';
+import Limits from '../../components/presentationals/icons/Limits';
+import LoadingIndicatorDots from '../../components/presentationals/icons/LoadingIndicatorDots';
+import LockIcon from '../../components/presentationals/icons/LockIcon';
+import Logout from '../../components/presentationals/icons/Logout';
+import NotificationIcon from '../../components/presentationals/icons/NotificationIcon';
+import PeersIcon from '../../components/presentationals/icons/PeersIcon';
+import RadarIcon from '../../components/presentationals/icons/RadarIcon';
+import RadioDot from '../../components/presentationals/icons/RadioDot';
+import RatioIcon from '../../components/presentationals/icons/RatioIcon';
+import Ratio from '../../components/presentationals/icons/Ratio';
+import Remove from '../../components/presentationals/icons/Remove';
+import RemoveMini from '../../components/presentationals/icons/RemoveMini';
+import Search from '../../components/presentationals/icons/Search';
+import SeedsIcon from '../../components/presentationals/icons/SeedsIcon';
+import SettingsIcon from '../../components/presentationals/icons/SettingsIcon';
+import SpinnerIcon from '../../components/presentationals/icons/SpinnerIcon';
+import StartIcon from '../../components/presentationals/icons/StartIcon';
+import StopIcon from '../../components/presentationals/icons/StopIcon';
+import TrackerMessageIcon from '../../components/presentationals/icons/TrackerMessageIcon';
+import Upload from '../../components/presentationals/icons/Upload';
+import UploadThickIcon from '../../components/presentationals/icons/UploadThickIcon';
+
 import styles from './index.module.scss';
 
 export class Index extends Component {
@@ -537,6 +599,73 @@ export class Index extends Component {
                 Margin 5
               </div>
               <div className={cl(styles.rectangle, 'bg-dark float-left p-5')} />
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col>
+              <h4>Icon</h4>
+              <div>
+                <Active />
+                <Add />
+                <AddMini />
+                <All />
+                <ArrowIcon />
+                <CalendarCreatedIcon />
+                <CalendarIcon />
+                <Checkmark />
+                <ChevronLeftIcon />
+                <ChevronRightIcon />
+                <CircleCheckmarkIcon />
+                <CircleExclamationIcon />
+                <CircleIcon />
+                <ClipboardIcon />
+                <ClockIcon />
+                <Close />
+                <CommentIcon />
+                <Completed />
+                <DetailNotAvailableIcon />
+                <DiskIcon />
+                <Disk />
+                <DotsMini />
+                <Download />
+                <DownloadSmall />
+                <DownloadThickIcon />
+                <Edit />
+                <ErrorIcon />
+                <ETA />
+                <FeedIcon />
+                <File />
+                <Files />
+                <FolderClosedOutlined />
+                <FolderClosedSolid />
+                <FolderOpenOutlined />
+                <FolderOpenSolid />
+                <HashIcon />
+                <Inactive />
+                <InfinityIcon />
+                <InformationIcon />
+                <Limits />
+                <LoadingIndicatorDots />
+                <LockIcon />
+                <Logout />
+                <NotificationIcon />
+                <PeersIcon />
+                <RadarIcon />
+                <RadioDot />
+                <RatioIcon />
+                <Ratio />
+                <Remove />
+                <RemoveMini />
+                <Search />
+                <SeedsIcon />
+                <SettingsIcon />
+                <SpinnerIcon />
+                <StartIcon />
+                <StopIcon />
+                <TrackerMessageIcon />
+                <Upload />
+                <UploadThickIcon />
+              </div>
             </Col>
           </Row>
         </Container>

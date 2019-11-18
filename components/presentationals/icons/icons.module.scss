@@ -1,0 +1,19 @@
+.icon {
+  display: inline-block;
+
+  &--md,
+  & {
+    width: 24px;
+    height: 24px;
+  }
+
+  &--sm {
+    width: 16px;
+    height: 16px;
+  }
+
+  &--xs {
+    width: 8px;
+    height: 8px;
+  }
+}

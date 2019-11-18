@@ -11,7 +11,7 @@
 @import '~bootstrap/scss/dropdown';
 @import '~bootstrap/scss/alert';
 @import '~bootstrap/scss/modal';
-@import '~bootstrap/scss/spinners';
+@import '~bootstrap/scss/tooltip';
 @import '~bootstrap/scss/card';
 
 @import '~bootstrap/scss/utilities';
@@ -50,6 +50,13 @@
     bottom: -0.05em;
     vertical-align: -0.125em;
   }
+}
+
+.dropdown-item svg {
+  position: relative;
+  height: 1em;
+  width: 1em;
+  vertical-align: -0.125em;
 }
 
 label,

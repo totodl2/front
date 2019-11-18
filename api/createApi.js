@@ -34,7 +34,7 @@ const createFetcher = (defaultConf = {}) => (
 };
 
 function extractParameters(endpoint) {
-  const regex = /\{([a-z0-9-_]+)\}/gi;
+  const regex = /\{([a-z0-9\-_]+)\}/gi;
   const parameters = [];
   let matches = regex.exec(endpoint);
   while (matches) {
@@ -45,9 +45,9 @@ function extractParameters(endpoint) {
 }
 
 const createCaller = (fetcher, { path: routePath, ...endpoint }, fullName) => {
-  const parameters = extractParameters(endpoint.path);
+  const parameters = extractParameters(routePath);
 
-  return (data, { routeParams, ...axiosConf } = {}) => {
+  return ({ routeParams, ...axiosConf } = {}) => {
     let path = routePath;
     for (let i = 0; i < parameters.length; i++) {
       const parameter = routeParams[parameters[i]];
@@ -58,7 +58,7 @@ const createCaller = (fetcher, { path: routePath, ...endpoint }, fullName) => {
       }
       path = path.replace(`{${parameters[i]}}`, parameter.toString());
     }
-    return fetcher(path, endpoint, { ...axiosConf, data });
+    return fetcher(path, endpoint, axiosConf);
   };
 };
 

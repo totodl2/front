@@ -1,0 +1,38 @@
+.informations {
+  margin-right: map-get($spacers, 3);
+  color: $text-muted;
+
+  &--danger {
+    color: $danger;
+
+    .informations-icon {
+      fill: $danger;
+    }
+  }
+
+  &--success {
+    color: $success;
+
+    .informations-icon {
+      fill: $success;
+    }
+  }
+
+  &--primary {
+    color: $primary;
+
+    .informations-icon {
+      fill: $primary;
+    }
+  }
+}
+
+.informations-icon {
+  fill: $gray-700;
+  vertical-align: middle;
+  margin-right: map-get($spacers, 1);
+}
+
+.informations-content {
+  vertical-align: middle;
+}

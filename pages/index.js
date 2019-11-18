@@ -27,7 +27,7 @@ class Login extends PureComponent {
   onSubmit = async data => {
     this.setState({ loading: true });
     try {
-      const user = (await this.props.api.users.login(data)).data;
+      const user = (await this.props.api.users.login({ data })).data;
       const newToken = this.props.token.setNewToken(
         user.token,
         user.refreshToken,

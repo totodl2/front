@@ -19,6 +19,22 @@
     "getAll": {
       "method": "GET",
       "path": "/torrents"
+    },
+    "get": {
+      "method": "GET",
+      "path": "/torrents/{hash}"
+    },
+    "pause": {
+      "method": "POST",
+      "path": "/torrents/{hash}/pause"
+    },
+    "start": {
+      "method": "POST",
+      "path": "/torrents/{hash}/start"
+    },
+    "remove": {
+      "method": "DELETE",
+      "path": "/torrents/{hash}"
     }
   }
 }
