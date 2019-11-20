@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import withRedirectTo from '../../lib/withRedirectTo';
 import redirectUnlogged from '../../lib/redirection/redirectUnlogged';

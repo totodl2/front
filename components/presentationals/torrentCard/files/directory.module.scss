@@ -1,0 +1,31 @@
+.directory {
+  align-items: end;
+  display: flex;
+
+  &--interactive {
+    cursor: pointer;
+  }
+}
+
+.directory-label {
+  margin-top: 0.3rem;
+  color: $gray-700;
+}
+
+.directory-icon {
+  color: $text-muted;
+  height: 1.5rem;
+  width: 1.5rem;
+  margin-right: map-get($spacers, 1);
+}
+
+.directories {
+
+  &--has-name {
+    margin-left: 1.5rem + map-get($spacers, 1);
+  }
+}
+
+.files {
+  margin-bottom: map-get($spacers, 2);
+}

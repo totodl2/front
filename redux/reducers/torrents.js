@@ -7,6 +7,33 @@ import {
   TYPE_PATCH_TORRENT,
   TYPE_REMOVE_TORRENT,
 } from '../actions/torrents';
+import get from 'lodash/get';
+import set from 'lodash/set';
+
+export const filesKey = '$$files';
+
+/**
+ * @param {Array} files
+ */
+const processFiles = files => {
+  const out = {};
+  files.forEach(file => {
+    if (!file.directory) {
+      out[filesKey] = out[filesKey] || [];
+      out[filesKey].push(file);
+      return;
+    }
+
+    const path = file.directory.split('/');
+    const directory = get(out, path, {});
+    if (!directory[filesKey]) {
+      directory[filesKey] = [];
+    }
+    directory[filesKey].push(file);
+    set(out, path, directory);
+  });
+  return out;
+};
 
 const torrentsDataReducers = (state = { data: {} }, action) => {
   if (action.type === TYPE_SET_TORRENTS) {
@@ -24,6 +51,7 @@ const torrentsDataReducers = (state = { data: {} }, action) => {
       ...state,
       [action.hash]: {
         ...action.data,
+        files: processFiles(get(action.data, 'files', [])),
         fullyLoaded: true,
       },
     };

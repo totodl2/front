@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { submit } from 'redux-form';
 import cl from 'classnames';
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import styles from './style.module.scss';
 import { Loader } from '../../../presentationals/loader';

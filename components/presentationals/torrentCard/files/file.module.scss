@@ -1,0 +1,30 @@
+.file {
+  display: flex;
+  align-items: end;
+  border-bottom: 1px solid $gray-300;
+  margin-bottom: map-get($spacers, 1);
+  position: relative;
+
+  &--has-progress {
+    border-bottom-color: lighten($success, 40%);
+  }
+}
+
+.file-progress {
+  position: absolute;
+  height: 1px;
+  background-color: $success;
+  left: 0px;
+  bottom: -1px;
+}
+
+.file-icon {
+  color: lighten($body-color, 20%);
+  height: 1.5rem;
+  width: 1.5rem;
+  margin-right: map-get($spacers, 1);
+}
+
+.file-label {
+  margin-top: 0.3rem;
+}

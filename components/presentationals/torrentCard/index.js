@@ -7,6 +7,7 @@ import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
 import Dropdown from 'reactstrap/lib/Dropdown';
 import { VelocityTransitionGroup } from 'velocity-react';
+import get from 'lodash/get';
 
 import Card from '../card/card';
 import Upload from '../icons/Upload';
@@ -192,9 +193,11 @@ class TorrentCard extends PureComponent {
           leave={{ animation: 'slideUp', duration: 200 }}
         >
           {isOpen && (
-            <div>
-              <Details torrent={torrent} toggle={toggle} />
-            </div>
+            <Details
+              className="px-3"
+              files={get(torrent, 'files', [])}
+              toggle={toggle}
+            />
           )}
         </VelocityTransitionGroup>
         <WaveLoader visible={isLoading} />
