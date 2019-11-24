@@ -19,5 +19,6 @@
   "gray-600": "#b0bac9",
   "gray-700": "#8798ad",
   "gray-800": "#8097b1",
-  "gray-900": "#2e384d"
+  "gray-900": "#2e384d",
+  "border-radius": "0.25rem"
 }

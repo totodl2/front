@@ -58,7 +58,6 @@ export class Layout extends PureComponent {
     if (!token.isLogged()) {
       return children;
     }
-
     return (
       <MenuContainer>
         {({ opened, toggle, type }) => (
@@ -73,9 +72,11 @@ export class Layout extends PureComponent {
               <MenuItem href="/in" icon={<Activity />}>
                 Torrents
               </MenuItem>
-              <MenuItem href="/demo" icon={<Activity />}>
-                Démo
-              </MenuItem>
+              {process.env.NODE_ENV === 'development' && (
+                <MenuItem href="/demo" icon={<Activity />}>
+                  Démo
+                </MenuItem>
+              )}
             </Menu>
             <div
               className={cl(styles.menuAlign, {

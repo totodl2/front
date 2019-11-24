@@ -1,0 +1,18 @@
+.dropzone {
+  border-radius: $input-border-radius;
+  border: $input-border-width solid $input-border-color;
+  background-color: $input-bg;
+  padding: map-get($spacers, 3);
+  text-align: center;
+  transition: border $transition-presentational-timing ease-in-out;
+
+  &--active {
+    border-style: dashed;
+    border-color: $primary;
+    border-width: $input-border-width * 2;
+  }
+}
+
+.dropzone-files {
+  margin-top: map-get($spacers, 3);
+}

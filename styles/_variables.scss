@@ -51,6 +51,10 @@ $alert-border-width: 0px;
 $transition-presentational-timing: 0.2s;
 
 $text-muted: $gray-700;
+$close-font-weight: 300;
+
+$modal-content-border-width: 0px;
+$modal-content-border-radius: $border-radius;
 
 @import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/variables';

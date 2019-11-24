@@ -40,6 +40,7 @@ const types = {
   xdf: Disc,
 
   exe: Cpu,
+  dmg: Cpu,
   setup: Cpu,
 
   nfo: FileText,
@@ -65,6 +66,8 @@ const types = {
   tr2: Book,
   tr3: Book,
   ybk: Book,
+  mobi: Book,
+  azw3: Book,
 
   rm: Film,
   mpg: Film,

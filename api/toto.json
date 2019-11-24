@@ -16,6 +16,16 @@
     }
   },
   "torrents": {
+    "upload": {
+      "magnet": {
+        "method": "POST",
+        "path": "/torrents/upload/magnet"
+      },
+      "file": {
+        "method": "POST",
+        "path": "/torrents/upload/file"
+      }
+    },
     "getAll": {
       "method": "GET",
       "path": "/torrents"

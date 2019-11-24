@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { fieldPropTypes } from 'redux-form';
+import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import cl from 'classnames';
 import sanitize from '../../utils/sanitizeId';
@@ -76,9 +77,9 @@ class FieldWrapperContainer extends PureComponent {
 
   static getDerivedStateFromProps(props, state) {
     const newState = { ...state };
-
-    if (((props.meta.form && props.input.name) || props.id) && !state.id) {
-      const newId = getId(props.id, props.meta.form, props.input.name);
+    const name = get(props, 'fields.name') || get(props, 'input.name');
+    if (((props.meta.form && name) || props.id) && !state.id) {
+      const newId = getId(props.id, props.meta.form, name);
       if (newId !== state.id) {
         newState.id = newId;
         return newState;

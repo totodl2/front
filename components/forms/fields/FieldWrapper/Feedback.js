@@ -1,5 +1,5 @@
 import React from 'react';
-import { fieldMetaPropTypes } from 'redux-form';
+import { fieldArrayMetaPropTypes, fieldMetaPropTypes } from 'redux-form';
 import PropTypes from 'prop-types';
 import InvalidFeedback from '../InvalidFeedback';
 
@@ -9,7 +9,10 @@ const Feedback = ({ className, meta }) => (
 
 Feedback.propTypes = {
   className: PropTypes.string,
-  meta: PropTypes.shape(fieldMetaPropTypes),
+  meta: PropTypes.oneOfType([
+    PropTypes.shape(fieldArrayMetaPropTypes),
+    PropTypes.shape(fieldMetaPropTypes),
+  ]),
 };
 
 export default Feedback;

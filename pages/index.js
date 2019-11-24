@@ -49,7 +49,7 @@ class Login extends PureComponent {
           <div className="mb-4">
             <h1 className="h2">Sign in toToto</h1>
             <p className="text-muted">
-              Please enter your credentials to preceed
+              Please enter your credentials to proceed
             </p>
           </div>
           <Form onSubmit={this.onSubmit} />
