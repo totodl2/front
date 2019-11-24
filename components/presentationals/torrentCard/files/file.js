@@ -22,7 +22,7 @@ const File = ({ file, className }) => {
       )}
       <div className={styles.fileLabel}>
         <span className={styles.fileIcon}>
-          <ExtensionIcon width="1.5rem" height="1.5rem" ext={file.extension} />
+          <ExtensionIcon ext={file.extension} />
         </span>
         <span className={styles.fileLabelSpan}>{file.basename}</span>
         <span className={styles.fileSize}>
