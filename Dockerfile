@@ -15,3 +15,4 @@ RUN touch .env && \
 ENTRYPOINT [ "npm", "run" ]
 
 CMD [ "start" ]
+
