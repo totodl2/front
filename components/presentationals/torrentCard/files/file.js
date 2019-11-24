@@ -9,8 +9,8 @@ import PrettyBytes from '../../prettyBytes';
 
 const File = ({ file, className }) => {
   const completed = file.bytesCompleted === file.length;
-  return (
-    <a href="#" target="_blank" className={cl(className, styles.file)}>
+  const content = (
+    <>
       {!completed && (
         <div
           className={styles.fileProgress}
@@ -20,15 +20,32 @@ const File = ({ file, className }) => {
           }}
         />
       )}
-      <div className={styles.fileIcon}>
-        <ExtensionIcon ext={file.extension} />
+      <div className={styles.fileLabel}>
+        <span className={styles.fileIcon}>
+          <ExtensionIcon width="1.5rem" height="1.5rem" ext={file.extension} />
+        </span>
+        <span className={styles.fileLabelSpan}>{file.basename}</span>
+        <span className={styles.fileSize}>
+          {!completed && (
+            <>
+              <PrettyBytes bytes={file.bytesCompleted} /> /
+            </>
+          )}
+          <PrettyBytes bytes={file.length} />
+        </span>
       </div>
-      <div className={styles.fileLabel}>{file.basename}</div>
-      <div className="ml-auto pl-3">
-        <PrettyBytes bytes={file.length} />
-      </div>
-    </a>
+      <div className="clearfix" />
+    </>
   );
+
+  if (completed) {
+    return (
+      <a href="#" target="_blank" className={cl(className, styles.file)}>
+        {content}
+      </a>
+    );
+  }
+  return <div className={cl(className, styles.file)}>{content}</div>;
 };
 
 File.propTypes = {

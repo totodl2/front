@@ -7,6 +7,8 @@ import {
 export const TYPE_START_LOADING_TORRENTS = 'torrents/startLoading';
 export const TYPE_STOP_LOADING_TORRENTS = 'torrents/stopLoading';
 export const TYPE_SET_TORRENTS = 'torrents/setTorrents';
+export const TYPE_ADD_TORRENT = 'torrents/addTorrent';
+export const TYPE_UPDATE_TORRENT_FILE = 'torrents/updateFile';
 export const TYPE_SET_TORRENT_FULL = 'torrents/setTorrentFull';
 export const TYPE_PATCH_TORRENT = 'torrents/patchTorrent';
 export const TYPE_REMOVE_TORRENT = 'torrents/remove';
@@ -26,19 +28,32 @@ const setTorrents = data => ({
   data,
 });
 
+export const add = (hash, data) => ({
+  type: TYPE_ADD_TORRENT,
+  data,
+  hash,
+});
+
 const setTorrent = (hash, data) => ({
   type: TYPE_SET_TORRENT_FULL,
   data,
   hash,
 });
 
-const patch = (hash, data) => ({
+export const patch = (hash, data) => ({
   type: TYPE_PATCH_TORRENT,
   hash,
   data,
 });
 
-const removeTorrent = hash => ({ type: TYPE_REMOVE_TORRENT, hash });
+export const updateFile = (hash, id, data) => ({
+  type: TYPE_UPDATE_TORRENT_FILE,
+  id,
+  hash,
+  data,
+});
+
+export const removeData = hash => ({ type: TYPE_REMOVE_TORRENT, hash });
 
 export const getAll = () => async (dispatch, getState, api) => {
   const loadingKey = createRandom(12);
@@ -71,6 +86,6 @@ export const start = hash => async (dispatch, getState, api) => {
 };
 
 export const remove = hash => async (dispatch, getState, api) => {
-  dispatch(removeTorrent(hash));
+  dispatch(removeData(hash));
   await api.torrents.remove({ routeParams: { hash } });
 };

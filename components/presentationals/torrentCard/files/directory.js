@@ -1,5 +1,5 @@
 import React from 'react';
-import { Folder, FolderMinus, FolderPlus } from 'react-feather';
+import { Folder, FolderMinus, FolderPlus, Copy } from 'react-feather';
 import { VelocityTransitionGroup } from 'velocity-react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
@@ -33,6 +33,15 @@ export const Directory = ({ files, name, className, isOpen, toggle }) => {
             {!toggle && <Folder />}
           </div>
           <div className={styles.directoryLabel}>{name}</div>
+          <div className={styles.directoryCopyBtn}>
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-secondary"
+            >
+              <Copy className="mr-1" />
+              Copy links
+            </button>
+          </div>
         </div>
       )}
       <VelocityTransitionGroup

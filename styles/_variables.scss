@@ -50,5 +50,7 @@ $alert-border-width: 0px;
 // decorative transitions, don't deliver informations to user
 $transition-presentational-timing: 0.2s;
 
+$text-muted: $gray-700;
+
 @import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/variables';

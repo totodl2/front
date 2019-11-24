@@ -13,6 +13,7 @@ import Card from '../card/card';
 import Upload from '../icons/Upload';
 import Download from '../icons/Download';
 import SeedsIcon from '../icons/SeedsIcon';
+import User from '../icons/User';
 import IconInformation from './iconInformation';
 import PrettyBytes from '../prettyBytes';
 import MainInformation from './mainInformation';
@@ -89,7 +90,7 @@ class TorrentCard extends PureComponent {
                   <MoreVertical />
                 </DropdownToggle>
                 <DropdownMenu>
-                  {!stopped && (
+                  {(seeding || downloading || checking) && (
                     <DropdownItem onClick={this.onPause}>
                       <Pause className="mr-2" /> Pause
                     </DropdownItem>
@@ -156,6 +157,11 @@ class TorrentCard extends PureComponent {
               {(downloading || seeding || checking) && (
                 <IconInformation icon={SeedsIcon} help="Leechers connected">
                   {torrent.peersGettingFromUs} of {torrent.peersConnected}
+                </IconInformation>
+              )}
+              {torrent.user && (
+                <IconInformation icon={User}>
+                  {torrent.user.nickname}
                 </IconInformation>
               )}
             </div>

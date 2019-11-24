@@ -16,12 +16,14 @@ import {
 import compose from '../../lib/compose';
 import TorrentCard from '../../components/presentationals/torrentCard';
 import Token from '../../lib/token/token';
-import { hasRole, ROLE_ADMIN } from '../../lib/roles';
+import { hasRole, ROLE_ADMIN, ROLE_UPLOADER } from '../../lib/roles';
 import ToggleContainer from '../../components/containers/ToggleContainer';
+import Torrents from '../../components/sse/torrents';
+import UploadZone from '../../components/presentationals/uploadZone';
 
 class Index extends PureComponent {
   static propTypes = {
-    torrents: PropTypes.object,
+    torrents: PropTypes.array,
     token: PropTypes.instanceOf(Token),
     getTorrent: PropTypes.func.isRequired,
     remove: PropTypes.func.isRequired,
@@ -50,13 +52,14 @@ class Index extends PureComponent {
 
   render() {
     const { torrents, token } = this.props;
-    const isSiteAdmin = hasRole(token.role, ROLE_ADMIN);
+    const isSiteAdmin = hasRole(token.roles, ROLE_ADMIN);
+    const isUploader = hasRole(token.roles, ROLE_UPLOADER);
 
     return (
       <div>
         <h2 className="mb-3">Liste des torrents</h2>
 
-        {Object.values(torrents).map((torrent, i) => (
+        {torrents.map((torrent, i) => (
           <ToggleContainer
             view={TorrentCard}
             torrent={torrent}
@@ -69,6 +72,8 @@ class Index extends PureComponent {
             onRemove={this.onRemove}
           />
         ))}
+        {isUploader && <ToggleContainer view={UploadZone} />}
+        <Torrents />
       </div>
     );
   }

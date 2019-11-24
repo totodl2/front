@@ -34,6 +34,7 @@ class Login extends PureComponent {
           label="Email"
           name="email"
           type="email"
+          autoComplete="email"
           validate={[validateEmail, validateRequired]}
         />
         <Field
@@ -41,6 +42,7 @@ class Login extends PureComponent {
           label="Password"
           name="password"
           type="password"
+          autoComplete="current-password"
           validate={[validatePassword, validateRequired]}
         />
         <input type="submit" className="d-none" />

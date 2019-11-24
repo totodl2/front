@@ -34,6 +34,7 @@ class Register extends PureComponent {
           label="Email"
           name="email"
           type="email"
+          autoComplete="email"
           validate={[validateEmail, validateRequired]}
         />
         <Field
@@ -41,7 +42,7 @@ class Register extends PureComponent {
           placeholder="John"
           label="Nickname"
           name="nickname"
-          type="email"
+          autoComplete="username"
           validate={[validateRequired]}
         />
         <Field
@@ -49,6 +50,7 @@ class Register extends PureComponent {
           label="Password"
           name="password"
           type="password"
+          autoComplete="new-password"
           validate={[validatePassword, validateRequired]}
         />
         <input type="submit" className="d-none" />

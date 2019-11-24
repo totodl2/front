@@ -1,6 +1,7 @@
 .directory {
   align-items: end;
   display: flex;
+  margin-bottom: map-get($spacers, 1);
 
   &--interactive {
     cursor: pointer;
@@ -9,18 +10,21 @@
 
 .directory-label {
   margin-top: 0.3rem;
-  color: $gray-700;
+  color: $gray-800;
 }
 
 .directory-icon {
-  color: $text-muted;
+  color: $gray-800;
   height: 1.5rem;
   width: 1.5rem;
   margin-right: map-get($spacers, 1);
 }
 
-.directories {
+.directory-copy-btn {
+  margin-left: auto;
+}
 
+.directories {
   &--has-name {
     margin-left: 1.5rem + map-get($spacers, 1);
   }
