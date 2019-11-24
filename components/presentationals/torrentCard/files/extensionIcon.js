@@ -85,7 +85,7 @@ const types = {
 };
 
 const ExtensionIcon = ({ ext, ...props }) => {
-  const lExt = ext.toLowerCase();
+  const lExt = (ext || '').toLowerCase();
 
   if (types[lExt]) {
     const Icon = types[lExt];
@@ -96,7 +96,7 @@ const ExtensionIcon = ({ ext, ...props }) => {
 };
 
 ExtensionIcon.propTypes = {
-  ext: PropTypes.string.isRequired,
+  ext: PropTypes.string,
 };
 
 export default ExtensionIcon;

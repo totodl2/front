@@ -52,13 +52,18 @@ const retrieveFilePath = (files, id, prevPath = '') => {
   const keys = Object.keys(files);
   // eslint-disable-next-line no-restricted-syntax
   for (const key of keys) {
+    const keyEscaped = key.replace(/'/gi, "\\'");
     if (key === filesKey) {
       const idx = findIndex(files[key], f => f.id === id);
       if (idx !== -1) {
-        return `${prevPath}[${key}][${idx}]`;
+        return `${prevPath}['${keyEscaped}'][${idx}]`;
       }
     } else {
-      const found = retrieveFilePath(files[key], id, `${prevPath}[${key}]`);
+      const found = retrieveFilePath(
+        files[key],
+        id,
+        `${prevPath}['${keyEscaped}']`,
+      );
       if (found !== false) {
         return found;
       }

@@ -40,7 +40,7 @@ const File = ({ file, className }) => {
 
   if (completed) {
     return (
-      <a href="#" target="_blank" className={cl(className, styles.file)}>
+      <a href={file.url} target="_blank" className={cl(className, styles.file)}>
         {content}
       </a>
     );
