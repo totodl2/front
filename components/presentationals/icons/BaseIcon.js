@@ -18,6 +18,7 @@ export default class BaseIcon extends React.Component {
     viewBox: '0 0 60 60',
   };
 
+  // eslint-disable-next-line no-unused-vars
   getClasses(iconName) {
     const { size, className } = this.props;
 

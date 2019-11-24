@@ -1,5 +1,5 @@
 import React from 'react';
-import FieldWrapperContainer from './index';
+import FieldWrapperContainer from './FieldWrapperContainer';
 
 const withFieldWrapper = (Component, defaultProps = {}) => props => (
   <FieldWrapperContainer

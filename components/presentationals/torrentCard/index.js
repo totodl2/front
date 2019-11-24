@@ -9,21 +9,22 @@ import Dropdown from 'reactstrap/lib/Dropdown';
 import { VelocityTransitionGroup } from 'velocity-react';
 import get from 'lodash/get';
 
-import Card from '../card/card';
+import IconInformation from './iconInformation';
 import Upload from '../icons/Upload';
 import Download from '../icons/Download';
 import SeedsIcon from '../icons/SeedsIcon';
 import User from '../icons/User';
-import IconInformation from './iconInformation';
+import DiskIcon from '../icons/DiskIcon';
+import PeersIcon from '../icons/PeersIcon';
+import ETAIcon from '../icons/ETA';
+import ErrorIcon from '../icons/ErrorIcon';
+
+import Card from '../card/card';
 import PrettyBytes from '../prettyBytes';
 import MainInformation from './mainInformation';
 import Progress from '../progress';
 import { isChecking, isDownloading, isSeeding, isStopped } from './status';
 import { getDownloadPercent, getSeedPercent } from './utils';
-import DiskIcon from '../icons/DiskIcon';
-import PeersIcon from '../icons/PeersIcon';
-import ETAIcon from '../icons/ETA';
-import ErrorIcon from '../icons/ErrorIcon';
 import ETA from '../eta';
 
 import styles from './index.module.scss';

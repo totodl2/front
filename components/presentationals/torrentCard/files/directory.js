@@ -34,10 +34,7 @@ export const Directory = ({ files, name, className, isOpen, toggle }) => {
           </div>
           <div className={styles.directoryLabel}>{name}</div>
           <div className={styles.directoryCopyBtn}>
-            <button
-              type="button"
-              className="btn btn-sm btn-outline-secondary"
-            >
+            <button type="button" className="btn btn-sm btn-outline-secondary">
               <Copy className="mr-1" />
               Copy links
             </button>

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -95,7 +95,7 @@ class Torrents extends PureComponent {
 export default compose(
   withApi(),
   connect(
-    state => ({}),
+    () => ({}),
     dispatch =>
       bindActionCreators({ patch, removeData, add, updateFile }, dispatch),
   ),

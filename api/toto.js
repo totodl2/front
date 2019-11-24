@@ -1,6 +1,6 @@
+import { resolve } from 'url';
 import createApi from './createApi';
 import endpoints from './toto.json';
-import { resolve } from 'url';
 
 export default token => {
   const defaultHeaders = {};

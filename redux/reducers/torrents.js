@@ -5,10 +5,8 @@ import setFp from 'lodash/fp/set';
 import findIndex from 'lodash/findIndex';
 
 import {
-  TYPE_STOP_LOADING_TORRENTS,
   TYPE_SET_TORRENTS,
   TYPE_SET_TORRENT_FULL,
-  TYPE_START_LOADING_TORRENTS,
   TYPE_UPDATE_TORRENT_FILE,
   TYPE_PATCH_TORRENT,
   TYPE_REMOVE_TORRENT,
@@ -54,10 +52,8 @@ const retrieveFilePath = (files, id, prevPath = '') => {
   const keys = Object.keys(files);
   // eslint-disable-next-line no-restricted-syntax
   for (const key of keys) {
-    console.log('SEARCH FOR', key, key === filesKey);
     if (key === filesKey) {
       const idx = findIndex(files[key], f => f.id === id);
-      console.log('IDX => ', idx);
       if (idx !== -1) {
         return `${prevPath}[${key}][${idx}]`;
       }
