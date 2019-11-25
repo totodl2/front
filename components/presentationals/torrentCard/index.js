@@ -177,7 +177,10 @@ class TorrentCard extends PureComponent {
             </MainInformation>
           )}
           {stopped && (
-            <MainInformation className="ml-3 d-none d-md-flex">
+            <MainInformation
+              className="ml-3 d-none d-md-flex"
+              label={finished ? 'Finished' : 'Paused'}
+            >
               {finished ? <Check /> : <Pause />}
             </MainInformation>
           )}

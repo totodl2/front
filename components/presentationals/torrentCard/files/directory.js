@@ -4,6 +4,7 @@ import { VelocityTransitionGroup } from 'velocity-react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import cl from 'classnames';
+import flatten from 'lodash/flattenDeep';
 
 import ToggleContainer from '../../../containers/ToggleContainer';
 import { FILES_KEY, MAX_FILES_TO_DEFAULT_OPEN } from './constants';
@@ -11,6 +12,17 @@ import { sortDirAlpha, sortFilesAlpha } from './utils';
 import File from './file';
 
 import styles from './directory.module.scss';
+import CopyButton from '../../copyButton';
+
+const flattenFiles = files =>
+  flatten(
+    Object.entries(files).map(([childName, value]) => {
+      if (childName === FILES_KEY) {
+        return value.map(f => f.url);
+      }
+      return flattenFiles(value);
+    }),
+  ).filter(Boolean);
 
 export const Directory = ({ files, name, className, isOpen, toggle }) => {
   const filesList = get(files, FILES_KEY, []);
@@ -34,10 +46,15 @@ export const Directory = ({ files, name, className, isOpen, toggle }) => {
           </div>
           <div className={styles.directoryLabel}>{name}</div>
           <div className={styles.directoryCopyBtn}>
-            <button type="button" className="btn btn-sm btn-outline-secondary">
+            <CopyButton
+              tag="button"
+              type="button"
+              copy={flattenFiles(files).join('\n')}
+              className="btn btn-sm btn-outline-secondary"
+            >
               <Copy className="mr-1" />
               Copy links
-            </button>
+            </CopyButton>
           </div>
         </div>
       )}

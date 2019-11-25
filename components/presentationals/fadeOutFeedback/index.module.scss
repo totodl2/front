@@ -1,0 +1,29 @@
+.feedback {
+  background-color: $dark;
+  color: $white;
+  padding: map-get($spacers, 1);
+  position: absolute;
+  z-index: 1;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  opacity: 1;
+  border-radius: $border-radius;
+  animation: fadeOutUpAnimation ease-out 0.75s;
+}
+
+@keyframes fadeOutUpAnimation {
+  0% {
+    top: 0px;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    top: -150%;
+  }
+}

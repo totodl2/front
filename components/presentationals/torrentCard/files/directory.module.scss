@@ -23,6 +23,8 @@
 
 .directory-copy-btn {
   margin-left: auto;
+  flex-shrink: 0;
+  position: relative;
 }
 
 .directories {
