@@ -5,6 +5,7 @@ export const TYPE_UPDATE_ME = 'me/update';
 export const TYPE_SET_ME = 'me/set';
 export const TYPE_START_LOADING_ME = 'me/startLoading';
 export const TYPE_STOP_LOADING_ME = 'me/stopLoading';
+export const TYPE_DESTROY_ME = 'me/destroy';
 
 const startLoading = loadingKey => ({
   loadingKey,
@@ -24,6 +25,10 @@ export const setMe = data => ({
 export const updateMe = data => ({
   type: TYPE_UPDATE_ME,
   data,
+});
+
+export const destroyMe = () => ({
+  type: TYPE_DESTROY_ME,
 });
 
 export const getMe = (forceReload = false) => async (

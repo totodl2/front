@@ -3,6 +3,7 @@ import {
   TYPE_START_LOADING_ME,
   TYPE_STOP_LOADING_ME,
   TYPE_UPDATE_ME,
+  TYPE_DESTROY_ME,
 } from '../actions/me';
 
 const initialState = { data: {}, loading: false };
@@ -38,6 +39,9 @@ const meReducers = (state = initialState, action) => {
         ...action.data,
       },
     };
+  }
+  if (action.type === TYPE_DESTROY_ME) {
+    return initialState;
   }
 
   return state;

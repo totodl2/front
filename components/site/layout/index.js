@@ -3,7 +3,7 @@ import cl from 'classnames';
 import PropTypes from 'prop-types';
 import { Activity } from 'react-feather';
 import Router from 'next/router';
-import { compose } from 'redux';
+import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 
@@ -14,7 +14,7 @@ import MenuContainer, {
   TYPE_MOBILE,
 } from '../../presentationals/menu/menuContainer';
 import Page from '../../layouts/page';
-
+import { destroyMe } from '../../../redux/actions/me';
 import styles from './index.module.scss';
 import Header from '../../presentationals/header';
 import Token from '../../../lib/token/token';
@@ -30,6 +30,7 @@ export class Layout extends PureComponent {
     token: PropTypes.instanceOf(Token).isRequired,
     user: PropTypes.object,
     userLoading: PropTypes.bool,
+    destroyMe: PropTypes.func.isRequired,
   };
 
   state = {
@@ -58,6 +59,11 @@ export class Layout extends PureComponent {
       pageLoading: false,
     });
 
+  logout = () => {
+    this.props.destroyMe();
+    return this.props.token.logout();
+  };
+
   render() {
     const { children, token, user, userLoading } = this.props;
 
@@ -78,7 +84,7 @@ export class Layout extends PureComponent {
               <MenuUser
                 loading={userLoading}
                 user={user}
-                logout={token.logout}
+                logout={this.logout}
                 menuOpened={opened}
               />
               <MenuItem href="/in" icon={<Activity />}>
@@ -112,8 +118,11 @@ export class Layout extends PureComponent {
 
 export default compose(
   withToken(),
-  connect(state => ({
-    user: get(state, 'me.data', {}),
-    userLoading: get(state, 'me.loading', false),
-  })),
+  connect(
+    state => ({
+      user: get(state, 'me.data', {}),
+      userLoading: get(state, 'me.loading', false),
+    }),
+    dispatch => bindActionCreators({ destroyMe }, dispatch),
+  ),
 )(Layout);
