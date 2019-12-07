@@ -9,6 +9,7 @@ export const TYPE_STOP_LOADING_TORRENTS = 'torrents/stopLoading';
 export const TYPE_SET_TORRENTS = 'torrents/setTorrents';
 export const TYPE_ADD_TORRENT = 'torrents/addTorrent';
 export const TYPE_UPDATE_TORRENT_FILE = 'torrents/updateFile';
+export const TYPE_CREATE_TORRENT_FILE = 'torrents/createFile';
 export const TYPE_SET_TORRENT_FULL = 'torrents/setTorrentFull';
 export const TYPE_PATCH_TORRENT = 'torrents/patchTorrent';
 export const TYPE_REMOVE_TORRENT = 'torrents/remove';
@@ -49,6 +50,12 @@ export const patch = (hash, data) => ({
 export const updateFile = (hash, id, data) => ({
   type: TYPE_UPDATE_TORRENT_FILE,
   id,
+  hash,
+  data,
+});
+
+export const createFile = (hash, data) => ({
+  type: TYPE_CREATE_TORRENT_FILE,
   hash,
   data,
 });

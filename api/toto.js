@@ -23,20 +23,18 @@ export default token => {
     return api;
   };
 
-  api.sse = {
-    /**
-     * @returns {EventSource}
-     */
-    torrents: () =>
-      new EventSource(
-        `${resolve(
-          conf.axiosDefault.baseURL,
-          '/sse/torrents',
-        )}?x-authorization=${encodeURIComponent(
-          defaultHeaders['x-authorization'],
-        )}`,
-      ),
-  };
+  /**
+   * @returns {EventSource}
+   */
+  api.sse = () =>
+    new EventSource(
+      `${resolve(
+        conf.axiosDefault.baseURL,
+        '/sse',
+      )}?x-authorization=${encodeURIComponent(
+        defaultHeaders['x-authorization'],
+      )}`,
+    );
 
   api.setToken(token);
   return api;

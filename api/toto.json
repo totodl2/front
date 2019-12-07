@@ -7,6 +7,10 @@
     "login": {
       "method": "POST",
       "path": "/users/login"
+    },
+    "me": {
+      "method": "GET",
+      "path": "/users/me"
     }
   },
   "tokens": {

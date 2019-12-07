@@ -1,6 +1,7 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import get from 'lodash/get';
 
 import { bindActionCreators, compose } from 'redux';
 import withApi from '../../lib/api/withApi';
@@ -9,23 +10,31 @@ import {
   removeData,
   add,
   updateFile,
+  createFile,
 } from '../../redux/actions/torrents';
+import { updateMe } from '../../redux/actions/me';
 import isServer from '../../lib/isServer';
+import withToken from '../../lib/token/withToken';
+import Token from '../../lib/token/token';
 
-class Torrents extends PureComponent {
+class SSE extends PureComponent {
   static propTypes = {
     api: PropTypes.object.isRequired,
     patch: PropTypes.func.isRequired,
     removeData: PropTypes.func.isRequired,
     add: PropTypes.func.isRequired,
     updateFile: PropTypes.func.isRequired,
+    createFile: PropTypes.func.isRequired,
+    updateMe: PropTypes.func.isRequired,
+    token: PropTypes.instanceOf(Token),
   };
 
   componentDidMount() {
     if (isServer) {
       return;
     }
-    this.eventSource = this.props.api.sse.torrents();
+    const { api, token } = this.props;
+    this.eventSource = api.sse();
     this.eventSource.addEventListener(
       'torrents.updated',
       this.onTorrentUpdated,
@@ -41,6 +50,15 @@ class Torrents extends PureComponent {
     this.eventSource.addEventListener(
       'files.updated',
       this.onTorrentFileUpdated,
+    );
+    this.eventSource.addEventListener(
+      'files.created',
+      this.onTorrentFileCreated,
+    );
+    this.userUpdatedEventName = `users.${get(token, 'id', 0)}.updated`;
+    this.eventSource.addEventListener(
+      this.userUpdatedEventName,
+      this.onUserUpdated,
     );
   }
 
@@ -62,6 +80,14 @@ class Torrents extends PureComponent {
       this.eventSource.removeEventListener(
         'files.updated',
         this.onTorrentFileUpdated,
+      );
+      this.eventSource.removeEventListener(
+        'files.created',
+        this.onTorrentFileCreated,
+      );
+      this.eventSource.removeEventListener(
+        this.userUpdatedEventName,
+        this.onUserUpdated,
       );
       this.eventSource = null;
     }
@@ -87,6 +113,16 @@ class Torrents extends PureComponent {
     this.props.add(data.hash, data);
   };
 
+  onTorrentFileCreated = ({ data: jsonData }) => {
+    const { hash, ...data } = JSON.parse(jsonData);
+    this.props.createFile(hash, data);
+  };
+
+  onUserUpdated = ({ data: jsonData }) => {
+    const { hash, ...data } = JSON.parse(jsonData);
+    this.props.updateMe(data.changes);
+  };
+
   render() {
     return null;
   }
@@ -94,9 +130,13 @@ class Torrents extends PureComponent {
 
 export default compose(
   withApi(),
+  withToken(),
   connect(
     () => ({}),
     dispatch =>
-      bindActionCreators({ patch, removeData, add, updateFile }, dispatch),
+      bindActionCreators(
+        { patch, removeData, add, updateFile, createFile, updateMe },
+        dispatch,
+      ),
   ),
-)(Torrents);
+)(SSE);

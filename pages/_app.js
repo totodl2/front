@@ -14,6 +14,8 @@ import withReduxStore from '../redux/withReduxStore';
 import ApiProvider from '../lib/api/provider';
 import TokenProvider from '../lib/token/provider';
 
+import SSE from '../components/sse';
+
 import '../styles/app.scss';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
@@ -30,6 +32,7 @@ class TotoApp extends App {
             <Layout>
               <Component {...pageProps} />
             </Layout>
+            <SSE />
           </Provider>
         </TokenProvider>
       </ApiProvider>

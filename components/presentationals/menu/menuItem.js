@@ -13,15 +13,12 @@ const MenuItem = ({
   className,
   children,
   icon,
+  type,
+  hoverable,
   ...props
-}) => (
-  <Link href={href} as={as} {...props}>
-    <a
-      className={cl(className, styles.menuItem, {
-        [styles.menuItemActive]:
-          router.asPath === as || router.pathname === href,
-      })}
-    >
+}) => {
+  const content = (
+    <>
       {icon && <div className={styles.menuItemIcon}>{icon}</div>}
       <div
         className={cl(styles.menuItemText, {
@@ -30,10 +27,34 @@ const MenuItem = ({
       >
         {children}
       </div>
-    </a>
-  </Link>
-);
+    </>
+  );
 
+  if (type === 'link') {
+    return (
+      <Link href={href} as={as} {...props}>
+        <a
+          className={cl(className, styles.menuItem, styles.menuItemHoverable, {
+            [styles.menuItemActive]:
+              router.asPath === as || router.pathname === href,
+          })}
+        >
+          {content}
+        </a>
+      </Link>
+    );
+  }
+
+  return (
+    <div
+      className={cl(className, styles.menuItem, {
+        [styles.menuItemHoverable]: hoverable,
+      })}
+    >
+      {content}
+    </div>
+  );
+};
 MenuItem.propTypes = {
   className: PropTypes.string,
   icon: PropTypes.node,
@@ -41,6 +62,12 @@ MenuItem.propTypes = {
   href: PropTypes.any,
   as: PropTypes.any,
   children: PropTypes.node,
+  hoverable: PropTypes.bool,
+  type: PropTypes.oneOf(['link', 'div']),
+};
+
+MenuItem.defaultProps = {
+  type: 'link',
 };
 
 export default withRouter(MenuItem);

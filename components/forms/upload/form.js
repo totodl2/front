@@ -37,7 +37,7 @@ class Register extends PureComponent {
           fileLabel="Torrent"
           label="Files"
           name="files"
-          accept="application/x-bittorrent"
+          accept=".torrent"
         />
         <input type="submit" className="d-none" />
         <FormGlobalErrors className="mt-3" errors={error} />

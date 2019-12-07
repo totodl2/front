@@ -9,7 +9,7 @@
   transition: all $transition-presentational-timing ease-in;
   color: $text-muted;
 
-  &:hover,
+  &:hover.menu-item--hoverable,
   &--active {
     color: $primary;
     padding-left: 0px;
@@ -19,10 +19,11 @@
   }
 
   &-icon {
-    width: calc(#{$headerHeight} - 3px);
+    //width: calc(#{$headerHeight} - 3px);
     display: flex;
     min-width: calc(#{$headerHeight} - 3px);
     justify-content: center;
+    align-items: center;
   }
 
   &-text {

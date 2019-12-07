@@ -1,0 +1,37 @@
+.menu-user {
+  margin-bottom: map-get($spacers, 3);
+
+  &-chart {
+    position: relative;
+    transition: all $transition-presentational-timing ease-in;
+    width: 120px;
+
+    svg {
+      width: 90%;
+      margin: 0 auto;
+      display: block;
+    }
+
+    &-percent {
+      transition: all $transition-presentational-timing ease-in;
+      font-size: 1.5rem;
+      font-weight: 400;
+      font-variant: all-small-caps;
+      text-transform: lowercase;
+      position: absolute;
+      bottom: 0rem;
+      text-align: center;
+      line-height: 1;
+      left: 0px;
+      right: 0px;
+    }
+
+    &--small {
+      width: calc(4rem - 3px);
+
+      .menu-user-chart-percent {
+        font-size: 1rem;
+      }
+    }
+  }
+}

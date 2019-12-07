@@ -19,11 +19,11 @@ import TorrentCard from '../../components/presentationals/torrentCard';
 import Token from '../../lib/token/token';
 import { hasRole, ROLE_ADMIN, ROLE_UPLOADER } from '../../lib/roles';
 import ToggleContainer from '../../components/containers/ToggleContainer';
-import Torrents from '../../components/sse/torrents';
 import AddButton from '../../components/presentationals/addButton';
 import connectModals from '../../lib/connectModals';
 import UploadModal from '../../components/modals/Upload';
 import withApi from '../../lib/api/withApi';
+import { getMe } from '../../redux/actions/me';
 
 class Index extends PureComponent {
   static propTypes = {
@@ -39,6 +39,7 @@ class Index extends PureComponent {
 
   static async getInitialProps(ctx) {
     await ctx.reduxStore.dispatch(getTorrents());
+    await ctx.reduxStore.dispatch(getMe());
     return {};
   }
 
@@ -93,7 +94,6 @@ class Index extends PureComponent {
         {isUploader && (
           <AddButton className="btn-primary" onClick={this.onUpload} />
         )}
-        <Torrents />
       </div>
     );
   }
@@ -104,7 +104,7 @@ export default compose(
   connect(
     state => ({ torrents: get(state, 'torrents.data', []) }),
     dispatch =>
-      bindActionCreators({ getTorrent, remove, pause, start }, dispatch),
+      bindActionCreators({ getTorrent, getMe, remove, pause, start }, dispatch),
   ),
   withApi(),
   connectModals({ UploadModal }),

@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import get from 'lodash/get';
-import set from 'lodash/set';
 import setFp from 'lodash/fp/set';
 import findIndex from 'lodash/findIndex';
 
@@ -8,6 +7,7 @@ import {
   TYPE_SET_TORRENTS,
   TYPE_SET_TORRENT_FULL,
   TYPE_UPDATE_TORRENT_FILE,
+  TYPE_CREATE_TORRENT_FILE,
   TYPE_PATCH_TORRENT,
   TYPE_REMOVE_TORRENT,
   TYPE_ADD_TORRENT,
@@ -18,22 +18,23 @@ export const filesKey = '$$files';
 /**
  * @param {Array} files
  */
-const processFiles = files => {
-  const out = {};
+const processFiles = (files, defaultOut = {}) => {
+  let out = defaultOut;
   files.forEach(file => {
     if (!file.directory) {
-      out[filesKey] = out[filesKey] || [];
-      out[filesKey].push(file);
+      const newFiles = [...(get(out, filesKey) || [])];
+      newFiles.push(file);
+      out = setFp(filesKey, newFiles, out);
       return;
     }
 
     const path = file.directory.split('/');
-    const directory = get(out, path, {});
+    const directory = { ...get(out, path, {}) };
     if (!directory[filesKey]) {
       directory[filesKey] = [];
     }
     directory[filesKey].push(file);
-    set(out, path, directory);
+    out = setFp(path, directory, out);
   });
   return out;
 };
@@ -98,6 +99,17 @@ const torrentsDataReducers = (state = [], action) => {
       state,
     );
   }
+  if (action.type === TYPE_CREATE_TORRENT_FILE) {
+    const idx = findIndex(state, t => t.hash === action.hash);
+    if (idx === -1 || !state[idx] || !state[idx].fullyLoaded) {
+      return state;
+    }
+    return setFp(
+      `[${idx}].files`,
+      processFiles([action.data], get(state, `[${idx}].files`, {})),
+      state,
+    );
+  }
   if (action.type === TYPE_UPDATE_TORRENT_FILE) {
     const idx = findIndex(state, t => t.hash === action.hash);
     if (idx === -1 || !state[idx] || !state[idx].files) {
@@ -141,6 +153,7 @@ const torrentsDataReducers = (state = [], action) => {
   }
   return state;
 };
+
 export default combineReducers({
   data: torrentsDataReducers,
 });
