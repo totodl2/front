@@ -3,7 +3,7 @@ import { fieldPropTypes } from 'redux-form';
 import PropTypes from 'prop-types';
 import cl from 'classnames';
 
-const Input = ({ input, meta, className, ...props }) => (
+const Input = ({ input = {}, meta, className, ...props }) => (
   <input
     type="text"
     {...input}

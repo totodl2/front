@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import get from 'lodash/get';
 import { Plus } from 'react-feather';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import withRedirectTo from '../../lib/withRedirectTo';
 import redirectUnlogged from '../../lib/redirection/redirectUnlogged';
@@ -13,6 +14,7 @@ import {
   remove,
   pause,
   start,
+  search,
 } from '../../redux/actions/torrents';
 import compose from '../../lib/compose';
 import TorrentCard from '../../components/presentationals/torrentCard';
@@ -24,6 +26,9 @@ import connectModals from '../../lib/connectModals';
 import UploadModal from '../../components/modals/Upload';
 import withApi from '../../lib/api/withApi';
 import { getMe } from '../../redux/actions/me';
+import Input from '../../components/forms/fields/Input/Input';
+
+const PAGE_SIZE = 50;
 
 class Index extends PureComponent {
   static propTypes = {
@@ -35,12 +40,29 @@ class Index extends PureComponent {
     start: PropTypes.func.isRequired,
     openUploadModal: PropTypes.func.isRequired,
     api: PropTypes.object,
+    searchTorrent: PropTypes.func.isRequired,
+    search: PropTypes.object,
   };
 
   static async getInitialProps(ctx) {
     await ctx.reduxStore.dispatch(getTorrents());
     await ctx.reduxStore.dispatch(getMe());
     return {};
+  }
+
+  state = {
+    page: 1,
+    searching: false,
+  };
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.search.searching !== state.searching) {
+      return {
+        page: 1,
+        searching: props.search.searching,
+      };
+    }
+    return null;
   }
 
   onOpen = async (evt, torrent) => {
@@ -59,38 +81,78 @@ class Index extends PureComponent {
 
   onUpload = () => this.props.openUploadModal({ api: this.props.api });
 
+  loadMore = page => this.setState({ page });
+
+  onSearch = evt => {
+    this.props.searchTorrent(evt.target.value);
+  };
+
+  getTorrents = () => {
+    const {
+      torrents,
+      search: { searching, results: found },
+    } = this.props;
+    const { page } = this.state;
+
+    return (searching
+      ? torrents.filter(t => found.indexOf(t.hash) !== -1)
+      : torrents
+    ).slice(0, page * PAGE_SIZE);
+  };
+
   render() {
-    const { torrents, token } = this.props;
+    const {
+      torrents,
+      token,
+      search: { searching, results: found },
+    } = this.props;
     const isSiteAdmin = hasRole(token.roles, ROLE_ADMIN);
     const isUploader = hasRole(token.roles, ROLE_UPLOADER);
+    const { page } = this.state;
 
     return (
       <div>
-        <div className="d-flex align-items-center mb-3">
-          <h2 className="mb-0">Liste des torrents</h2>
+        <div className="d-flex flex-wrap align-items-center mb-3">
+          <h2 className="mb-0">Torrents list</h2>
+          <Input
+            type="text"
+            className="ml-auto w-auto bg-white mr-0 mr-md-3"
+            placeholder="Search..."
+            onChange={this.onSearch}
+          />
           {isUploader && (
             <button
               type="button"
-              className="btn btn-outline-primary ml-auto"
+              className="btn btn-outline-primary d-none d-md-block"
               onClick={this.onUpload}
             >
               <Plus /> Add torrents
             </button>
           )}
         </div>
-        {torrents.map(torrent => (
-          <ToggleContainer
-            view={TorrentCard}
-            torrent={torrent}
-            key={torrent.hash}
-            isAdmin={isSiteAdmin || token.id === torrent.userId}
-            isLoading={torrent.loading}
-            onOpen={this.onOpen}
-            onPause={this.onPause}
-            onStart={this.onStart}
-            onRemove={this.onRemove}
-          />
-        ))}
+        <InfiniteScroll
+          pageStart={1}
+          initialLoad={false}
+          hasMore={
+            page * PAGE_SIZE < (searching ? found.length : torrents.length)
+          }
+          loadMore={this.loadMore}
+        >
+          {this.getTorrents().map(torrent => (
+            <ToggleContainer
+              view={TorrentCard}
+              torrent={torrent}
+              key={torrent.hash}
+              isAdmin={isSiteAdmin || token.id === torrent.userId}
+              isLoading={torrent.loading}
+              onOpen={this.onOpen}
+              onPause={this.onPause}
+              onStart={this.onStart}
+              onRemove={this.onRemove}
+            />
+          ))}
+        </InfiniteScroll>
+
         {isUploader && (
           <AddButton className="btn-primary" onClick={this.onUpload} />
         )}
@@ -102,9 +164,15 @@ class Index extends PureComponent {
 export default compose(
   withRedirectTo(redirectUnlogged),
   connect(
-    state => ({ torrents: get(state, 'torrents.data', []) }),
+    state => ({
+      torrents: get(state, 'torrents.data', []),
+      search: get(state, 'torrents.search', {}),
+    }),
     dispatch =>
-      bindActionCreators({ getTorrent, getMe, remove, pause, start }, dispatch),
+      bindActionCreators(
+        { getTorrent, getMe, remove, pause, start, searchTorrent: search },
+        dispatch,
+      ),
   ),
   withApi(),
   connectModals({ UploadModal }),

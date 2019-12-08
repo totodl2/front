@@ -13,6 +13,7 @@ export const TYPE_CREATE_TORRENT_FILE = 'torrents/createFile';
 export const TYPE_SET_TORRENT_FULL = 'torrents/setTorrentFull';
 export const TYPE_PATCH_TORRENT = 'torrents/patchTorrent';
 export const TYPE_REMOVE_TORRENT = 'torrents/remove';
+export const TYPE_TORRENTS_SEARCH = 'torrents/search';
 
 const startLoading = loadingKey => ({
   loadingKey,
@@ -27,6 +28,11 @@ const stopLoading = loadingKey => ({
 const setTorrents = data => ({
   type: TYPE_SET_TORRENTS,
   data,
+});
+
+export const search = keywords => ({
+  type: TYPE_TORRENTS_SEARCH,
+  keywords,
 });
 
 export const add = (hash, data) => ({

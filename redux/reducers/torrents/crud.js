@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import get from 'lodash/get';
 import setFp from 'lodash/fp/set';
 import findIndex from 'lodash/findIndex';
@@ -11,7 +10,7 @@ import {
   TYPE_PATCH_TORRENT,
   TYPE_REMOVE_TORRENT,
   TYPE_ADD_TORRENT,
-} from '../actions/torrents';
+} from '../../actions/torrents';
 
 export const filesKey = '$$files';
 
@@ -154,6 +153,4 @@ const torrentsDataReducers = (state = [], action) => {
   return state;
 };
 
-export default combineReducers({
-  data: torrentsDataReducers,
-});
+export default torrentsDataReducers;

@@ -67,7 +67,7 @@ class MenuUser extends PureComponent {
             radius={50}
             cy={50}
             cx={50}
-            lineWidth={menuOpened ? 20 : 30}
+            lineWidth={menuOpened ? 20 : 25}
             lengthAngle={180}
             startAngle={180}
             paddingAngle={0}
