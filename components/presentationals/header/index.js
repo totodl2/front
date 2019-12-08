@@ -4,14 +4,17 @@ import cl from 'classnames';
 
 import Page from '../../layouts/page';
 
-import logo from './asset/totoLogo.png';
+import logo from './asset/logototo.png';
+import logo2x from './asset/logototo@2.png';
+import logo3x from './asset/logototo@3.png';
+
 import styles from './index.module.scss';
 
 const Header = ({ className }) => (
   <div className={cl(className, styles.header)}>
     <Page className="d-flex align-items-center">
       <div className={styles.logo}>
-        <img src={logo} alt="logo" />
+        <img src={logo} srcSet={`${logo2x} 2x, ${logo3x} 3x`} alt="logo" />
       </div>
     </Page>
   </div>
