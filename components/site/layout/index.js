@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import cl from 'classnames';
 import PropTypes from 'prop-types';
-import { Activity } from 'react-feather';
+import { Activity, Plus } from 'react-feather';
 import Router from 'next/router';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
@@ -24,6 +24,10 @@ import withToken from '../../../lib/token/withToken';
 import WaveLoader from '../../presentationals/waveLoader';
 import MenuUser from '../../presentationals/menuUser';
 import SSE from '../../sse';
+import connectModals from '../../../lib/connectModals';
+import UploadModal from '../../modals/Upload';
+import withApi from '../../../lib/api/withApi';
+import { hasRole, ROLE_UPLOADER } from '../../../lib/roles';
 
 export class Layout extends PureComponent {
   static propTypes = {
@@ -32,6 +36,8 @@ export class Layout extends PureComponent {
     user: PropTypes.object,
     userLoading: PropTypes.bool,
     destroyMe: PropTypes.func.isRequired,
+    openUploadModal: PropTypes.func.isRequired,
+    api: PropTypes.object,
   };
 
   state = {
@@ -60,6 +66,8 @@ export class Layout extends PureComponent {
       pageLoading: false,
     });
 
+  onUpload = () => this.props.openUploadModal({ api: this.props.api });
+
   logout = () => {
     this.props.destroyMe();
     return this.props.token.logout();
@@ -67,6 +75,7 @@ export class Layout extends PureComponent {
 
   render() {
     const { children, token, user, userLoading } = this.props;
+    const isUploader = hasRole(token.roles, ROLE_UPLOADER);
 
     if (!token.isLogged()) {
       return children;
@@ -105,7 +114,17 @@ export class Layout extends PureComponent {
                 [styles.menuAlignTablet]: type === TYPE_TABLET,
               })}
             >
-              <Header />
+              <Header>
+                {isUploader && (
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary d-none d-sm-block"
+                    onClick={this.onUpload}
+                  >
+                    <Plus /> Add torrents
+                  </button>
+                )}
+              </Header>
               <Page>
                 {children}
                 <WaveLoader visible={this.state.pageLoading} />
@@ -120,6 +139,7 @@ export class Layout extends PureComponent {
 
 export default compose(
   withToken(),
+  withApi(),
   connect(
     state => ({
       user: get(state, 'me.data', {}),
@@ -127,4 +147,5 @@ export default compose(
     }),
     dispatch => bindActionCreators({ destroyMe }, dispatch),
   ),
+  connectModals({ UploadModal }),
 )(Layout);

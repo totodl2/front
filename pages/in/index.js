@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import get from 'lodash/get';
-import { Plus } from 'react-feather';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import withRedirectTo from '../../lib/withRedirectTo';
@@ -116,19 +115,10 @@ class Index extends PureComponent {
           <h2 className="mb-0">Torrents list</h2>
           <Input
             type="text"
-            className="ml-auto w-auto bg-white mr-0 mr-md-3"
+            className="ml-auto w-auto bg-white"
             placeholder="Search..."
             onChange={this.onSearch}
           />
-          {isUploader && (
-            <button
-              type="button"
-              className="btn btn-outline-primary d-none d-md-block"
-              onClick={this.onUpload}
-            >
-              <Plus /> Add torrents
-            </button>
-          )}
         </div>
         <InfiniteScroll
           pageStart={1}
