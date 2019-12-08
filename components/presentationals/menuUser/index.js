@@ -110,7 +110,7 @@ class MenuUser extends PureComponent {
           )}
           <div className="text-truncate h6 mb-0">
             {/* eslint-disable-next-line no-script-url */}
-            <a href="javascript:" onClick={logout}>
+            <a href="#" onClick={logout}>
               Logout
             </a>
           </div>

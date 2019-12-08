@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { fieldPropTypes } from 'redux-form';
+import { fieldInputPropTypes } from 'redux-form';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import cl from 'classnames';
@@ -59,7 +59,8 @@ const getClassNames = (className, meta) =>
 
 class FieldWrapperContainer extends PureComponent {
   static propTypes = {
-    ...fieldPropTypes,
+    input: PropTypes.shape(fieldInputPropTypes),
+    meta: PropTypes.object,
     id: PropTypes.string, // eslint-disable-line
     className: PropTypes.string,
     label: PropTypes.string,
@@ -73,6 +74,7 @@ class FieldWrapperContainer extends PureComponent {
 
   static defaultProps = {
     optional: false,
+    meta: {},
   };
 
   static getDerivedStateFromProps(props, state) {

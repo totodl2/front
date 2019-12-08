@@ -10,14 +10,14 @@ import styles from './file.module.scss';
 
 const File = ({ input, className, onRemove }) => (
   <div className={className}>
-    <a
-      href="javascript:" // eslint-disable-line
+    <button
+      type="button" // eslint-disable-line
       title="Remove"
       onClick={onRemove}
-      className={styles.fileRemove}
+      className={cl(styles.fileRemove, 'btn btn-link')}
     >
       <X />
-    </a>
+    </button>
     <span className={cl('align-middle', styles.fileName)}>
       {input.value.name}
     </span>

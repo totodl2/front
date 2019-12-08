@@ -23,6 +23,7 @@ import MenuItem from '../../presentationals/menu/menuItem';
 import withToken from '../../../lib/token/withToken';
 import WaveLoader from '../../presentationals/waveLoader';
 import MenuUser from '../../presentationals/menuUser';
+import SSE from '../../sse';
 
 export class Layout extends PureComponent {
   static propTypes = {
@@ -74,6 +75,7 @@ export class Layout extends PureComponent {
       <MenuContainer>
         {({ opened, toggle, type }) => (
           <>
+            <SSE />
             <Menu
               opened={opened}
               toggle={toggle}

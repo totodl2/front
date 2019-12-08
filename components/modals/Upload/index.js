@@ -16,7 +16,7 @@ class UploadModal extends PureComponent {
     isOpen: PropTypes.bool,
     close: PropTypes.func.isRequired,
     className: PropTypes.string,
-    api: PropTypes.func.isRequired,
+    api: PropTypes.object.isRequired,
     resetSection: PropTypes.func.isRequired,
     arrayRemove: PropTypes.func.isRequired,
   };
