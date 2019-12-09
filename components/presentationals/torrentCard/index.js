@@ -1,6 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { MoreVertical, Check, Pause, Play, Trash } from 'react-feather';
+import {
+  MoreVertical,
+  Check,
+  Pause,
+  Play,
+  Trash,
+  Compass,
+} from 'react-feather';
 import cl from 'classnames';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
@@ -41,13 +48,28 @@ class TorrentCard extends PureComponent {
     isLoading: PropTypes.bool,
     isOpen: PropTypes.bool,
     toggle: PropTypes.func.isRequired,
+    onOpenTrackers: PropTypes.func,
     onPause: PropTypes.func,
     onStart: PropTypes.func,
     onRemove: PropTypes.func,
     onOpen: PropTypes.func.isRequired,
   };
 
-  onRemove = evt => (this.props.onRemove || noop)(evt, this.props.torrent);
+  state = {
+    confirmRemove: false,
+  };
+
+  onRemove = evt => {
+    const { confirmRemove } = this.state;
+
+    if (!confirmRemove) {
+      this.setState({ confirmRemove: true });
+      evt.stopPropagation();
+      return;
+    }
+
+    (this.props.onRemove || noop)(evt, this.props.torrent);
+  };
 
   onStart = evt => (this.props.onStart || noop)(evt, this.props.torrent);
 
@@ -61,8 +83,26 @@ class TorrentCard extends PureComponent {
     this.props.toggle(evt);
   };
 
+  onDropdownToggle = opened => {
+    if (!opened) {
+      this.setState({ confirmRemove: false });
+    }
+  };
+
+  onOpenTrackers = () => {
+    this.props.onOpenTrackers(this.props.torrent);
+  };
+
   render() {
-    const { torrent, isAdmin, isLoading, isOpen, toggle } = this.props;
+    const { confirmRemove } = this.state;
+    const {
+      torrent,
+      isAdmin,
+      isLoading,
+      isOpen,
+      toggle,
+      onOpenTrackers,
+    } = this.props;
     const downloaded = torrent.leftUntilDone <= 0;
     const seeding = isSeeding(torrent.status);
     const downloading = isDownloading(torrent.status);
@@ -73,7 +113,7 @@ class TorrentCard extends PureComponent {
     return (
       <Card
         className={cl(
-          'd-flex flex-column mb-4 position-relative overflow-hidden',
+          'd-flex flex-column mb-4 position-relative',
           styles.card,
           {
             [styles.cardNotOpened]: !isOpen,
@@ -83,7 +123,11 @@ class TorrentCard extends PureComponent {
         <div className={cl('p-3', styles.cardHeader)} onClick={this.onOpen}>
           {isAdmin && (
             <div className={cl(styles.moreButton, 'ml-auto')}>
-              <ToggleContainer view={Dropdown} direction="left">
+              <ToggleContainer
+                view={Dropdown}
+                direction="left"
+                onToggle={this.onDropdownToggle}
+              >
                 <DropdownToggle
                   tag="button"
                   className="btn btn-round shadow-none"
@@ -101,14 +145,24 @@ class TorrentCard extends PureComponent {
                       <Play className="mr-2" /> Start
                     </DropdownItem>
                   )}
-                  <DropdownItem onClick={this.onRemove}>
-                    <Trash className="mr-2" /> Remove
+                  {onOpenTrackers && (
+                    <DropdownItem onClick={this.onOpenTrackers}>
+                      <Compass className="mr-2" />
+                      Trackers
+                    </DropdownItem>
+                  )}
+                  <DropdownItem
+                    className={confirmRemove ? 'text-danger' : ''}
+                    onClick={this.onRemove}
+                  >
+                    <Trash className="mr-2" />
+                    {confirmRemove ? 'Click again to confirm' : 'Remove'}
                   </DropdownItem>
                 </DropdownMenu>
               </ToggleContainer>
             </div>
           )}
-          <div className="w-100 overflow-hidden">
+          <div className="w-100">
             <h5 className="text-truncate">{torrent.name || 'Unknown'}</h5>
             {seeding && (
               <Progress color="primary" percent={getSeedPercent(torrent)} />

@@ -23,6 +23,7 @@ import ToggleContainer from '../../components/containers/ToggleContainer';
 import AddButton from '../../components/presentationals/addButton';
 import connectModals from '../../lib/connectModals';
 import UploadModal from '../../components/modals/Upload';
+import TrackersModal from '../../components/modals/Trackers';
 import withApi from '../../lib/api/withApi';
 import { getMe } from '../../redux/actions/me';
 import Input from '../../components/forms/fields/Input/Input';
@@ -40,6 +41,7 @@ class Index extends PureComponent {
     openUploadModal: PropTypes.func.isRequired,
     api: PropTypes.object,
     searchTorrent: PropTypes.func.isRequired,
+    openTrackersModal: PropTypes.func.isRequired,
     search: PropTypes.object,
   };
 
@@ -86,6 +88,10 @@ class Index extends PureComponent {
     this.props.searchTorrent(evt.target.value);
   };
 
+  onOpenTrackers = torrent => {
+    this.props.openTrackersModal({ torrent });
+  };
+
   getTorrents = () => {
     const {
       torrents,
@@ -103,7 +109,7 @@ class Index extends PureComponent {
     const {
       torrents,
       token,
-      search: { searching, results: found },
+      search: { searching, keywords, results: found },
     } = this.props;
     const isSiteAdmin = hasRole(token.roles, ROLE_ADMIN);
     const isUploader = hasRole(token.roles, ROLE_UPLOADER);
@@ -115,9 +121,12 @@ class Index extends PureComponent {
           <h2 className="mb-0">Torrents list</h2>
           <Input
             type="text"
-            className="ml-auto w-auto bg-white"
+            className="ml-auto w-auto"
+            inputClassName="bg-white"
             placeholder="Search..."
+            value={keywords}
             onChange={this.onSearch}
+            clearable
           />
         </div>
         <InfiniteScroll
@@ -139,6 +148,7 @@ class Index extends PureComponent {
               onPause={this.onPause}
               onStart={this.onStart}
               onRemove={this.onRemove}
+              onOpenTrackers={this.onOpenTrackers}
             />
           ))}
         </InfiniteScroll>
@@ -165,5 +175,5 @@ export default compose(
       ),
   ),
   withApi(),
-  connectModals({ UploadModal }),
+  connectModals({ UploadModal, TrackersModal }),
 )(Index);
