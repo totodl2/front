@@ -162,7 +162,7 @@ class TorrentCard extends PureComponent {
               </ToggleContainer>
             </div>
           )}
-          <div className="w-100">
+          <div className="w-100 overflow-hidden">
             <h5 className="text-truncate">{torrent.name || 'Unknown'}</h5>
             {seeding && (
               <Progress color="primary" percent={getSeedPercent(torrent)} />
