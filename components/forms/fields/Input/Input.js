@@ -45,7 +45,7 @@ class Input extends PureComponent {
 
     const inputEl = (
       <input
-        type="text"
+        type={type || 'text'}
         {...finalInputProps}
         value={finalInputProps.value || ''}
         className={cl('form-control', inputClassName, {
