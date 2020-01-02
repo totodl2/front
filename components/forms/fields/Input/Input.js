@@ -5,7 +5,7 @@ import cl from 'classnames';
 
 import styles from './styles.module.scss';
 
-const defaultClearValue = (value, evt) => {
+const defaultClearValue = evt => {
   // eslint-disable-next-line no-param-reassign
   evt.target.value = '';
 };
@@ -23,7 +23,11 @@ class Input extends PureComponent {
 
   onClear = evt => {
     const { input: { onChange: inputOnChange } = {}, onChange } = this.props;
-    return (onChange || inputOnChange || defaultClearValue)(null, evt);
+    if (inputOnChange) {
+      return inputOnChange(null, evt);
+    }
+
+    return (onChange || defaultClearValue)(evt);
   };
 
   render() {
