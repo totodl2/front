@@ -35,7 +35,7 @@ class TrackersModal extends PureComponent {
           {trackers.length > 0 && (
             <ul className={styles.list}>
               {trackers.map(t => (
-                <li key={t.id}>{this.formatUrl(t.announce)}</li>
+                <li key={t.id}>{this.formatUrl(t.announce || t.scrape)}</li>
               ))}
             </ul>
           )}

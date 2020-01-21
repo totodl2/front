@@ -142,7 +142,8 @@ class Index extends PureComponent {
               view={TorrentCard}
               torrent={torrent}
               key={torrent.hash}
-              isAdmin={isSiteAdmin || token.id === torrent.userId}
+              isAdmin={isSiteAdmin}
+              isOwner={isSiteAdmin || token.id === torrent.userId}
               isLoading={torrent.loading}
               onOpen={this.onOpen}
               onPause={this.onPause}

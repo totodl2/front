@@ -45,6 +45,7 @@ class TorrentCard extends PureComponent {
   static propTypes = {
     torrent: PropTypes.object.isRequired,
     isAdmin: PropTypes.bool,
+    isOwner: PropTypes.bool,
     isLoading: PropTypes.bool,
     isOpen: PropTypes.bool,
     toggle: PropTypes.func.isRequired,
@@ -98,6 +99,7 @@ class TorrentCard extends PureComponent {
     const {
       torrent,
       isAdmin,
+      isOwner,
       isLoading,
       isOpen,
       toggle,
@@ -121,7 +123,7 @@ class TorrentCard extends PureComponent {
         )}
       >
         <div className={cl('p-3', styles.cardHeader)} onClick={this.onOpen}>
-          {isAdmin && (
+          {isOwner && (
             <div className={cl(styles.moreButton, 'ml-auto')}>
               <ToggleContainer
                 view={Dropdown}
@@ -135,12 +137,13 @@ class TorrentCard extends PureComponent {
                   <MoreVertical />
                 </DropdownToggle>
                 <DropdownMenu>
-                  {(seeding || downloading || checking) && (
-                    <DropdownItem onClick={this.onPause}>
-                      <Pause className="mr-2" /> Pause
-                    </DropdownItem>
-                  )}
-                  {stopped && (
+                  {(seeding || downloading || checking) &&
+                    (!finished || isAdmin) && (
+                      <DropdownItem onClick={this.onPause}>
+                        <Pause className="mr-2" /> Pause
+                      </DropdownItem>
+                    )}
+                  {stopped && (!finished || isAdmin) && (
                     <DropdownItem onClick={this.onStart}>
                       <Play className="mr-2" /> Start
                     </DropdownItem>
