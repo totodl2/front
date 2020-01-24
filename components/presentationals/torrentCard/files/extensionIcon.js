@@ -11,9 +11,12 @@ import {
   Globe,
   Image,
   Music,
+  Terminal,
 } from 'react-feather';
 
 const types = {
+  bat: Terminal,
+
   png: Image,
   jpeg: Image,
   jpg: Image,
@@ -46,14 +49,17 @@ const types = {
   nfo: FileText,
   txt: FileText,
   srt: FileText,
+  ssa: FileText,
   sig: FileText,
   asc: FileText,
   xls: FileText,
   doc: FileText,
   docx: FileText,
+  ini: FileText,
 
   html: Globe,
   htm: Globe,
+  url: Globe,
 
   pdf: Book,
   epub: Book,
@@ -68,6 +74,8 @@ const types = {
   ybk: Book,
   mobi: Book,
   azw3: Book,
+  cbr: Book,
+  cbz: Book,
 
   rm: Film,
   mpg: Film,
