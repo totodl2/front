@@ -9,6 +9,8 @@ import PrettyBytes from '../../prettyBytes';
 
 const File = ({ file, className }) => {
   const completed = file.bytesCompleted === file.length;
+  const transcoded = (file.transcoded || []).filter(f => f.type === 'media');
+
   const content = (
     <>
       {!completed && (
@@ -24,7 +26,9 @@ const File = ({ file, className }) => {
         <span className={styles.fileIcon}>
           <ExtensionIcon ext={file.extension} />
         </span>
-        <span className={styles.fileLabelSpan}>{file.basename}</span>
+        <span className={styles.fileLabelSpan}>
+          {completed ? <a href={file.url}>{file.basename}</a> : file.basename}
+        </span>
         <span className={styles.fileSize}>
           {!completed && (
             <>
@@ -33,18 +37,24 @@ const File = ({ file, className }) => {
           )}
           <PrettyBytes bytes={file.length} />
         </span>
+        {transcoded.length > 0 && (
+          <span className={styles.fileTranscoded}>
+            {transcoded.map(media => (
+              <a
+                href={media.url}
+                key={media.preset}
+                className="btn btn-sm btn-outline-primary"
+              >
+                {media.preset}p
+              </a>
+            ))}
+          </span>
+        )}
       </div>
       <div className="clearfix" />
     </>
   );
 
-  if (completed) {
-    return (
-      <a href={file.url} target="_blank" className={cl(className, styles.file)}>
-        {content}
-      </a>
-    );
-  }
   return <div className={cl(className, styles.file)}>{content}</div>;
 };
 

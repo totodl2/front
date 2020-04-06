@@ -35,4 +35,15 @@
 .file-size {
   display: inline-block;
   float: right;
+  margin-left: map-get($spacers, 2);
+}
+
+.file-transcoded {
+  display: inline-block;
+  float: right;
+  margin-top: -0.25rem;
+
+  > * {
+    margin-left: map-get($spacers, 2);
+  }
 }
