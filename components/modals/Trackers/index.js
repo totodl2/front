@@ -14,13 +14,6 @@ class TrackersModal extends PureComponent {
     torrent: PropTypes.object.isRequired,
   };
 
-  formatUrl(url) {
-    if (typeof URL === 'function') {
-      return new URL(url).hostname;
-    }
-    return url;
-  }
-
   render() {
     const { isOpen, close, className, torrent } = this.props;
     const trackers = get(torrent, 'trackers', []);
@@ -35,7 +28,7 @@ class TrackersModal extends PureComponent {
           {trackers.length > 0 && (
             <ul className={styles.list}>
               {trackers.map(t => (
-                <li key={t.id}>{this.formatUrl(t.announce || t.scrape)}</li>
+                <li key={t.id}>{t.announce || t.scrape}</li>
               ))}
             </ul>
           )}
