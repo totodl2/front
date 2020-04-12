@@ -108,6 +108,7 @@ class Index extends PureComponent {
         kind: 'caption',
         label: sub.title,
         srclang: sub.lang,
+        src: sub.url,
       }));
 
     this.props.openPlayerModal({ sources, tracks });
