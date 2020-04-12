@@ -24,6 +24,7 @@ import AddButton from '../../components/presentationals/addButton';
 import connectModals from '../../lib/connectModals';
 import UploadModal from '../../components/modals/Upload';
 import TrackersModal from '../../components/modals/Trackers';
+import PlayerModal from '../../components/modals/Player';
 import withApi from '../../lib/api/withApi';
 import { getMe } from '../../redux/actions/me';
 import Input from '../../components/forms/fields/Input/Input';
@@ -39,6 +40,7 @@ class Index extends PureComponent {
     pause: PropTypes.func.isRequired,
     start: PropTypes.func.isRequired,
     openUploadModal: PropTypes.func.isRequired,
+    openPlayerModal: PropTypes.func.isRequired,
     api: PropTypes.object,
     searchTorrent: PropTypes.func.isRequired,
     openTrackersModal: PropTypes.func.isRequired,
@@ -90,6 +92,16 @@ class Index extends PureComponent {
 
   onOpenTrackers = torrent => {
     this.props.openTrackersModal({ torrent });
+  };
+
+  onPlayFile = file => {
+    const sources = [
+      {
+        src: file.vodUrl,
+        type: 'application/x-mpegURL',
+      },
+    ];
+    this.props.openPlayerModal({ sources });
   };
 
   getTorrents = () => {
@@ -150,6 +162,7 @@ class Index extends PureComponent {
               onStart={this.onStart}
               onRemove={this.onRemove}
               onOpenTrackers={this.onOpenTrackers}
+              onPlayFile={this.onPlayFile}
             />
           ))}
         </InfiniteScroll>
@@ -176,5 +189,5 @@ export default compose(
       ),
   ),
   withApi(),
-  connectModals({ UploadModal, TrackersModal }),
+  connectModals({ UploadModal, TrackersModal, PlayerModal }),
 )(Index);

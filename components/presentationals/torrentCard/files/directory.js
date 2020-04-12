@@ -24,7 +24,14 @@ const flattenFiles = files =>
     }),
   ).filter(Boolean);
 
-export const Directory = ({ files, name, className, isOpen, toggle }) => {
+export const Directory = ({
+  files,
+  name,
+  className,
+  isOpen,
+  toggle,
+  onPlayFile,
+}) => {
   const filesList = get(files, FILES_KEY, []);
   const directories = Object.entries(files);
   filesList.sort(sortFilesAlpha);
@@ -80,6 +87,7 @@ export const Directory = ({ files, name, className, isOpen, toggle }) => {
                   key={childName}
                   name={childName}
                   files={value}
+                  onPlayFile={onPlayFile}
                   defaultOpened={count < MAX_FILES_TO_DEFAULT_OPEN}
                 />
               );
@@ -87,7 +95,7 @@ export const Directory = ({ files, name, className, isOpen, toggle }) => {
             {filesList.length > 0 && (
               <div className={styles.files}>
                 {filesList.map(file => (
-                  <File key={file.id} file={file} />
+                  <File key={file.id} file={file} onPlay={onPlayFile} />
                 ))}
               </div>
             )}
@@ -108,6 +116,7 @@ Directory.propTypes = {
   className: PropTypes.string,
   isOpen: PropTypes.bool,
   toggle: PropTypes.func,
+  onPlayFile: PropTypes.func,
 };
 
 export default ToggleDirectory;

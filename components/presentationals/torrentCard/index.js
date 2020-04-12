@@ -50,6 +50,7 @@ class TorrentCard extends PureComponent {
     isOpen: PropTypes.bool,
     toggle: PropTypes.func.isRequired,
     onOpenTrackers: PropTypes.func,
+    onPlayFile: PropTypes.func,
     onPause: PropTypes.func,
     onStart: PropTypes.func,
     onRemove: PropTypes.func,
@@ -104,6 +105,7 @@ class TorrentCard extends PureComponent {
       isOpen,
       toggle,
       onOpenTrackers,
+      onPlayFile,
     } = this.props;
     const downloaded = torrent.leftUntilDone <= 0;
     const seeding = isSeeding(torrent.status);
@@ -264,6 +266,7 @@ class TorrentCard extends PureComponent {
               className="px-3"
               files={get(torrent, 'files', [])}
               toggle={toggle}
+              onPlayFile={onPlayFile}
             />
           )}
         </VelocityTransitionGroup>

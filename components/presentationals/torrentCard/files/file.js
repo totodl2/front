@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cl from 'classnames';
+import { Play } from 'react-feather';
 
 import ExtensionIcon from './extensionIcon';
 
@@ -8,7 +9,7 @@ import styles from './file.module.scss';
 import PrettyBytes from '../../prettyBytes';
 import TranscoderStatus from './transcoderStatus';
 
-const File = ({ file, className }) => {
+const File = ({ file, className, onPlay }) => {
   const completed = file.bytesCompleted === file.length;
   const transcoded = (file.transcoded || []).filter(f => f.type === 'media');
   const transcoQueuedAt = file.transcodingQueuedAt;
@@ -53,6 +54,18 @@ const File = ({ file, className }) => {
             ))}
           </span>
         )}
+        {transcoded.length > 0 && onPlay && (
+          <span className={styles.filePlay}>
+            <button
+              type="button"
+              onClick={() => onPlay(file)}
+              className="btn btn-sm btn-outline-primary"
+            >
+              <Play className="mr-2" />
+              Play
+            </button>
+          </span>
+        )}
         {transcoQueuedAt && !transcoFinishedAt && (
           <span className={styles.fileTranscodingStatus}>
             <TranscoderStatus
@@ -75,6 +88,7 @@ const File = ({ file, className }) => {
 File.propTypes = {
   file: PropTypes.object.isRequired,
   className: PropTypes.string,
+  onPlay: PropTypes.func,
 };
 
 export default File;

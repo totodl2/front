@@ -8,11 +8,12 @@ import ToggleDirectory from './files/directory';
 
 import styles from './details.module.scss';
 
-const Details = ({ files, toggle, className }) => (
+const Details = ({ files, toggle, className, onPlayFile }) => (
   <div className={className}>
     <h6>Files</h6>
     <ToggleDirectory
       files={files}
+      onPlayFile={onPlayFile}
       defaultOpened={
         !files[FILES_KEY] || files[FILES_KEY].length < MAX_FILES_TO_DEFAULT_OPEN
       }
@@ -30,6 +31,7 @@ Details.propTypes = {
   toggle: PropTypes.func.isRequired,
   files: PropTypes.object,
   className: PropTypes.string,
+  onPlayFile: PropTypes.func,
 };
 
 export default Details;
