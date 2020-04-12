@@ -6,10 +6,13 @@ import ExtensionIcon from './extensionIcon';
 
 import styles from './file.module.scss';
 import PrettyBytes from '../../prettyBytes';
+import TranscoderStatus from './transcoderStatus';
 
 const File = ({ file, className }) => {
   const completed = file.bytesCompleted === file.length;
   const transcoded = (file.transcoded || []).filter(f => f.type === 'media');
+  const transcoQueuedAt = file.transcodingQueuedAt;
+  const transcoFinishedAt = file.transcodedAt;
 
   const content = (
     <>
@@ -45,9 +48,20 @@ const File = ({ file, className }) => {
                 key={media.preset}
                 className="btn btn-sm btn-outline-primary"
               >
-                {media.preset}p
+                {media.preset}
               </a>
             ))}
+          </span>
+        )}
+        {transcoQueuedAt && !transcoFinishedAt && (
+          <span className={styles.fileTranscodingStatus}>
+            <TranscoderStatus
+              id={file.id}
+              status={file.transcodingStatus}
+              finishedAt={file.transcodedAt}
+              failedAt={file.transcodingFailedAt}
+              queuedAt={transcoQueuedAt}
+            />
           </span>
         )}
       </div>
