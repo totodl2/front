@@ -15,7 +15,6 @@ class Player extends React.Component {
       preload: 'auto',
       autoplay: true,
       language: navigator.language,
-      enableLowInitialPlaylist: true,
       ...this.props,
     });
   }
@@ -32,9 +31,14 @@ class Player extends React.Component {
   // see https://github.com/videojs/video.js/pull/3856
   render() {
     return (
-      <div data-vjs-player>
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-        <video ref={this.videoRef} className="video-js position-relative" />
+      <div className="embed-responsive embed-responsive-16by9">
+        <div data-vjs-player>
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <video
+            ref={this.videoRef}
+            className="video-js embed-responsive-item"
+          />
+        </div>
       </div>
     );
   }

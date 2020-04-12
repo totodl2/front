@@ -101,7 +101,16 @@ class Index extends PureComponent {
         type: 'application/x-mpegURL',
       },
     ];
-    this.props.openPlayerModal({ sources });
+
+    const tracks = (file.transcoded || [])
+      .filter(el => el.type === 'sub')
+      .map(sub => ({
+        kind: 'caption',
+        label: sub.title,
+        srclang: sub.lang,
+      }));
+
+    this.props.openPlayerModal({ sources, tracks });
   };
 
   getTorrents = () => {
