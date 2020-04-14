@@ -20,7 +20,7 @@ class PlayerModal extends PureComponent {
 
     return (
       <Modal
-        size="lg"
+        size="xl"
         isOpen={isOpen}
         toggle={close}
         className={cl(className, styles.modal)}
