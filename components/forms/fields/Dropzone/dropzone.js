@@ -48,7 +48,7 @@ class Dropzone extends PureComponent {
             >
               <input {...getInputProps()} />
               <p>Drag&apos;n&apos;drop your files here or</p>
-              <button type="button" className="btn btn-outline-secondary">
+              <button type="button" className="btn btn-outline-dark">
                 Select files
               </button>
             </div>

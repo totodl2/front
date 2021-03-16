@@ -18,7 +18,6 @@ import { destroyMe } from '../../../redux/actions/me';
 import styles from './index.module.scss';
 import Header from '../../presentationals/header';
 import Token from '../../../lib/token/token';
-import MenuItem from '../../presentationals/menu/menuItem';
 
 import withToken from '../../../lib/token/withToken';
 import WaveLoader from '../../presentationals/waveLoader';
@@ -28,6 +27,7 @@ import connectModals from '../../../lib/connectModals';
 import UploadModal from '../../modals/Upload';
 import withApi from '../../../lib/api/withApi';
 import { hasRole, ROLE_UPLOADER } from '../../../lib/roles';
+import MenuItemLink from '../../presentationals/menu/menuItemLink';
 
 export class Layout extends PureComponent {
   static propTypes = {
@@ -98,13 +98,13 @@ export class Layout extends PureComponent {
                 logout={this.logout}
                 menuOpened={opened}
               />
-              <MenuItem href="/in" icon={<Activity />}>
+              <MenuItemLink href="/in" icon={<Activity />}>
                 Torrents
-              </MenuItem>
+              </MenuItemLink>
               {process.env.NODE_ENV === 'development' && (
-                <MenuItem href="/demo" icon={<Activity />}>
+                <MenuItemLink href="/demo" icon={<Activity />}>
                   Démo
-                </MenuItem>
+                </MenuItemLink>
               )}
             </Menu>
             <div

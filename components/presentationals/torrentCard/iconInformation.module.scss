@@ -1,3 +1,5 @@
+@import 'variables';
+
 .informations {
   margin-right: map-get($spacers, 3);
   color: $text-muted;
@@ -18,11 +20,27 @@
     }
   }
 
+  &--secondary {
+    color: $secondary;
+
+    .informations-icon {
+      fill: $secondary;
+    }
+  }
+
   &--primary {
     color: $primary;
 
     .informations-icon {
       fill: $primary;
+    }
+  }
+
+  &--dark {
+    color: $dark;
+
+    .informations-icon {
+      fill: $dark;
     }
   }
 }

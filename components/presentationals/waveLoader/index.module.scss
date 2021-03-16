@@ -5,10 +5,13 @@
   right: 0px;
   bottom: 0px;
   overflow: hidden;
-  background-color: rgba($white, 0.8);
+  background-color: rgba($white, 0.4);
   transform: scaleY(1);
   align-items: flex-end;
   display: none;
+
+  -webkit-backdrop-filter: blur(0.2rem) !important;
+  backdrop-filter: blur(0.2rem) !important;
 
   &--visible {
     display: flex;

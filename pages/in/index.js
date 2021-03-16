@@ -144,7 +144,6 @@ class Index extends PureComponent {
           <Input
             type="text"
             className="ml-auto w-auto"
-            inputClassName="bg-white"
             placeholder="Search..."
             value={keywords}
             onChange={this.onSearch}

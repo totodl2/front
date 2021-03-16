@@ -1,7 +1,7 @@
 .progress {
   width: 100%;
   position: relative;
-  height: 5px;
+  height: 6px;
 
   &::before {
     position: absolute;
@@ -10,7 +10,7 @@
     top: 2px;
     left: 0px;
     right: 0px;
-    height: 1px;
+    height: 2px;
     background-color: lighten($text-muted, 10%);
   }
 
@@ -22,8 +22,16 @@
     background-color: lighten($primary, 10%);
   }
 
+  &--secondary::before {
+    background-color: rgba($white, 0.8);
+  }
+
   &--success::before {
     background-color: lighten($success, 10%);
+  }
+
+  &--ternary::before {
+    background-color: lighten($white, 0.8);
   }
 }
 
@@ -33,7 +41,7 @@
   left: 0px;
   bottom: 0px;
   right: 0px;
-  border-radius: 2px;
+  border-radius: 3px;
 
   &,
   &--normal {
@@ -46,5 +54,13 @@
 
   &--success {
     background-color: $success;
+  }
+
+  &--secondary {
+    background-color: $secondary;
+  }
+
+  &--ternary {
+    background-color: $ternary;
   }
 }

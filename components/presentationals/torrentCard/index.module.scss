@@ -8,6 +8,7 @@
   position: relative;
   top: 0px;
   transition: top 0.1s ease-in;
+  padding: map-get($spacers, 2);
 
   &--not-opened {
     &:hover {

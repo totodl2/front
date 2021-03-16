@@ -135,6 +135,8 @@ class TorrentCard extends PureComponent {
                 <DropdownToggle
                   tag="button"
                   className="btn btn-round shadow-none"
+                  aria-haspopup="true"
+                  aria-expanded="false"
                 >
                   <MoreVertical />
                 </DropdownToggle>
@@ -170,10 +172,13 @@ class TorrentCard extends PureComponent {
           <div className="w-100 overflow-hidden">
             <h5 className="text-truncate">{torrent.name || 'Unknown'}</h5>
             {seeding && (
-              <Progress color="primary" percent={getSeedPercent(torrent)} />
+              <Progress color="ternary" percent={getSeedPercent(torrent)} />
             )}
             {!downloaded && (
-              <Progress color="success" percent={getDownloadPercent(torrent)} />
+              <Progress
+                color="secondary"
+                percent={getDownloadPercent(torrent)}
+              />
             )}
             <div className="mt-2 text-truncate">
               {torrent.errorString && (
@@ -198,14 +203,14 @@ class TorrentCard extends PureComponent {
                 <PrettyBytes bytes={torrent.sizeWhenDone} />
               </IconInformation>
               {(downloading || seeding || checking) && (
-                <IconInformation color="primary" icon={Upload}>
+                <IconInformation color="dark" icon={Upload}>
                   <PrettyBytes bytes={torrent.rateUpload} />
                   /s
                 </IconInformation>
               )}
               {(downloading || checking) && (
                 <>
-                  <IconInformation color="success" icon={Download}>
+                  <IconInformation color="dark" icon={Download}>
                     <PrettyBytes bytes={torrent.rateDownload} />
                     /s
                   </IconInformation>
@@ -270,7 +275,7 @@ class TorrentCard extends PureComponent {
             />
           )}
         </VelocityTransitionGroup>
-        <WaveLoader visible={isLoading} />
+        <WaveLoader className="border-radius" visible={isLoading} />
       </Card>
     );
   }

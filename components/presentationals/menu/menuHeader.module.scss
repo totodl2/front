@@ -1,10 +1,14 @@
-@import "variables";
+@import 'variables';
 
 .header {
+  background-color: $bgColors;
+}
+
+.content {
   height: $headerHeight;
   width: $headerHeight;
-  justify-content: center;
   display: flex;
+  justify-items: left;
   align-items: center;
 }
 
@@ -12,4 +16,6 @@
   box-shadow: none !important;
   background-color: transparent !important;
   border: none !important;
+  color: $dark !important;
+  width: $headerHeight;
 }

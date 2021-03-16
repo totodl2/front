@@ -82,5 +82,50 @@ h6,
   font-variant: all-small-caps;
   text-transform: lowercase;
   font-size: 1.2rem;
-  color: $gray-700;
+  color: $gray-800;
+}
+
+.modal-backdrop.fade {
+  -webkit-backdrop-filter: blur(0rem) !important;
+  backdrop-filter: blur(0rem) !important;
+  transition: opacity $transition-fade linear,
+    backdrop-filter $transition-fade linear,
+    -webkit-backdrop-filter $transition-fade linear;
+}
+
+.modal-backdrop.show {
+  -webkit-backdrop-filter: blur(0.15rem) !important;
+  backdrop-filter: blur(0.15rem) !important;
+}
+
+.was-validated .form-control:valid,
+.form-control.is-valid {
+  border-color: rgba(theme-color('success'), 0.4);
+}
+
+.was-validated .form-control:invalid,
+.form-control.is-invalid {
+  border-color: rgba(theme-color('danger'), 0.4);
+}
+
+.modal-content {
+  box-shadow: $box-shadow-lg;
+}
+
+.card,
+.modal-content {
+  -webkit-backdrop-filter: blur(1rem) !important;
+  backdrop-filter: blur(1rem) !important;
+}
+
+body::before {
+  display: block;
+  content: ' ';
+  z-index: -1;
+  background: $background-gradient fixed !important;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
 }

@@ -3,6 +3,8 @@
 .menu-content {
   width: 100%;
   min-height: calc(100vh - #{$headerHeight});
+  flex-direction: column;
+  display: flex;
 
   &--mobile {
     position: absolute;

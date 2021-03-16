@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import cl from 'classnames';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
@@ -23,10 +24,10 @@ class TrackersModal extends PureComponent {
         <ModalHeader tag={ModalTitle} toggle={close}>
           Trackers for {torrent.name}
         </ModalHeader>
-        <ModalBody className="py-0">
+        <ModalBody className="py-4">
           {trackers.length <= 0 && <p>No trackers found</p>}
           {trackers.length > 0 && (
-            <ul className={styles.list}>
+            <ul className={cl(styles.list, 'mb-0')}>
               {trackers.map(t => (
                 <li key={t.id}>{t.announce || t.scrape}</li>
               ))}

@@ -2,6 +2,10 @@
 @import 'nprogress';
 @import '~video.js/src/css/vjs.scss';
 
+.border-radius {
+  border-radius: $border-radius;
+}
+
 .bg-gray-100 {
   background-color: $gray-100 !important;
 }

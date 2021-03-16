@@ -6,8 +6,20 @@
   padding: map-get($spacers, 3) 0px map-get($spacers, 3) 3px;
   display: flex;
   position: relative;
-  transition: all $transition-presentational-timing ease-in;
+  transition: background-color $transition-presentational-timing ease-in,
+    color $transition-presentational-timing ease-in,
+    border-radius $transition-presentational-timing ease-in;
   color: $text-muted;
+  background-color: $bgColors;
+  border-radius: 0px;
+
+  &--previous-active {
+    border-bottom-right-radius: $border-radius;
+  }
+
+  &--after-active {
+    border-top-right-radius: $border-radius;
+  }
 
   &:hover.menu-item--hoverable,
   &--active {
@@ -15,7 +27,22 @@
     padding-left: 0px;
     text-decoration: none;
     border-left: 3px solid $primary;
-    background-color: lighten($primary, 38%);
+    background-color: transparent; // lighten($primary, 38%);
+  }
+
+  &::before {
+    z-index: -1;
+    content: ' ';
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    box-shadow: 0px 0px 0rem 0rem $primary;
+    //transition: box-shadow $transition-presentational-timing ease-in;
+  }
+
+  &:hover.menu-item--hoverable::before,
+  &--active::before {
+    box-shadow: 0px 0px 1.4rem 0.15rem $primary;
   }
 
   &-icon {

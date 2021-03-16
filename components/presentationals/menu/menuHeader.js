@@ -7,14 +7,16 @@ import styles from './menuHeader.module.scss';
 
 const MenuHeader = ({ className, opened, toggle }) => (
   <div className={cl(className, styles.header)}>
-    <button
-      type="button"
-      className={cl('btn btn-lg btn-white', styles.button)}
-      onClick={toggle}
-    >
-      {!opened && <Menu />}
-      {opened && <X />}
-    </button>
+    <div className={styles.content}>
+      <button
+        type="button"
+        className={cl('btn btn-lg', styles.button)}
+        onClick={toggle}
+      >
+        {!opened && <Menu />}
+        {opened && <X />}
+      </button>
+    </div>
   </div>
 );
 

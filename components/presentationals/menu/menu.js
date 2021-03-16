@@ -4,6 +4,7 @@ import cl from 'classnames';
 import styles from './menu.module.scss';
 import MenuContent from './menuContent';
 import MenuHeader from './menuHeader';
+import MenuBgPlaceholder from './menuBgPlaceholder';
 
 const Menu = ({ className, children, mobile, opened, toggle }) => (
   <div
@@ -15,6 +16,7 @@ const Menu = ({ className, children, mobile, opened, toggle }) => (
     <MenuHeader toggle={toggle} opened={opened} />
     <MenuContent mobile={mobile} opened={opened}>
       {children}
+      <MenuBgPlaceholder />
     </MenuContent>
   </div>
 );

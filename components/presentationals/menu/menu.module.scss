@@ -7,10 +7,10 @@
   overflow-y: auto;
   overflow-x: hidden;
   width: $width;
-  background-color: $bgColors;
-  border-right: 1px solid $borderColor;
-  border-bottom: 1px solid $borderColor;
-  border-bottom-style: inset;
+  //background-color: $bgColors;
+  //border-right: 1px solid $borderColor;
+  //border-bottom: 1px solid $borderColor;
+  //border-bottom-style: inset;
   transition: width $transition-presentational-timing ease-in-out;
   z-index: $zindex-fixed;
 

@@ -10,7 +10,7 @@ import cl from 'classnames';
  * @constructor
  */
 const Card = ({ className, children, ...props }) => (
-  <div className={cl(className, 'card shadow')} {...props}>
+  <div className={cl(className, 'card')} {...props}>
     {children}
   </div>
 );

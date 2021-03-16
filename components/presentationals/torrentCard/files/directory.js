@@ -57,7 +57,7 @@ export const Directory = ({
               tag="button"
               type="button"
               copy={flattenFiles(files).join('\n')}
-              className="btn btn-sm btn-outline-secondary"
+              className="btn btn-sm btn-outline-dark"
             >
               <Copy className="mr-1" />
               Copy links

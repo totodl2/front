@@ -84,11 +84,11 @@ class UploadModal extends PureComponent {
       <Modal size="lg" isOpen={isOpen} toggle={close} className={className}>
         <ModalHeader toggle={close}>Upload</ModalHeader>
         <ModalBody className="py-0">
-          <Form onSubmit={this.onSubmit} />
+          <Form className="mt-4" onSubmit={this.onSubmit} />
         </ModalBody>
         <ModalFooter>
           <div className="mx-auto">
-            <button type="button" className="btn" onClick={close}>
+            <button type="button" className="btn mr-2" onClick={close}>
               Fermer
             </button>
             <SubmitButton className="btn btn-primary">Envoyer</SubmitButton>

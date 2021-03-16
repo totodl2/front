@@ -1,5 +1,6 @@
 $headerHeight: 4rem;
-$bgColors: $white;
-$borderColor: $gray-300;
+$bgColors: rgba($white, 0.4);
+$borderColor: transparent; // $gray-300;
 $width: 300px;
 $mobileWidth: 100%;
+$border-radius: 1.5rem;

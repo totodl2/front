@@ -23,7 +23,7 @@ IconInformation.propTypes = {
   icon: PropTypes.func.isRequired,
   children: PropTypes.node,
   className: PropTypes.string,
-  color: PropTypes.oneOf(['success', 'danger', 'primary']),
+  color: PropTypes.oneOf(['secondary', 'success', 'danger', 'primary', 'dark']),
 };
 
 export default IconInformation;

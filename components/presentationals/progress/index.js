@@ -15,7 +15,13 @@ const Progress = ({ color, percent, className }) => (
 );
 
 Progress.propTypes = {
-  color: PropTypes.oneOf(['primary', 'success', 'normal']),
+  color: PropTypes.oneOf([
+    'primary',
+    'ternary',
+    'secondary',
+    'success',
+    'normal',
+  ]),
   percent: PropTypes.number.isRequired,
   className: PropTypes.string,
 };

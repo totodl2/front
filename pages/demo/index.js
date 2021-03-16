@@ -244,7 +244,7 @@ export class Index extends Component {
           ))}
         </Container>
         <Container className="mt-5">
-          <div className="bg-white">
+          <div>
             <h4>Form input</h4>
             <Row>
               <Col md="6">
