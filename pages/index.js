@@ -44,10 +44,10 @@ class Login extends PureComponent {
 
   render() {
     return (
-      <FloatingCard className="col-md-5">
+      <FloatingCard className="col-lg-5 col-md-7">
         <div className="card-body p-5">
           <div className="mb-4">
-            <h1 className="h2">Sign in toToto</h1>
+            <h1 className="h2">Sign in toTotoTouBô</h1>
             <p className="text-muted">
               Please enter your credentials to proceed
             </p>
@@ -62,7 +62,7 @@ class Login extends PureComponent {
             .
           </p>
         </div>
-        <WaveLoader visible={this.state.loading} />
+        <WaveLoader className="border-radius" visible={this.state.loading} />
       </FloatingCard>
     );
   }

@@ -76,6 +76,10 @@ $modal-content-border-width: 1px;
 $modal-footer-border-color: rgba($white, 0.2);
 $modal-header-border-color: rgba($white, 0.2);
 
+
+$dropdown-bg: rgba($white, 0.4);
+$dropdown-border-color: rgba($white, 0.4);
+
 @import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/variables';
 

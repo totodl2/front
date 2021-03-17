@@ -41,7 +41,7 @@ class MenuUser extends PureComponent {
         value: usage,
       },
       {
-        color: theme['gray-300'],
+        color: theme.white,
         title: 'Disk space',
         value: 1 - get(user, 'diskUsage', 0) / get(user, 'diskSpace', 0),
       },

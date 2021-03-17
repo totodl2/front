@@ -44,10 +44,10 @@ class Login extends PureComponent {
 
   render() {
     return (
-      <FloatingCard className="col-md-5">
+      <FloatingCard className="col-lg-5 col-md-7">
         <div className="card-body p-5">
           <div className="mb-4">
-            <h1 className="h2">Sign up toToto</h1>
+            <h1 className="h2">Sign up toTotoTouBô</h1>
             <p className="text-muted">
               Fill in these fields to join the community
             </p>
