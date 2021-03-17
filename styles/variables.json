@@ -7,7 +7,7 @@
   "warning": "#ffc107",
   "white": "#fff",
   "info": "#00c1d4",
-  "background-gradient": "conic-gradient(from 0deg at 50% -5%, #c4caef, #ffbd9e)",
+  "background-gradient": "linear-gradient(45deg, #ffbd9e 0, #c4caef 58%)",
   "box-shadow-sm": "0 5px 5px 0 rgba(46,91,255,.07), 0 5px 10px 0 rgba(46,91,255,.07)",
   "box-shadow": "0 5px 5px 0 rgba(46,91,255,.07), 0 5px 15px 0 rgba(46,91,255,.07)",
   "box-shadow-lg": "0 5px 8px 0 rgba(46,91,255,.07), 0 5px 20px 0 rgba(46,91,255,.07)",

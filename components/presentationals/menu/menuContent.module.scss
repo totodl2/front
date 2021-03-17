@@ -17,5 +17,10 @@
       height: auto;
       left: 0px;
     }
+
+    > * {
+      border-bottom-right-radius: 0px !important;
+      border-top-right-radius: 0px !important;
+    }
   }
 }

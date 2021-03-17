@@ -114,8 +114,14 @@ h6,
 
 .card,
 .modal-content {
-  -webkit-backdrop-filter: blur(1rem) !important;
-  backdrop-filter: blur(1rem) !important;
+  -webkit-backdrop-filter: blur(0.7rem) !important;
+  backdrop-filter: blur(0.7rem) !important;
+}
+
+@supports (not (-webkit-backdrop-filter: blur(0.7rem))) and (not (backdrop-filter: blur(0.7rem))) {
+  .modal-content {
+    background: linear-gradient(45deg, lighten($ternary, 12%) 0, lighten($primary, 38%) 58%);
+  }
 }
 
 body::before {

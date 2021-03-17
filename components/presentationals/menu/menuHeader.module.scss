@@ -2,6 +2,10 @@
 
 .header {
   background-color: $bgColors;
+
+  @supports (not (-webkit-backdrop-filter: blur(0.7rem))) and (not (backdrop-filter: blur(0.7rem))) {
+    background: rgba($bgColors, 0.8);
+  }
 }
 
 .content {

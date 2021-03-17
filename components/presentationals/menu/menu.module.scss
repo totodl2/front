@@ -14,6 +14,9 @@
   transition: width $transition-presentational-timing ease-in-out;
   z-index: $zindex-fixed;
 
+  -webkit-backdrop-filter: blur(0.7rem);
+  backdrop-filter: blur(0.7rem);
+
   &--mobile {
     width: $mobileWidth;
   }
