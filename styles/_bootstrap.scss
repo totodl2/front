@@ -113,10 +113,15 @@ h6,
 }
 
 .card,
+.card-header,
 .modal-content,
 .dropdown-menu {
   -webkit-backdrop-filter: blur(0.7rem) !important;
   backdrop-filter: blur(0.7rem) !important;
+}
+
+.card-header {
+  border-bottom: none;
 }
 
 .dropdown-menu {

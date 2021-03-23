@@ -39,7 +39,9 @@
   margin-left: map-get($spacers, 2);
 }
 
-.file-transcoded, .file-play {
+.file-transcoded,
+.file-play,
+.file-media-info {
   display: inline-block;
   float: right;
   //margin-top: -0.25rem;
@@ -47,6 +49,11 @@
   > * {
     margin-left: map-get($spacers, 2);
   }
+}
+
+.file-media-info {
+  margin-left: map-get($spacers, 2);
+  margin-top: 1px;
 }
 
 .file-transcoding-status {

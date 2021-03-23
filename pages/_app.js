@@ -10,6 +10,7 @@ import Layout from '../components/site/layout';
 import withApiContext from '../lib/api/withApiContext';
 import withTokenContext from '../lib/token/withTokenContext';
 import withReduxStore from '../redux/withReduxStore';
+import withSSE from '../lib/sse/withSSE';
 
 import ApiProvider from '../lib/api/provider';
 import TokenProvider from '../lib/token/provider';
@@ -41,4 +42,5 @@ export default compose(
   withApiContext,
   withTokenContext,
   withReduxStore,
+  withSSE,
 )(TotoApp);

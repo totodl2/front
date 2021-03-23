@@ -1,0 +1,35 @@
+.header {
+  background: rgba($black, 0.9);
+  background: linear-gradient(
+    180deg,
+    rgba($black, 0.9) 0%,
+    rgba($black, 0.6) 60%,
+    rgba($black, 0) 100%
+  );
+  opacity: 0;
+  transition: all ease-in-out $transition-presentational-timing;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: map-get($spacers, 3) map-get($spacers, 5) map-get($spacers, 5)
+    map-get($spacers, 3);
+  margin-right: map-get($spacers, 3);
+
+  &-title {
+    font-size: $h2-font-size;
+  }
+
+  &-close {
+    position: absolute;
+    right: 0px;
+    top: map-get($spacers, 3);
+    font-size: 1rem !important;
+    border: $border-width solid $white !important;
+  }
+}
+
+:global(.video-js.vjs-paused.vjs-has-started) .header,
+:global(.video-js.vjs-user-active.vjs-has-started) .header {
+  opacity: 1;
+}

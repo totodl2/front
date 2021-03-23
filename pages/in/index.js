@@ -8,12 +8,12 @@ import InfiniteScroll from 'react-infinite-scroller';
 import withRedirectTo from '../../lib/withRedirectTo';
 import redirectUnlogged from '../../lib/redirection/redirectUnlogged';
 import {
-  getAll as getTorrents,
   get as getTorrent,
   remove,
   pause,
   start,
   search,
+  getAll as getTorrents,
 } from '../../redux/actions/torrents';
 import compose from '../../lib/compose';
 import TorrentCard from '../../components/presentationals/torrentCard';
@@ -28,6 +28,9 @@ import PlayerModal from '../../components/modals/Player';
 import withApi from '../../lib/api/withApi';
 import { getMe } from '../../redux/actions/me';
 import Input from '../../components/forms/fields/Input/Input';
+import Page from '../../components/layouts/page';
+import createSources from '../../lib/file/createSources';
+import createTracks from '../../lib/file/createTracks';
 
 const PAGE_SIZE = 50;
 
@@ -47,12 +50,6 @@ class Index extends PureComponent {
     search: PropTypes.object,
   };
 
-  static async getInitialProps(ctx) {
-    await ctx.reduxStore.dispatch(getTorrents());
-    await ctx.reduxStore.dispatch(getMe());
-    return {};
-  }
-
   state = {
     page: 1,
     searching: false,
@@ -66,6 +63,11 @@ class Index extends PureComponent {
       };
     }
     return null;
+  }
+
+  static async getInitialProps(ctx) {
+    await ctx.reduxStore.dispatch(getTorrents());
+    return {};
   }
 
   onOpen = async (evt, torrent) => {
@@ -95,23 +97,11 @@ class Index extends PureComponent {
   };
 
   onPlayFile = file => {
-    const sources = [
-      {
-        src: file.vodUrl,
-        type: 'application/x-mpegURL',
-      },
-    ];
-
-    const tracks = (file.transcoded || [])
-      .filter(el => el.type === 'sub')
-      .map(sub => ({
-        kind: 'caption',
-        label: sub.title,
-        srclang: sub.lang,
-        src: sub.url,
-      }));
-
-    this.props.openPlayerModal({ sources, tracks });
+    this.props.openPlayerModal({
+      sources: createSources(file),
+      tracks: createTracks(file),
+      title: file.basename,
+    });
   };
 
   getTorrents = () => {
@@ -138,48 +128,50 @@ class Index extends PureComponent {
     const { page } = this.state;
 
     return (
-      <div>
-        <div className="d-flex flex-wrap align-items-center mb-3">
-          <h2 className="mb-0">Torrents list</h2>
-          <Input
-            type="text"
-            className="ml-auto w-auto"
-            placeholder="Search..."
-            value={keywords}
-            onChange={this.onSearch}
-            clearable
-          />
-        </div>
-        <InfiniteScroll
-          pageStart={1}
-          initialLoad={false}
-          hasMore={
-            page * PAGE_SIZE < (searching ? found.length : torrents.length)
-          }
-          loadMore={this.loadMore}
-        >
-          {this.getTorrents().map(torrent => (
-            <ToggleContainer
-              view={TorrentCard}
-              torrent={torrent}
-              key={torrent.hash}
-              isAdmin={isSiteAdmin}
-              isOwner={isSiteAdmin || token.id === torrent.userId}
-              isLoading={torrent.loading}
-              onOpen={this.onOpen}
-              onPause={this.onPause}
-              onStart={this.onStart}
-              onRemove={this.onRemove}
-              onOpenTrackers={this.onOpenTrackers}
-              onPlayFile={this.onPlayFile}
+      <Page className="pt-5">
+        <div>
+          <div className="d-flex flex-wrap align-items-center mb-3">
+            <h2 className="mb-0">Torrents list</h2>
+            <Input
+              type="text"
+              className="ml-auto w-auto"
+              placeholder="Search..."
+              value={keywords}
+              onChange={this.onSearch}
+              clearable
             />
-          ))}
-        </InfiniteScroll>
+          </div>
+          <InfiniteScroll
+            pageStart={1}
+            initialLoad={false}
+            hasMore={
+              page * PAGE_SIZE < (searching ? found.length : torrents.length)
+            }
+            loadMore={this.loadMore}
+          >
+            {this.getTorrents().map(torrent => (
+              <ToggleContainer
+                view={TorrentCard}
+                torrent={torrent}
+                key={torrent.hash}
+                isAdmin={isSiteAdmin}
+                isOwner={isSiteAdmin || token.id === torrent.userId}
+                isLoading={torrent.loading}
+                onOpen={this.onOpen}
+                onPause={this.onPause}
+                onStart={this.onStart}
+                onRemove={this.onRemove}
+                onOpenTrackers={this.onOpenTrackers}
+                onPlayFile={this.onPlayFile}
+              />
+            ))}
+          </InfiniteScroll>
 
-        {isUploader && (
-          <AddButton className="btn-primary" onClick={this.onUpload} />
-        )}
-      </div>
+          {isUploader && (
+            <AddButton className="btn-primary" onClick={this.onUpload} />
+          )}
+        </div>
+      </Page>
     );
   }
 }

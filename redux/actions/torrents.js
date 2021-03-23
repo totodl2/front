@@ -1,3 +1,4 @@
+import _get from 'lodash/get';
 import createRandom from '../../lib/createRandom';
 import {
   CHECK_WAIT,
@@ -68,7 +69,12 @@ export const createFile = (hash, data) => ({
 
 export const removeData = hash => ({ type: TYPE_REMOVE_TORRENT, hash });
 
-export const getAll = () => async (dispatch, getState, api) => {
+export const getAll = (force = false) => async (dispatch, getState, api) => {
+  const state = getState();
+  if (!force && _get(state, 'torrents.loaded') === true) {
+    return _get(state, 'torrents.data');
+  }
+
   const loadingKey = createRandom(12);
   dispatch(startLoading(loadingKey));
   try {

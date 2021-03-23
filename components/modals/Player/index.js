@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'reactstrap';
 import cl from 'classnames';
-import { X } from 'react-feather';
 
 import Player from '../../video/Player';
 
@@ -18,22 +16,17 @@ class PlayerModal extends PureComponent {
   render() {
     const { isOpen, close, className, ...props } = this.props;
 
+    if (!isOpen) {
+      return null;
+    }
+
     return (
-      <Modal
-        size="xl"
-        isOpen={isOpen}
-        toggle={close}
-        className={cl(className, styles.modal)}
-      >
-        <button
-          type="button"
-          className={cl('btn btn-round btn-outline-white', styles.close)}
-          onClick={close}
-        >
-          <X />
-        </button>
-        <Player {...props} />
-      </Modal>
+      <Player
+        {...props}
+        onClose={close}
+        className={cl(styles.playerContainer)}
+        videoClassName={styles.playerContainerVideo}
+      />
     );
   }
 }

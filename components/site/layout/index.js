@@ -13,7 +13,6 @@ import MenuContainer, {
   TYPE_TABLET,
   TYPE_MOBILE,
 } from '../../presentationals/menu/menuContainer';
-import Page from '../../layouts/page';
 import { destroyMe } from '../../../redux/actions/me';
 import styles from './index.module.scss';
 import Header from '../../presentationals/header';
@@ -22,7 +21,6 @@ import Token from '../../../lib/token/token';
 import withToken from '../../../lib/token/withToken';
 import WaveLoader from '../../presentationals/waveLoader';
 import MenuUser from '../../presentationals/menuUser';
-import SSE from '../../sse';
 import connectModals from '../../../lib/connectModals';
 import UploadModal from '../../modals/Upload';
 import withApi from '../../../lib/api/withApi';
@@ -84,7 +82,6 @@ export class Layout extends PureComponent {
       <MenuContainer>
         {({ opened, toggle, type }) => (
           <>
-            <SSE />
             <Menu
               opened={opened}
               toggle={toggle}
@@ -114,7 +111,7 @@ export class Layout extends PureComponent {
                 [styles.menuAlignTablet]: type === TYPE_TABLET,
               })}
             >
-              <Header>
+              <Header href="/in">
                 {isUploader && (
                   <button
                     type="button"
@@ -125,10 +122,8 @@ export class Layout extends PureComponent {
                   </button>
                 )}
               </Header>
-              <Page>
-                {children}
-                <WaveLoader visible={this.state.pageLoading} />
-              </Page>
+              {children}
+              <WaveLoader fill="page" visible={this.state.pageLoading} />
             </div>
           </>
         )}

@@ -50,5 +50,17 @@
       "method": "DELETE",
       "path": "/torrents/{hash}"
     }
+  },
+  "metadata": {
+    "configuration": {
+      "method": "GET",
+      "path": "/metadata"
+    }
+  },
+  "movies": {
+    "get": {
+      "method": "GET",
+      "path": "/movies/{movie}"
+    }
   }
 }

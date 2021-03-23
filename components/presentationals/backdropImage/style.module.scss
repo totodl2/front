@@ -1,0 +1,29 @@
+.backdrop {
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: map-get($spacers, 5) 0;
+  z-index: 1;
+  color: $white;
+
+  :global {
+    h6,
+    .text-muted {
+      color: rgba($white-muted, 0.6) !important;
+    }
+  }
+
+  &::before {
+    z-index: -1;
+    content: ' ';
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    background-color: rgba($black, 0.8);
+
+    -webkit-backdrop-filter: blur(0.1rem) !important;
+    backdrop-filter: blur(0.1rem) !important;
+  }
+}

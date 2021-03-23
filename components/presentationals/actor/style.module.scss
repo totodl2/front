@@ -1,0 +1,35 @@
+.actor {
+  position: relative;
+  background-color: rgba($white, 0.4);
+  overflow: hidden;
+
+  &-image {
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+  }
+
+  &-footer {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    padding: map-get($spacers, 2) map-get($spacers, 3);
+    color: $white;
+    font-size: 0.9rem;
+    background: linear-gradient(
+      0deg,
+      rgba($dark, 0.9) 0%,
+      rgba($dark, 0.6) 60%,
+      rgba($dark, 0) 100%
+    );
+
+    h5,
+    h5 {
+      margin-bottom: 0px;
+    }
+    h6 {
+      color: rgba($white-muted, 0.8);
+    }
+  }
+}

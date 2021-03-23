@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cl from 'classnames';
-import { Play } from 'react-feather';
+import { Play, Info } from 'react-feather';
+import Link from 'next/link';
 
 import ExtensionIcon from './extensionIcon';
 
@@ -9,11 +10,10 @@ import styles from './file.module.scss';
 import PrettyBytes from '../../prettyBytes';
 import TranscoderStatus from './transcoderStatus';
 
-const File = ({ file, className, onPlay }) => {
+const File = ({ file, className, onPlay, hideInfo }) => {
+  const { movieId, transcodingQueuedAt, transcodedAt } = file;
   const completed = file.bytesCompleted === file.length;
   const transcoded = (file.transcoded || []).filter(f => f.type === 'media');
-  const transcoQueuedAt = file.transcodingQueuedAt;
-  const transcoFinishedAt = file.transcodedAt;
 
   const content = (
     <>
@@ -54,6 +54,22 @@ const File = ({ file, className, onPlay }) => {
             ))}
           </span>
         )}
+        {movieId && !hideInfo && (
+          <Link
+            href="/in/movies/[id]"
+            as={`/in/movies/${encodeURIComponent(movieId.toString())}`}
+          >
+            <a
+              className={cl(
+                'btn btn-sm btn-outline-primary',
+                styles.fileMediaInfo,
+              )}
+            >
+              <Info className="mr-2" />
+              Info
+            </a>
+          </Link>
+        )}
         {transcoded.length > 0 && onPlay && (
           <span className={styles.filePlay}>
             <button
@@ -66,14 +82,14 @@ const File = ({ file, className, onPlay }) => {
             </button>
           </span>
         )}
-        {transcoQueuedAt && !transcoFinishedAt && (
+        {transcodingQueuedAt && !transcodedAt && (
           <span className={styles.fileTranscodingStatus}>
             <TranscoderStatus
               id={file.id}
               status={file.transcodingStatus}
               finishedAt={file.transcodedAt}
               failedAt={file.transcodingFailedAt}
-              queuedAt={transcoQueuedAt}
+              queuedAt={transcodingQueuedAt}
             />
           </span>
         )}
@@ -89,6 +105,7 @@ File.propTypes = {
   file: PropTypes.object.isRequired,
   className: PropTypes.string,
   onPlay: PropTypes.func,
+  hideInfo: PropTypes.bool,
 };
 
 export default File;

@@ -6,6 +6,8 @@ $theme-colors: (
   white: $white,
 );
 
+$white-muted: rgba($white, 0.85);
+
 $grid-breakpoints: (
   xxs: 0,
   xs: 400,
@@ -40,11 +42,6 @@ $input-bg: $gray-100;
 
 $label-margin-bottom: 0.1rem;
 
-$card-border-width: 0px;
-//$card-border-color: $gray-400;
-$card-cap-bg: $white;
-$card-spacer-x: 2rem;
-
 $alert-border-width: 0px;
 
 // decorative transitions, don't deliver informations to user
@@ -64,6 +61,8 @@ $input-focus-border-color: rgba($white, 0.5);
 $card-bg: rgba($white, 0.4);
 $card-border-color: rgba($white, 0.4);
 $card-border-width: 1px;
+$card-cap-bg: transparent;
+$card-spacer-x: 2rem;
 
 // modals
 $modal-content-border-color: rgba($white, 0.4);
@@ -75,7 +74,6 @@ $modal-content-border-color: rgba($white, 0.7);
 $modal-content-border-width: 1px;
 $modal-footer-border-color: rgba($white, 0.2);
 $modal-header-border-color: rgba($white, 0.2);
-
 
 $dropdown-bg: rgba($white, 0.4);
 $dropdown-border-color: rgba($white, 0.4);

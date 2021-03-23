@@ -44,7 +44,7 @@ const processFiles = (files, defaultOut = {}) => {
  * @param {string|''} prevPath
  * @returns {string|boolean}
  */
-const retrieveFilePath = (files, id, prevPath = '') => {
+export const retrieveFilePath = (files, id, prevPath = '') => {
   if (!files) {
     return false;
   }
