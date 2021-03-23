@@ -90,7 +90,7 @@ class Movie extends PureComponent {
               <h6 className="mb-0">{data.originalTitle}</h6>
             </div>
             <div className="row">
-              <div className="col-md-3">
+              <div className="col-md-3 text-center mb-3 mb-md-0">
                 <ImdbImage
                   path={data.posterPath}
                   alt={data.title}
@@ -98,6 +98,7 @@ class Movie extends PureComponent {
                   type="poster"
                   size={4}
                   className="w-100 border-radius"
+                  style={{ maxWidth: '300px' }}
                 />
               </div>
               <div className="col-md-8">
@@ -182,7 +183,10 @@ class Movie extends PureComponent {
               <h3>Actors</h3>
               <div className="row mb-5">
                 {cast.map(({ character, id, person }) => (
-                  <div className="col-md-2 mb-3" key={id}>
+                  <div
+                    className="col-xl-2 col-lg-3 col-md-4 col-6 mb-3"
+                    key={id}
+                  >
                     <Actor
                       className="h-100"
                       character={character}
