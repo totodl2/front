@@ -4,7 +4,7 @@ import cl from 'classnames';
 import ImdbImage from '../imdbImage';
 
 import styles from './style.module.scss';
-console.log(styles);
+
 const Movie = React.forwardRef(
   (
     {
