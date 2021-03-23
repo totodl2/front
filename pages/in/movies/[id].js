@@ -144,6 +144,7 @@ class Movie extends PureComponent {
                         <a
                           href={`https://youtu.be/${trailer.key}`}
                           target="_blank"
+                          rel="noreferrer noopener"
                           key={trailer.id}
                           className="btn btn-outline-white btn-sm mr-2"
                         >
