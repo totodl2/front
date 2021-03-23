@@ -12,8 +12,8 @@ const ErrorPage = ({ status, title, message: givenMessage }) => (
     <div className="row">
       <div className="col-xxl-4 col-xl-5 col-lg-6 col-md-7 col-sm-9 mx-auto">
         <Card>
-          <CardBody withFatPadding>
-            <h1>{title || status || 'Error unknown'}</h1>
+          <CardBody>
+            <h1 className="h2">{title || status || 'Error unknown'}</h1>
             <p className="mb-4 text-muted">
               {givenMessage ||
                 (messages[`${status}`]

@@ -61,6 +61,14 @@
     "get": {
       "method": "GET",
       "path": "/movies/{movie}"
+    },
+    "getTop": {
+      "method": "GET",
+      "path": "/movies/"
+    },
+    "getByGenre": {
+      "method": "GET",
+      "path": "/movies/genres/{genre}"
     }
   }
 }

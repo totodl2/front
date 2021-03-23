@@ -19,6 +19,7 @@ import createSources from '../../../lib/file/createSources';
 import createTracks from '../../../lib/file/createTracks';
 import Actor from '../../../components/presentationals/actor';
 import ErrorPage from '../../../components/site/error';
+import WaveLoader from '../../../components/presentationals/waveLoader';
 
 class Movie extends PureComponent {
   static propTypes = {
@@ -47,9 +48,13 @@ class Movie extends PureComponent {
 
   render() {
     const {
-      movie: { data = {}, error },
+      movie: { loading, data = {}, error },
       configuration,
     } = this.props;
+
+    if (loading) {
+      return <WaveLoader fill="page" visible />;
+    }
 
     if (error) {
       return <ErrorPage {...error} />;

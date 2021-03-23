@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import cl from 'classnames';
 import PropTypes from 'prop-types';
-import { Activity, Plus } from 'react-feather';
+import { Activity, Plus, Film } from 'react-feather';
 import Router from 'next/router';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
@@ -97,6 +97,9 @@ export class Layout extends PureComponent {
               />
               <MenuItemLink href="/in" icon={<Activity />}>
                 Torrents
+              </MenuItemLink>
+              <MenuItemLink href="/in/movies" icon={<Film />}>
+                Movies
               </MenuItemLink>
               {process.env.NODE_ENV === 'development' && (
                 <MenuItemLink href="/demo" icon={<Activity />}>

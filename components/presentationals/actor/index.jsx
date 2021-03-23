@@ -6,7 +6,7 @@ import ImdbImage from '../imdbImage';
 import styles from './style.module.scss';
 
 const Actor = ({ character, configuration, person, className }) => (
-  <div className={cl('border-radius', styles.actor, className)}>
+  <div className={cl(styles.actor, className)}>
     <ImdbImage
       className={styles.actorImage}
       path={person.profilePath}

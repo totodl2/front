@@ -34,6 +34,7 @@ export const getCurrent = id => async (dispatch, getState, api) => {
     dispatch(setCurrent(data));
     return data;
   } catch (e) {
+    console.warn(e);
     if (e.response) {
       const data = get(e, 'response.data', {});
       dispatch(
