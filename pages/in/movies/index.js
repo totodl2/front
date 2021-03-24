@@ -15,6 +15,7 @@ import redirectUnlogged from '../../../lib/redirection/redirectUnlogged';
 import ErrorPage from '../../../components/site/error';
 import Page from '../../../components/layouts/page';
 import WaveLoader from '../../../components/presentationals/waveLoader';
+import withUser from '../../../lib/user/withUser';
 
 const getTypeTitle = (genres, type) => {
   if (type === 'last') {
@@ -121,33 +122,38 @@ class Movie extends PureComponent {
             </Link>
           ))}
         </div>
-        {movies.map(({ type, data: moviesList }) => (
-          <div key={type} className="mb-4">
-            <h2>{getTypeTitle(genres, type)}</h2>
-            <div className="row">
-              {moviesList.map(movie => (
-                <div
-                  className="col-xl-2 col-lg-3 col-md-4 col-6 mb-3"
-                  key={movie.id}
-                >
-                  <Link
-                    passHref
-                    href="/in/movies/[id]"
-                    as={`/in/movies/${encodeURIComponent(movie.id.toString())}`}
-                  >
-                    <MovieCard
-                      view="a"
-                      configuration={configuration}
-                      title={movie.title}
-                      posterPath={movie.posterPath}
-                      hoverable
-                    />
-                  </Link>
+        {movies.map(
+          ({ type, data: moviesList }) =>
+            moviesList.length > 0 && (
+              <div key={type} className="mb-4">
+                <h2>{getTypeTitle(genres, type)}</h2>
+                <div className="row">
+                  {moviesList.map(movie => (
+                    <div
+                      className="col-xl-2 col-lg-3 col-md-4 col-6 mb-3"
+                      key={movie.id}
+                    >
+                      <Link
+                        passHref
+                        href="/in/movies/[id]"
+                        as={`/in/movies/${encodeURIComponent(
+                          movie.id.toString(),
+                        )}`}
+                      >
+                        <MovieCard
+                          view="a"
+                          configuration={configuration}
+                          title={movie.title}
+                          posterPath={movie.posterPath}
+                          hoverable
+                        />
+                      </Link>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        ))}
+              </div>
+            ),
+        )}
       </Page>
     );
   }
@@ -160,4 +166,5 @@ export default compose(
     configuration: get(state, 'metadataConfiguration', {}),
     list: get(state, 'movies.list', {}),
   })),
+  withUser,
 )(Movie);

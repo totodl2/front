@@ -20,6 +20,7 @@ import createTracks from '../../../lib/file/createTracks';
 import Actor from '../../../components/presentationals/actor';
 import ErrorPage from '../../../components/site/error';
 import WaveLoader from '../../../components/presentationals/waveLoader';
+import withUser from '../../../lib/user/withUser';
 
 class Movie extends PureComponent {
   static propTypes = {
@@ -223,4 +224,5 @@ export default compose(
     //   ),
   ),
   connectModals({ PlayerModal }),
+  withUser,
 )(Movie);

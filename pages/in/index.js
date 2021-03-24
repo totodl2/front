@@ -31,6 +31,7 @@ import Input from '../../components/forms/fields/Input/Input';
 import Page from '../../components/layouts/page';
 import createSources from '../../lib/file/createSources';
 import createTracks from '../../lib/file/createTracks';
+import withUser from '../../lib/user/withUser';
 
 const PAGE_SIZE = 50;
 
@@ -191,4 +192,5 @@ export default compose(
   ),
   withApi(),
   connectModals({ UploadModal, TrackersModal, PlayerModal }),
+  withUser,
 )(Index);
