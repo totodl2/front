@@ -152,7 +152,7 @@ class Movie extends PureComponent {
                           target="_blank"
                           rel="noreferrer noopener"
                           key={trailer.id}
-                          className="btn btn-outline-white btn-sm mr-2"
+                          className="btn btn-outline-white btn-sm mb-1 mr-2"
                         >
                           {trailer.name}
                         </a>

@@ -26,6 +26,7 @@ import UploadModal from '../../modals/Upload';
 import withApi from '../../../lib/api/withApi';
 import { hasRole, ROLE_UPLOADER } from '../../../lib/roles';
 import MenuItemLink from '../../presentationals/menu/menuItemLink';
+import withSSE from '../../../lib/sse/withSSE';
 
 export class Layout extends PureComponent {
   static propTypes = {
@@ -138,6 +139,7 @@ export class Layout extends PureComponent {
 export default compose(
   withToken(),
   withApi(),
+  withSSE,
   connect(
     state => ({
       user: get(state, 'me.data', {}),
