@@ -112,13 +112,14 @@ h6,
   box-shadow: $box-shadow-lg;
 }
 
-.card,
-.card-header,
+//.card,
+//.card-header,
 .modal-content,
 .dropdown-menu {
-  -webkit-backdrop-filter: blur(0.7rem) !important;
-  backdrop-filter: blur(0.7rem) !important;
+  -webkit-backdrop-filter: blur(0.5rem) !important;
+  backdrop-filter: blur(0.5rem) !important;
 }
+
 
 .card-header {
   border-bottom: none;

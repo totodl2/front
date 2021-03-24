@@ -14,34 +14,46 @@ const Movie = React.forwardRef(
       posterPath,
       className,
       hoverable,
+      children,
+      releaseDate,
       ...props
     },
     ref,
-  ) => (
-    <View
-      {...props}
-      ref={ref}
-      className={cl(styles.movie, className, {
-        [styles.movieHoverable]: hoverable,
-      })}
-    >
-      <ImdbImage
-        className={styles.movieImage}
-        path={posterPath}
-        alt={title}
-        configuration={configuration}
-        type="poster"
-        size={2}
-      />
-      <div className={styles.movieFooter}>
-        <h5>{title}</h5>
-      </div>
-    </View>
-  ),
+  ) => {
+    const year = releaseDate ? new Date(releaseDate).getFullYear() : null;
+
+    return (
+      <View
+        {...props}
+        ref={ref}
+        className={cl(styles.movie, className, {
+          [styles.movieHoverable]: hoverable,
+        })}
+      >
+        <ImdbImage
+          className={styles.movieImage}
+          path={posterPath}
+          alt={title}
+          configuration={configuration}
+          type="poster"
+          size={2}
+        />
+        <div className={styles.movieFooter}>
+          <h5>
+            {title}
+            {year ? <span className={styles.movieYear}> ({year})</span> : ''}
+          </h5>
+        </div>
+        {children}
+      </View>
+    );
+  },
 );
 
 Movie.propTypes = {
+  children: PropTypes.any,
   view: PropTypes.any,
+  releaseDate: PropTypes.string,
   className: PropTypes.string,
   configuration: PropTypes.object.isRequired,
   posterPath: PropTypes.string,

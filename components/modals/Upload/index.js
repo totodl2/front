@@ -89,12 +89,12 @@ class UploadModal extends PureComponent {
         <ModalFooter>
           <div className="mx-auto">
             <button type="button" className="btn mr-2" onClick={close}>
-              Fermer
+              Cancel
             </button>
-            <SubmitButton className="btn btn-primary">Envoyer</SubmitButton>
+            <SubmitButton className="btn btn-primary">Upload</SubmitButton>
           </div>
         </ModalFooter>
-        <WaveLoader visible={this.state.loading} />
+        <WaveLoader className="border-radius" visible={this.state.loading} />
       </Modal>
     );
   }

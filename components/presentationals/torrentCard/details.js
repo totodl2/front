@@ -8,12 +8,21 @@ import ToggleDirectory from './files/directory';
 
 import styles from './details.module.scss';
 
-const Details = ({ files, toggle, className, onPlayFile }) => (
+const Details = ({
+  files,
+  toggle,
+  className,
+  onPlayFile,
+  onChangeMetadata,
+  onRemoveMetadata,
+}) => (
   <div className={className}>
     <h6>Files</h6>
     <ToggleDirectory
       files={files}
       onPlayFile={onPlayFile}
+      onChangeMetadata={onChangeMetadata}
+      onRemoveMetadata={onRemoveMetadata}
       defaultOpened={
         !files[FILES_KEY] || files[FILES_KEY].length < MAX_FILES_TO_DEFAULT_OPEN
       }
@@ -32,6 +41,8 @@ Details.propTypes = {
   files: PropTypes.object,
   className: PropTypes.string,
   onPlayFile: PropTypes.func,
+  onChangeMetadata: PropTypes.func,
+  onRemoveMetadata: PropTypes.func,
 };
 
 export default Details;

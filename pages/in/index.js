@@ -32,6 +32,8 @@ import Page from '../../components/layouts/page';
 import createSources from '../../lib/file/createSources';
 import createTracks from '../../lib/file/createTracks';
 import withUser from '../../lib/user/withUser';
+import MetadataContainer from '../../components/containers/MetadataContainer';
+import MetadataModal from '../../components/modals/Metadata';
 
 const PAGE_SIZE = 50;
 
@@ -45,6 +47,7 @@ class Index extends PureComponent {
     start: PropTypes.func.isRequired,
     openUploadModal: PropTypes.func.isRequired,
     openPlayerModal: PropTypes.func.isRequired,
+    openMetadataModal: PropTypes.func.isRequired,
     api: PropTypes.object,
     searchTorrent: PropTypes.func.isRequired,
     openTrackersModal: PropTypes.func.isRequired,
@@ -105,6 +108,12 @@ class Index extends PureComponent {
     });
   };
 
+  onChangeMetadata = file => {
+    this.props.openMetadataModal({
+      file,
+    });
+  };
+
   getTorrents = () => {
     const {
       torrents,
@@ -129,50 +138,57 @@ class Index extends PureComponent {
     const { page } = this.state;
 
     return (
-      <Page className="pt-5">
-        <div>
-          <div className="d-flex flex-wrap align-items-center mb-3">
-            <h2 className="mb-0">Torrents list</h2>
-            <Input
-              type="text"
-              className="ml-auto w-auto"
-              placeholder="Search..."
-              value={keywords}
-              onChange={this.onSearch}
-              clearable
-            />
-          </div>
-          <InfiniteScroll
-            pageStart={1}
-            initialLoad={false}
-            hasMore={
-              page * PAGE_SIZE < (searching ? found.length : torrents.length)
-            }
-            loadMore={this.loadMore}
-          >
-            {this.getTorrents().map(torrent => (
-              <ToggleContainer
-                view={TorrentCard}
-                torrent={torrent}
-                key={torrent.hash}
-                isAdmin={isSiteAdmin}
-                isOwner={isSiteAdmin || token.id === torrent.userId}
-                isLoading={torrent.loading}
-                onOpen={this.onOpen}
-                onPause={this.onPause}
-                onStart={this.onStart}
-                onRemove={this.onRemove}
-                onOpenTrackers={this.onOpenTrackers}
-                onPlayFile={this.onPlayFile}
-              />
-            ))}
-          </InfiniteScroll>
+      <MetadataContainer>
+        {({ removeMetadata: onRemoveMetadata, remove: removeMetadata }) => (
+          <Page className="pt-5">
+            <div>
+              <div className="d-flex flex-wrap align-items-center mb-3">
+                <h2 className="mb-0">Torrents list</h2>
+                <Input
+                  type="text"
+                  className="ml-auto w-auto"
+                  placeholder="Search..."
+                  value={keywords}
+                  onChange={this.onSearch}
+                  clearable
+                />
+              </div>
+              <InfiniteScroll
+                pageStart={1}
+                initialLoad={false}
+                hasMore={
+                  page * PAGE_SIZE <
+                  (searching ? found.length : torrents.length)
+                }
+                loadMore={this.loadMore}
+              >
+                {this.getTorrents().map(torrent => (
+                  <ToggleContainer
+                    view={TorrentCard}
+                    torrent={torrent}
+                    key={torrent.hash}
+                    isAdmin={isSiteAdmin}
+                    isOwner={isSiteAdmin || token.id === torrent.userId}
+                    isLoading={torrent.loading || removeMetadata.loading}
+                    onOpen={this.onOpen}
+                    onPause={this.onPause}
+                    onStart={this.onStart}
+                    onRemove={this.onRemove}
+                    onOpenTrackers={this.onOpenTrackers}
+                    onPlayFile={this.onPlayFile}
+                    onRemoveMetadata={onRemoveMetadata}
+                    onChangeMetadata={this.onChangeMetadata}
+                  />
+                ))}
+              </InfiniteScroll>
 
-          {isUploader && (
-            <AddButton className="btn-primary" onClick={this.onUpload} />
-          )}
-        </div>
-      </Page>
+              {isUploader && (
+                <AddButton className="btn-primary" onClick={this.onUpload} />
+              )}
+            </div>
+          </Page>
+        )}
+      </MetadataContainer>
     );
   }
 }
@@ -191,6 +207,6 @@ export default compose(
       ),
   ),
   withApi(),
-  connectModals({ UploadModal, TrackersModal, PlayerModal }),
+  connectModals({ UploadModal, TrackersModal, PlayerModal, MetadataModal }),
   withUser,
 )(Index);

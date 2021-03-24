@@ -145,6 +145,7 @@ class Movie extends PureComponent {
                           configuration={configuration}
                           title={movie.title}
                           posterPath={movie.posterPath}
+                          releaseDate={movie.releaseDate}
                           hoverable
                         />
                       </Link>

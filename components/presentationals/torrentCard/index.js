@@ -55,6 +55,8 @@ class TorrentCard extends PureComponent {
     onStart: PropTypes.func,
     onRemove: PropTypes.func,
     onOpen: PropTypes.func.isRequired,
+    onChangeMetadata: PropTypes.func,
+    onRemoveMetadata: PropTypes.func,
   };
 
   state = {
@@ -106,6 +108,8 @@ class TorrentCard extends PureComponent {
       toggle,
       onOpenTrackers,
       onPlayFile,
+      onChangeMetadata,
+      onRemoveMetadata,
     } = this.props;
     const downloaded = torrent.leftUntilDone <= 0;
     const seeding = isSeeding(torrent.status);
@@ -272,6 +276,12 @@ class TorrentCard extends PureComponent {
               files={get(torrent, 'files', [])}
               toggle={toggle}
               onPlayFile={onPlayFile}
+              onChangeMetadata={
+                isOwner || isAdmin ? onChangeMetadata : undefined
+              }
+              onRemoveMetadata={
+                isOwner || isAdmin ? onRemoveMetadata : undefined
+              }
             />
           )}
         </VelocityTransitionGroup>

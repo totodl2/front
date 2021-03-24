@@ -37,7 +37,7 @@ class TrackersModal extends PureComponent {
         <ModalFooter>
           <div className="mx-auto">
             <button type="button" className="btn" onClick={close}>
-              Fermer
+              Close
             </button>
           </div>
         </ModalFooter>

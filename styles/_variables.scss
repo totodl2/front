@@ -66,8 +66,8 @@ $card-cap-bg: transparent;
 $card-spacer-x: 2rem;
 
 // modals
-$modal-content-border-color: rgba($white, 0.4);
-$modal-content-bg: rgba($white, 0.4);
+$modal-content-border-color: rgba($white, 0.8);
+$modal-content-bg: rgba($white, 0.6);
 $modal-backdrop-bg: rgba($secondary, 0.4);
 $modal-backdrop-opacity: 1;
 $modal-content-border-radius: $border-radius;
@@ -77,7 +77,8 @@ $modal-footer-border-color: rgba($white, 0.2);
 $modal-header-border-color: rgba($white, 0.2);
 
 $dropdown-bg: rgba($white, 0.4);
-$dropdown-border-color: rgba($white, 0.4);
+$dropdown-border-width: 1px;
+$dropdown-border-color: rgba($white, 0.7);
 
 @import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/variables';

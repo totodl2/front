@@ -1,6 +1,5 @@
-import get from 'lodash/get';
-
 import createRandom from '../../lib/createRandom';
+import handleApiError from '../../lib/utils/handleApiError';
 export const TYPE_SET_CURRENT = 'movies/current/set';
 export const TYPE_START_LOADING_CURRENT = 'movies/current/startLoading';
 export const TYPE_STOP_LOADING_CURRENT = 'movies/current/stopLoading';
@@ -34,19 +33,7 @@ export const getCurrent = id => async (dispatch, getState, api) => {
     dispatch(setCurrent(data));
     return data;
   } catch (e) {
-    console.warn(e);
-    if (e.response) {
-      const data = get(e, 'response.data', {});
-      dispatch(
-        setCurrentError({
-          status: data.code || e.status,
-          title: data.name || e.statusText,
-          message: data.message,
-        }),
-      );
-    } else {
-      dispatch(setCurrentError(e));
-    }
+    dispatch(setCurrentError(handleApiError(e)));
     return null;
   } finally {
     dispatch(stopLoadingCurrent(loadingKey));

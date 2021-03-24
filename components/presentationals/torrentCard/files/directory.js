@@ -31,6 +31,8 @@ export const Directory = ({
   isOpen,
   toggle,
   onPlayFile,
+  onChangeMetadata,
+  onRemoveMetadata,
 }) => {
   const filesList = get(files, FILES_KEY, []);
   const directories = Object.entries(files);
@@ -89,13 +91,21 @@ export const Directory = ({
                   files={value}
                   onPlayFile={onPlayFile}
                   defaultOpened={count < MAX_FILES_TO_DEFAULT_OPEN}
+                  onChangeMetadata={onChangeMetadata}
+                  onRemoveMetadata={onRemoveMetadata}
                 />
               );
             })}
             {filesList.length > 0 && (
               <div className={styles.files}>
                 {filesList.map(file => (
-                  <File key={file.id} file={file} onPlay={onPlayFile} />
+                  <File
+                    key={file.id}
+                    file={file}
+                    onPlay={onPlayFile}
+                    onChangeMetadata={onChangeMetadata}
+                    onRemoveMetadata={onRemoveMetadata}
+                  />
                 ))}
               </div>
             )}
@@ -117,6 +127,8 @@ Directory.propTypes = {
   isOpen: PropTypes.bool,
   toggle: PropTypes.func,
   onPlayFile: PropTypes.func,
+  onChangeMetadata: PropTypes.func,
+  onRemoveMetadata: PropTypes.func,
 };
 
 export default ToggleDirectory;

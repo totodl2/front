@@ -54,7 +54,19 @@
   "metadata": {
     "configuration": {
       "method": "GET",
-      "path": "/metadata"
+      "path": "/metadata/configuration"
+    },
+    "searchMovie": {
+      "method": "GET",
+      "path": "/metadata/movies"
+    },
+    "set": {
+      "method": "POST",
+      "path": "/metadata/files/{file}"
+    },
+    "remove": {
+      "method": "DELETE",
+      "path": "/metadata/files/{file}"
     }
   },
   "movies": {
