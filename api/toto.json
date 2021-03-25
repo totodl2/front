@@ -82,5 +82,11 @@
       "method": "GET",
       "path": "/movies/genres/{genre}"
     }
+  },
+  "transcoders": {
+    "queue": {
+      "method": "POST",
+      "path": "/transcoders/queue/{file}"
+    }
   }
 }

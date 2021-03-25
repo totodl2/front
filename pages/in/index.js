@@ -34,6 +34,7 @@ import createTracks from '../../lib/file/createTracks';
 import withUser from '../../lib/user/withUser';
 import MetadataContainer from '../../components/containers/MetadataContainer';
 import MetadataModal from '../../components/modals/Metadata';
+import TranscoderContainer from '../../components/containers/TranscoderContainer';
 
 const PAGE_SIZE = 50;
 
@@ -163,22 +164,28 @@ class Index extends PureComponent {
                 loadMore={this.loadMore}
               >
                 {this.getTorrents().map(torrent => (
-                  <ToggleContainer
-                    view={TorrentCard}
-                    torrent={torrent}
-                    key={torrent.hash}
-                    isAdmin={isSiteAdmin}
-                    isOwner={isSiteAdmin || token.id === torrent.userId}
-                    isLoading={torrent.loading || removeMetadata.loading}
-                    onOpen={this.onOpen}
-                    onPause={this.onPause}
-                    onStart={this.onStart}
-                    onRemove={this.onRemove}
-                    onOpenTrackers={this.onOpenTrackers}
-                    onPlayFile={this.onPlayFile}
-                    onRemoveMetadata={onRemoveMetadata}
-                    onChangeMetadata={this.onChangeMetadata}
-                  />
+                  <TranscoderContainer key={torrent.hash}>
+                    {({ loading, transcode }) => (
+                      <ToggleContainer
+                        view={TorrentCard}
+                        torrent={torrent}
+                        isAdmin={isSiteAdmin}
+                        isOwner={isSiteAdmin || token.id === torrent.userId}
+                        isLoading={
+                          torrent.loading || removeMetadata.loading || loading
+                        }
+                        onOpen={this.onOpen}
+                        onPause={this.onPause}
+                        onStart={this.onStart}
+                        onRemove={this.onRemove}
+                        onOpenTrackers={this.onOpenTrackers}
+                        onPlayFile={this.onPlayFile}
+                        onRemoveMetadata={onRemoveMetadata}
+                        onChangeMetadata={this.onChangeMetadata}
+                        onTranscode={transcode}
+                      />
+                    )}
+                  </TranscoderContainer>
                 ))}
               </InfiniteScroll>
 

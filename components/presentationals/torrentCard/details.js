@@ -15,6 +15,7 @@ const Details = ({
   onPlayFile,
   onChangeMetadata,
   onRemoveMetadata,
+  onTranscode,
 }) => (
   <div className={className}>
     <h6>Files</h6>
@@ -23,6 +24,7 @@ const Details = ({
       onPlayFile={onPlayFile}
       onChangeMetadata={onChangeMetadata}
       onRemoveMetadata={onRemoveMetadata}
+      onTranscode={onTranscode}
       defaultOpened={
         !files[FILES_KEY] || files[FILES_KEY].length < MAX_FILES_TO_DEFAULT_OPEN
       }
@@ -43,6 +45,7 @@ Details.propTypes = {
   onPlayFile: PropTypes.func,
   onChangeMetadata: PropTypes.func,
   onRemoveMetadata: PropTypes.func,
+  onTranscode: PropTypes.func,
 };
 
 export default Details;

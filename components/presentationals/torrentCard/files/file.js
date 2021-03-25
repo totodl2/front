@@ -21,6 +21,7 @@ import styles from './file.module.scss';
 import PrettyBytes from '../../prettyBytes';
 import TranscoderStatus from './transcoderStatus';
 import ToggleContainer from '../../../containers/ToggleContainer';
+import TranscoderIcon from '../../icons/TranscoderIcon';
 
 class File extends PureComponent {
   static propTypes = {
@@ -30,6 +31,7 @@ class File extends PureComponent {
     hideInfo: PropTypes.bool,
     onChangeMetadata: PropTypes.func,
     onRemoveMetadata: PropTypes.func,
+    onTranscode: PropTypes.func,
   };
 
   state = {
@@ -55,6 +57,11 @@ class File extends PureComponent {
     return onChangeMetadata(file);
   };
 
+  onTranscode = () => {
+    const { file, onTranscode } = this.props;
+    return onTranscode(file.id);
+  };
+
   render() {
     const {
       file,
@@ -63,9 +70,15 @@ class File extends PureComponent {
       hideInfo,
       onChangeMetadata,
       onRemoveMetadata,
+      onTranscode,
     } = this.props;
     const { confirmRemoveMetadata } = this.state;
-    const { movieId, transcodingQueuedAt, transcodedAt } = file;
+    const {
+      movieId,
+      transcodingQueuedAt,
+      transcodedAt,
+      transcodingFailedAt,
+    } = file;
     const completed = file.bytesCompleted === file.length;
     const transcoded = (file.transcoded || []).filter(f => f.type === 'media');
 
@@ -91,7 +104,8 @@ class File extends PureComponent {
           </span>
           {(transcoded.length > 0 ||
             onChangeMetadata ||
-            (hasMetadata && onRemoveMetadata)) &&
+            (hasMetadata && onRemoveMetadata) ||
+            (onTranscode && (transcodedAt || transcodingFailedAt))) &&
             completed && (
               <ToggleContainer
                 view={Dropdown}
@@ -135,6 +149,12 @@ class File extends PureComponent {
                       {confirmRemoveMetadata
                         ? 'Click again to confirm'
                         : 'Remove metadata'}
+                    </DropdownItem>
+                  )}
+                  {onTranscode && (transcodedAt || transcodingFailedAt) && (
+                    <DropdownItem onClick={this.onTranscode}>
+                      <TranscoderIcon className="mr-2" />
+                      Transcode
                     </DropdownItem>
                   )}
                 </DropdownMenu>
@@ -181,8 +201,8 @@ class File extends PureComponent {
               <TranscoderStatus
                 id={file.id}
                 status={file.transcodingStatus}
-                finishedAt={file.transcodedAt}
-                failedAt={file.transcodingFailedAt}
+                finishedAt={transcodedAt}
+                failedAt={transcodingFailedAt}
                 queuedAt={transcodingQueuedAt}
               />
             </span>

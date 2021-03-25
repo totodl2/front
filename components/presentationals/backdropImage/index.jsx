@@ -5,9 +5,16 @@ import PropTypes from 'prop-types';
 import styles from './style.module.scss';
 import getImdbSrc from '../imdbImage/getImdbSrc';
 
-const BackdropImage = ({ configuration, type, size = 0, path, children }) => (
+const BackdropImage = ({
+  className,
+  configuration,
+  type,
+  size = 0,
+  path,
+  children,
+}) => (
   <div
-    className={cl(styles.backdrop)}
+    className={cl(styles.backdrop, className)}
     style={{
       backgroundImage:
         path && `url(${getImdbSrc(configuration, type, size, path)})`,
@@ -18,6 +25,7 @@ const BackdropImage = ({ configuration, type, size = 0, path, children }) => (
 );
 
 BackdropImage.propTypes = {
+  className: PropTypes.string,
   configuration: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
   size: PropTypes.number,

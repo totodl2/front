@@ -26,6 +26,7 @@ import withToken from '../../../lib/token/withToken';
 import Token from '../../../lib/token/token';
 import MetadataModal from '../../../components/modals/Metadata';
 import MetadataContainer from '../../../components/containers/MetadataContainer';
+import TranscoderContainer from '../../../components/containers/TranscoderContainer';
 
 class Movie extends PureComponent {
   static propTypes = {
@@ -91,9 +92,10 @@ class Movie extends PureComponent {
 
     return (
       <MetadataContainer>
-        {({ removeMetadata: onRemoveMetadata }) => (
+        {({ remove, removeMetadata: onRemoveMetadata }) => (
           <>
             <BackdropImage
+              className="mb-5"
               path={data.backdropPath}
               configuration={configuration}
               type="backdrop"
@@ -194,27 +196,36 @@ class Movie extends PureComponent {
             </BackdropImage>
             <Page>
               {files.length > 0 && (
-                <div className="my-5">
-                  <h3 className="mb-0">Files</h3>
-                  {files.map(file => (
-                    <File
-                      file={file}
-                      key={file.id}
-                      onPlay={this.onPlay}
-                      hideInfo
-                      onRemoveMetadata={
-                        isSiteAdmin || token.id === file.userId
-                          ? onRemoveMetadata
-                          : undefined
-                      }
-                      onChangeMetadata={
-                        isSiteAdmin || token.id === file.userId
-                          ? this.onChangeMetadata
-                          : undefined
-                      }
-                    />
-                  ))}
-                </div>
+                <TranscoderContainer>
+                  {({ transcode, loading: transcodeLoading }) => (
+                    <div className="mb-5">
+                      <h3 className="mb-0">Files</h3>
+                      {files.map(file => (
+                        <File
+                          file={file}
+                          key={file.id}
+                          onPlay={this.onPlay}
+                          hideInfo
+                          onRemoveMetadata={
+                            isSiteAdmin || token.id === file.userId
+                              ? onRemoveMetadata
+                              : undefined
+                          }
+                          onChangeMetadata={
+                            isSiteAdmin || token.id === file.userId
+                              ? this.onChangeMetadata
+                              : undefined
+                          }
+                          onTranscode={isSiteAdmin ? transcode : undefined}
+                        />
+                      ))}
+                      <WaveLoader
+                        fill="page"
+                        visible={remove.loading || transcodeLoading}
+                      />
+                    </div>
+                  )}
+                </TranscoderContainer>
               )}
               {cast.length > 0 && (
                 <>

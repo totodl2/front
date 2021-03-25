@@ -33,6 +33,7 @@ export const Directory = ({
   onPlayFile,
   onChangeMetadata,
   onRemoveMetadata,
+  onTranscode,
 }) => {
   const filesList = get(files, FILES_KEY, []);
   const directories = Object.entries(files);
@@ -93,6 +94,7 @@ export const Directory = ({
                   defaultOpened={count < MAX_FILES_TO_DEFAULT_OPEN}
                   onChangeMetadata={onChangeMetadata}
                   onRemoveMetadata={onRemoveMetadata}
+                  onTranscode={onTranscode}
                 />
               );
             })}
@@ -105,6 +107,7 @@ export const Directory = ({
                     onPlay={onPlayFile}
                     onChangeMetadata={onChangeMetadata}
                     onRemoveMetadata={onRemoveMetadata}
+                    onTranscode={onTranscode}
                   />
                 ))}
               </div>
@@ -129,6 +132,7 @@ Directory.propTypes = {
   onPlayFile: PropTypes.func,
   onChangeMetadata: PropTypes.func,
   onRemoveMetadata: PropTypes.func,
+  onTranscode: PropTypes.func,
 };
 
 export default ToggleDirectory;
