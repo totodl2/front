@@ -27,7 +27,7 @@ import TrackersModal from '../../components/modals/Trackers';
 import PlayerModal from '../../components/modals/Player';
 import withApi from '../../lib/api/withApi';
 import { getMe } from '../../redux/actions/me';
-import Input from '../../components/forms/fields/Input/Input';
+import Input from '../../components/forms/fields/Input';
 import Page from '../../components/layouts/page';
 import createSources from '../../lib/file/createSources';
 import createTracks from '../../lib/file/createTracks';
@@ -97,6 +97,10 @@ class Index extends PureComponent {
     this.props.searchTorrent(evt.target.value);
   };
 
+  onClear = () => {
+    this.props.searchTorrent('');
+  };
+
   onOpenTrackers = torrent => {
     this.props.openTrackersModal({ torrent });
   };
@@ -147,11 +151,11 @@ class Index extends PureComponent {
                 <h2 className="mb-0">Torrents list</h2>
                 <Input
                   type="text"
-                  className="ml-auto w-auto"
+                  wrapperClassName="ml-auto w-auto"
                   placeholder="Search..."
-                  value={keywords}
+                  value={keywords || ''}
                   onChange={this.onSearch}
-                  clearable
+                  onClear={this.onClear}
                 />
               </div>
               <InfiniteScroll

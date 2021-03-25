@@ -1,0 +1,14 @@
+.invalid-feedback {
+  display: flex !important;
+  overflow: hidden;
+  transition: max-height 0.2s ease-in-out, margin 0.2s ease-in-out;
+
+  &--visible {
+    margin-top: 0.25rem;
+    max-height: 42px;
+  }
+  &--hidden {
+    margin-top: 0px;
+    max-height: 0px;
+  }
+}

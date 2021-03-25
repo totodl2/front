@@ -112,6 +112,10 @@ h6,
   box-shadow: $box-shadow-lg;
 }
 
+//.modal-footer {
+//  padding: $modal-header-padding;
+//}
+
 //.card,
 //.card-header,
 .modal-content,
@@ -119,7 +123,6 @@ h6,
   -webkit-backdrop-filter: blur(0.5rem) !important;
   backdrop-filter: blur(0.5rem) !important;
 }
-
 
 .card-header {
   border-bottom: none;

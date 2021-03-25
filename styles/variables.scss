@@ -83,6 +83,7 @@ $dropdown-border-color: rgba($white, 0.7);
 @import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/variables';
 
-$modal-inner-padding: map-get($spacers, 4) map-get($spacers, 5);
+$modal-inner-padding: map-get($spacers, 4); // map-get($spacers, 5);
+$modal-header-padding: map-get($spacers, 3) map-get($spacers, 4);
 //$modal-header-padding-y: $modal-inner-padding;
 //$modal-header-padding-x: $modal-inner-padding;

@@ -12,7 +12,7 @@ import { bindActionCreators, compose } from 'redux';
 import get from 'lodash/get';
 import { connect } from 'react-redux';
 
-import { Form } from '../../forms/metadata';
+import Form from '../../forms/metadata';
 import WaveLoader from '../../presentationals/waveLoader';
 import MetadataContainer from '../../containers/MetadataContainer';
 import Movie from '../../presentationals/movie';

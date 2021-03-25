@@ -1,14 +1,13 @@
 import React from 'react';
-import { fieldPropTypes } from 'redux-form';
+import PropTypes from 'prop-types';
 import { ReactComponent as X } from 'feather-icons/dist/icons/x.svg';
 import cl from 'classnames';
 
-import withFieldWrapper from '../FieldWrapper/withFieldWrapper';
 import PrettyBytes from '../../../presentationals/prettyBytes';
 
 import styles from './file.module.scss';
 
-const File = ({ input, className, onRemove }) => (
+const File = ({ value, className, onRemove }) => (
   <div className={className}>
     <button
       type="button" // eslint-disable-line
@@ -18,18 +17,18 @@ const File = ({ input, className, onRemove }) => (
     >
       <X />
     </button>
-    <span className={cl('align-middle', styles.fileName)}>
-      {input.value.name}
-    </span>
+    <span className={cl('align-middle', styles.fileName)}>{value.name}</span>
     <span className="align-middle text-muted">
       &nbsp;-&nbsp;
-      <PrettyBytes bytes={input.value.size} />
+      <PrettyBytes bytes={value.size} />
     </span>
   </div>
 );
 
-File.propTypes = fieldPropTypes;
-
-export const FileWrapped = withFieldWrapper(File);
+File.propTypes = {
+  value: PropTypes.object,
+  className: PropTypes.string,
+  onRemove: PropTypes.func.isRequired,
+};
 
 export default File;

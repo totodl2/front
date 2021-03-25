@@ -25,6 +25,7 @@ const torrentsSearchReducers = (state, action) => {
         ...state,
         search: {
           searching: false,
+          keywords: '',
           results: [],
         },
       };

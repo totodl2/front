@@ -7,14 +7,14 @@ import Link from 'next/link';
 import withApi from '../lib/api/withApi';
 import withToken from '../lib/token/withToken';
 import FloatingCard from '../components/layouts/floatingCard';
-import { Form, SubmitButton } from '../components/forms/register';
+import Form from '../components/forms/register';
 import Token from '../lib/token/token';
 import { handleResponseErrors } from '../lib/form/processApiErrors';
 import WaveLoader from '../components/presentationals/waveLoader';
 import withRedirectTo from '../lib/withRedirectTo';
 import redirectLogged from '../lib/redirection/redirectLogged';
 
-class Login extends PureComponent {
+class Register extends PureComponent {
   static propTypes = {
     api: PropTypes.object.isRequired,
     token: PropTypes.instanceOf(Token).isRequired,
@@ -36,7 +36,7 @@ class Login extends PureComponent {
       return user;
     } catch (e) {
       console.warn(e);
-      return handleResponseErrors(e, data);
+      return handleResponseErrors(e);
     } finally {
       this.setState({ loading: false });
     }
@@ -45,24 +45,32 @@ class Login extends PureComponent {
   render() {
     return (
       <FloatingCard className="col-lg-5 col-md-7">
-        <div className="card-body p-5">
-          <div className="mb-4">
-            <h1 className="h2">Sign up toTotoTouBô</h1>
-            <p className="text-muted">
-              Fill in these fields to join the community
-            </p>
-          </div>
-          <Form onSubmit={this.onSubmit} />
-          <SubmitButton className="btn btn-primary w-100">Sign up</SubmitButton>
-          <p className="text-muted text-center mt-2 mb-0">
-            You already have an account ?{' '}
-            <Link href="/">
-              <a>Sign in</a>
-            </Link>
-            .
-          </p>
-        </div>
-        <WaveLoader visible={this.state.loading} />
+        <Form onSubmit={this.onSubmit}>
+          {({ form }) => (
+            <>
+              <div className="card-body p-5">
+                <div className="mb-4">
+                  <h1 className="h2">Sign up toTotoTouBô</h1>
+                  <p className="text-muted">
+                    Fill in these fields to join the community
+                  </p>
+                </div>
+                {form}
+                <button type="submit" className="btn btn-primary w-100">
+                  Sign up
+                </button>
+                <p className="text-muted text-center mt-2 mb-0">
+                  You already have an account ?{' '}
+                  <Link href="/">
+                    <a>Sign in</a>
+                  </Link>
+                  .
+                </p>
+              </div>
+              <WaveLoader visible={this.state.loading} />
+            </>
+          )}
+        </Form>
       </FloatingCard>
     );
   }
@@ -72,4 +80,4 @@ export default compose(
   withRedirectTo(redirectLogged),
   withApi(),
   withToken(),
-)(Login);
+)(Register);

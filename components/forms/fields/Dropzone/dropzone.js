@@ -1,16 +1,24 @@
 import React, { PureComponent } from 'react';
 import ReactDropzone from 'react-dropzone';
-import { fieldArrayPropTypes, Field } from 'redux-form';
+import { Field } from 'react-final-form';
 import PropTypes from 'prop-types';
+import get from 'lodash/get';
 import cl from 'classnames';
 
-import { FileWrapped } from './file';
+import File from './file';
 
 import styles from './dropzone.module.scss';
+import FieldWrapper from '../FieldWrapper';
 
 class Dropzone extends PureComponent {
   static propTypes = {
-    ...fieldArrayPropTypes,
+    fields: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+      map: PropTypes.func.isRequired,
+      remove: PropTypes.func.isRequired,
+    }),
+    meta: PropTypes.any,
+    input: PropTypes.any,
     className: PropTypes.string,
     fileLabel: PropTypes.string,
     id: PropTypes.string,
@@ -22,7 +30,9 @@ class Dropzone extends PureComponent {
 
   onDrop = files => {
     const { fields } = this.props;
-    files.map(file => fields.push(file));
+    files.forEach(file => {
+      fields.push(file);
+    });
   };
 
   render() {
@@ -61,9 +71,10 @@ class Dropzone extends PureComponent {
               {fields.map((fieldName, i) => (
                 <Field
                   name={fieldName}
-                  key={fieldName}
+                  key={get(fields, `value[${i}].key`, fieldName)}
                   label={`${fileLabel} ${i + 1}`}
-                  component={FileWrapped}
+                  component={FieldWrapper}
+                  controlComponent={File}
                   onRemove={() => fields.remove(i)}
                 />
               ))}
