@@ -1,4 +1,5 @@
 import setFp from 'lodash/fp/set';
+import get from 'lodash/get';
 
 import {
   TYPE_SET_CURRENT_ERROR,
@@ -40,9 +41,10 @@ export default (state = {}, action) => {
     };
   }
   if (action.type === TYPE_UPDATE_CURRENT_FILE) {
-    const {
-      data: { files },
-    } = state;
+    const files = get(state, 'data.files');
+    if (!files) {
+      return state;
+    }
     const idx = files.findIndex(file => file.id === action.fileId);
     if (idx === -1) {
       return state;
