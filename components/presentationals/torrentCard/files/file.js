@@ -105,7 +105,7 @@ class File extends PureComponent {
           {(transcoded.length > 0 ||
             onChangeMetadata ||
             (hasMetadata && onRemoveMetadata) ||
-            (onTranscode && (transcodedAt || transcodingFailedAt))) &&
+            (onTranscode && transcodingQueuedAt)) &&
             completed && (
               <ToggleContainer
                 view={Dropdown}
@@ -151,7 +151,7 @@ class File extends PureComponent {
                         : 'Remove metadata'}
                     </DropdownItem>
                   )}
-                  {onTranscode && (transcodedAt || transcodingFailedAt) && (
+                  {onTranscode && transcodingQueuedAt && (
                     <DropdownItem onClick={this.onTranscode}>
                       <TranscoderIcon className="mr-2" />
                       Transcode

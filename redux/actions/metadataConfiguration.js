@@ -28,7 +28,7 @@ export const getConfiguration = (forceReload = false) => async (
   api,
 ) => {
   const conf = get(getState(), 'metadataConfiguration', {});
-  if (!forceReload && conf.enabled !== undefined) {
+  if (!forceReload && conf.images !== undefined) {
     return conf;
   }
 

@@ -11,18 +11,18 @@ import {
 
 export default (state = {}, action) => {
   if (action.type === TYPE_START_LOADING_CURRENT) {
-    const { data, ...newState } = state;
+    const { data, ...oldState } = state;
     return {
-      ...newState,
+      ...oldState,
       error: null,
       loading: true,
       loadingKey: action.loadingKey,
     };
   }
   if (action.type === TYPE_STOP_LOADING_CURRENT) {
-    const { loadingKey, ...newState } = state;
+    const { loadingKey, ...oldState } = state;
     return {
-      ...newState,
+      ...oldState,
       loading: false,
     };
   }
@@ -34,9 +34,9 @@ export default (state = {}, action) => {
     };
   }
   if (action.type === TYPE_SET_CURRENT_ERROR) {
-    const { data, ...newState } = state;
+    const { data, ...oldState } = state;
     return {
-      ...newState,
+      ...oldState,
       error: action.error,
     };
   }

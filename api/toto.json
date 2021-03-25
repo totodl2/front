@@ -74,7 +74,7 @@
       "method": "GET",
       "path": "/movies/{movie}"
     },
-    "getTop": {
+    "getAll": {
       "method": "GET",
       "path": "/movies/"
     },

@@ -5,34 +5,45 @@ import {
   TYPE_START_LOADING_LIST,
 } from '../../actions/moviesList';
 
-export default (state = {}, action) => {
+export default (state = { genres: [] }, action) => {
   if (action.type === TYPE_START_LOADING_LIST) {
-    const { data, ...newState } = state;
     return {
-      ...newState,
+      ...state,
+      data: action.from === 0 ? [] : state.data,
+      genreId: action.genreId,
+      hasMore: true,
       error: null,
       loading: true,
       loadingKey: action.loadingKey,
     };
   }
   if (action.type === TYPE_STOP_LOADING_LIST) {
-    const { loadingKey, ...newState } = state;
+    const { loadingKey, ...oldState } = state;
     return {
-      ...newState,
+      ...oldState,
       loading: false,
     };
   }
   if (action.type === TYPE_SET_LIST) {
-    return {
+    const { data: movies, genres } = action.data;
+    const newState = {
       ...state,
       error: null,
-      data: action.data,
+      genreId: action.genreId,
+      hasMore: movies.length > 0,
+      genres,
     };
+    if (action.from > 0) {
+      newState.data = newState.data.slice(0, action.from).concat(movies);
+    } else {
+      newState.data = movies;
+    }
+    return newState;
   }
   if (action.type === TYPE_SET_LIST_ERROR) {
-    const { data, ...newState } = state;
+    const { data, ...oldState } = state;
     return {
-      ...newState,
+      ...oldState,
       error: action.error,
     };
   }
