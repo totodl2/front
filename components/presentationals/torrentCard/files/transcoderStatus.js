@@ -41,8 +41,8 @@ const TranscoderStatus = ({ id, failedAt, status, queuedAt }) => {
 TranscoderStatus.propTypes = {
   id: PropTypes.string.isRequired,
   status: PropTypes.object.isRequired,
-  queuedAt: PropTypes.string.isRequired,
-  failedAt: PropTypes.string.isRequired,
+  queuedAt: PropTypes.string,
+  failedAt: PropTypes.string,
 };
 
 export default TranscoderStatus;

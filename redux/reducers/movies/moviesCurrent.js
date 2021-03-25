@@ -1,8 +1,11 @@
+import setFp from 'lodash/fp/set';
+
 import {
   TYPE_SET_CURRENT_ERROR,
   TYPE_SET_CURRENT,
   TYPE_STOP_LOADING_CURRENT,
   TYPE_START_LOADING_CURRENT,
+  TYPE_UPDATE_CURRENT_FILE,
 } from '../../actions/moviesCurrent';
 
 export default (state = {}, action) => {
@@ -35,6 +38,24 @@ export default (state = {}, action) => {
       ...newState,
       error: action.error,
     };
+  }
+  if (action.type === TYPE_UPDATE_CURRENT_FILE) {
+    const {
+      data: { files },
+    } = state;
+    const idx = files.findIndex(file => file.id === action.fileId);
+    if (idx === -1) {
+      return state;
+    }
+
+    return setFp(
+      `data.files[${idx}]`,
+      {
+        ...files[idx],
+        ...action.data,
+      },
+      state,
+    );
   }
   return state;
 };

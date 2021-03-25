@@ -116,8 +116,8 @@ class File extends PureComponent {
                 <DropdownToggle
                   tag="button"
                   className="btn btn-round shadow-none btn-sm"
-                  aria-haspopup="true"
-                  aria-expanded="false"
+                  aria-haspopup
+                  aria-expanded={false}
                 >
                   <MoreVertical />
                 </DropdownToggle>

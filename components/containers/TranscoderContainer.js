@@ -6,7 +6,7 @@ import handleApiError from '../../lib/utils/handleApiError';
 class TranscoderContainer extends PureComponent {
   static propTypes = {
     view: PropTypes.any,
-    children: PropTypes.func.isRequired,
+    children: PropTypes.func,
     api: PropTypes.object.isRequired,
   };
 

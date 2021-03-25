@@ -4,6 +4,13 @@ export const TYPE_SET_CURRENT = 'movies/current/set';
 export const TYPE_START_LOADING_CURRENT = 'movies/current/startLoading';
 export const TYPE_STOP_LOADING_CURRENT = 'movies/current/stopLoading';
 export const TYPE_SET_CURRENT_ERROR = 'movies/current/error';
+export const TYPE_UPDATE_CURRENT_FILE = 'movies/current/file/update';
+
+export const updateCurrentFile = (fileId, data) => ({
+  type: TYPE_UPDATE_CURRENT_FILE,
+  fileId,
+  data,
+});
 
 const startLoadingCurrent = loadingKey => ({
   loadingKey,

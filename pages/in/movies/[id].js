@@ -30,6 +30,7 @@ import TranscoderContainer from '../../../components/containers/TranscoderContai
 
 class Movie extends PureComponent {
   static propTypes = {
+    movieId: PropTypes.number.isRequired,
     configuration: PropTypes.object.isRequired,
     openPlayerModal: PropTypes.func.isRequired,
     movie: PropTypes.shape({
@@ -44,7 +45,7 @@ class Movie extends PureComponent {
   static async getInitialProps(appContext) {
     await appContext.reduxStore.dispatch(getConfiguration());
     await appContext.reduxStore.dispatch(getCurrent(appContext.query.id));
-    return {};
+    return { movieId: parseInt(appContext.query.id, 10) };
   }
 
   onPlay = file => {
@@ -66,6 +67,7 @@ class Movie extends PureComponent {
       movie: { loading, data = {}, error },
       configuration,
       token,
+      movieId,
     } = this.props;
 
     if (loading) {
@@ -205,7 +207,7 @@ class Movie extends PureComponent {
                           file={file}
                           key={file.id}
                           onPlay={this.onPlay}
-                          hideInfo
+                          hideInfo={file.movieId === movieId}
                           onRemoveMetadata={
                             isSiteAdmin || token.id === file.userId
                               ? onRemoveMetadata

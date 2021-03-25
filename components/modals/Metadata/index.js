@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { CheckCircle, Info } from 'react-feather';
+import { /* CheckCircle, */ Info } from 'react-feather';
 import cl from 'classnames';
 import { bindActionCreators, compose } from 'redux';
 import get from 'lodash/get';
@@ -37,9 +37,9 @@ class MetadataModal extends PureComponent {
     getConfiguration: PropTypes.func.isRequired,
   };
 
-  state = {
-    selected: null,
-  };
+  // state = {
+  //   selected: null,
+  // };
 
   componentDidMount() {
     this.props.getConfiguration();
@@ -55,20 +55,20 @@ class MetadataModal extends PureComponent {
     }
   }
 
-  select = media => {
-    this.setState(({ selected }) => ({
-      selected: selected === media.id ? null : media.id,
-    }));
-  };
+  // select = media => {
+  //   this.setState(({ selected }) => ({
+  //     selected: selected === media.id ? null : media.id,
+  //   }));
+  // };
 
   onSubmit = data => {
     this.props.searchMovie(data.query);
-    this.setState({ selected: null });
+    // this.setState({ selected: null });
   };
 
-  onSetMetadata = () => {
+  onSetMetadata = media => {
     const { setMetadata, file } = this.props;
-    setMetadata(file.id, this.state.selected);
+    setMetadata(file.id, media.id);
   };
 
   render() {
@@ -81,7 +81,7 @@ class MetadataModal extends PureComponent {
       search,
       set,
     } = this.props;
-    const { selected } = this.state;
+    // const { selected } = this.state;
 
     return (
       <Modal size="lg" isOpen={isOpen} toggle={close} className={className}>
@@ -98,20 +98,21 @@ class MetadataModal extends PureComponent {
                 <div className="col-lg-3 col-6 mb-3" key={media.id}>
                   <Movie
                     className={cl(styles.movie, {
-                      [styles.movieSelected]: selected === media.id,
+                      // [styles.movieSelected]: selected === media.id,
                     })}
                     title={media.title}
                     configuration={configuration}
                     posterPath={media.posterPath}
-                    onClick={() => this.select(media)}
-                    hoverable={selected !== media.id}
+                    onClick={() => this.onSetMetadata(media)}
+                    // hoverable={selected !== media.id}
+                    hoverable
                     releaseDate={media.releaseDate}
                   >
-                    {selected === media.id && (
+                    {/* selected === media.id && (
                       <div className={styles.movieCheck}>
                         <CheckCircle />
                       </div>
-                    )}
+                    )} */}
                   </Movie>
                 </div>
               ))}
@@ -130,14 +131,6 @@ class MetadataModal extends PureComponent {
           <div className="mx-auto">
             <button type="button" className="btn mr-2" onClick={close}>
               Cancel
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              disabled={!selected}
-              onClick={this.onSetMetadata}
-            >
-              Save
             </button>
           </div>
         </ModalFooter>

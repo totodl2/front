@@ -25,9 +25,9 @@ const ErrorCard = ({
 );
 
 ErrorCard.propTypes = {
-  title: PropTypes.element,
+  title: PropTypes.any,
   status: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  message: PropTypes.element,
+  message: PropTypes.any,
   children: PropTypes.any,
 };
 

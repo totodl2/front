@@ -141,8 +141,8 @@ class TorrentCard extends PureComponent {
                 <DropdownToggle
                   tag="button"
                   className="btn btn-round shadow-none"
-                  aria-haspopup="true"
-                  aria-expanded="false"
+                  aria-haspopup
+                  aria-expanded={false}
                 >
                   <MoreVertical />
                 </DropdownToggle>
