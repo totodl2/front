@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { Smile } from 'react-feather';
+import { ReactComponent as Smile } from 'feather-icons/dist/icons/smile.svg';
+
 import cl from 'classnames';
 import ReactMinimalPieChart from 'react-minimal-pie-chart';
 

@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Archive,
-  Book,
-  Cpu,
-  Disc,
-  File,
-  FileText,
-  Film,
-  Globe,
-  Image,
-  Music,
-  Terminal,
-} from 'react-feather';
+
+import { ReactComponent as Archive } from 'feather-icons/dist/icons/archive.svg';
+import { ReactComponent as Book } from 'feather-icons/dist/icons/book.svg';
+import { ReactComponent as Cpu } from 'feather-icons/dist/icons/cpu.svg';
+import { ReactComponent as Disc } from 'feather-icons/dist/icons/disc.svg';
+import { ReactComponent as File } from 'feather-icons/dist/icons/file.svg';
+import { ReactComponent as FileText } from 'feather-icons/dist/icons/file-text.svg';
+import { ReactComponent as Film } from 'feather-icons/dist/icons/film.svg';
+import { ReactComponent as Globe } from 'feather-icons/dist/icons/globe.svg';
+import { ReactComponent as Image } from 'feather-icons/dist/icons/image.svg';
+import { ReactComponent as Music } from 'feather-icons/dist/icons/music.svg';
+import { ReactComponent as Terminal } from 'feather-icons/dist/icons/terminal.svg';
 
 const types = {
   bat: Terminal,
@@ -84,6 +83,7 @@ const types = {
   avi: Film,
   mp4: Film,
   mkv: Film,
+  wmv: Film,
 
   mp3: Music,
   wma: Music,

@@ -31,7 +31,7 @@ import Input from '../../components/forms/fields/Input/Input';
 import Page from '../../components/layouts/page';
 import createSources from '../../lib/file/createSources';
 import createTracks from '../../lib/file/createTracks';
-import withUser from '../../lib/user/withUser';
+import withUserPreloading from '../../lib/user/withUserPreloading';
 import MetadataContainer from '../../components/containers/MetadataContainer';
 import MetadataModal from '../../components/modals/Metadata';
 import TranscoderContainer from '../../components/containers/TranscoderContainer';
@@ -215,5 +215,5 @@ export default compose(
   ),
   withApi(),
   connectModals({ UploadModal, TrackersModal, PlayerModal, MetadataModal }),
-  withUser,
+  withUserPreloading,
 )(Index);

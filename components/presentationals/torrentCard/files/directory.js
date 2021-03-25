@@ -1,5 +1,9 @@
 import React from 'react';
-import { Folder, FolderMinus, FolderPlus, Copy } from 'react-feather';
+import { ReactComponent as Folder } from 'feather-icons/dist/icons/folder.svg';
+import { ReactComponent as FolderMinus } from 'feather-icons/dist/icons/folder-minus.svg';
+import { ReactComponent as FolderPlus } from 'feather-icons/dist/icons/folder-plus.svg';
+import { ReactComponent as Copy } from 'feather-icons/dist/icons/copy.svg';
+
 import { VelocityTransitionGroup } from 'velocity-react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';

@@ -63,6 +63,7 @@
     "react/self-closing-comp": 0,
     "react/static-property-placement": [1, "static public field"],
     "react/state-in-constructor": 0,
+    "react/react-in-jsx-scope": 0,
     "require-yield": 0
   },
   "settings": {

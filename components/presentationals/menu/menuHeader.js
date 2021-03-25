@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cl from 'classnames';
-import { X, Menu } from 'react-feather';
+import { ReactComponent as Menu } from 'feather-icons/dist/icons/menu.svg';
+import { ReactComponent as X } from 'feather-icons/dist/icons/x.svg';
 
 import styles from './menuHeader.module.scss';
 

@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-  MoreVertical,
-  Check,
-  Pause,
-  Play,
-  Trash,
-  Compass,
-} from 'react-feather';
+
+import { ReactComponent as MoreVertical } from 'feather-icons/dist/icons/more-vertical.svg';
+import { ReactComponent as Check } from 'feather-icons/dist/icons/check.svg';
+import { ReactComponent as Pause } from 'feather-icons/dist/icons/pause.svg';
+import { ReactComponent as Play } from 'feather-icons/dist/icons/play.svg';
+import { ReactComponent as Trash } from 'feather-icons/dist/icons/trash.svg';
+import { ReactComponent as Compass } from 'feather-icons/dist/icons/compass.svg';
+
 import cl from 'classnames';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';

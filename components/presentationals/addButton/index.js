@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cl from 'classnames';
-import { Plus } from 'react-feather';
+import { ReactComponent as Plus } from 'feather-icons/dist/icons/plus.svg';
 
 import styles from './index.module.scss';
 

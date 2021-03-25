@@ -1,4 +1,4 @@
-FROM node:10.11
+FROM node:14.16
 
 ARG API_URL
 ENV NODE_ENV production

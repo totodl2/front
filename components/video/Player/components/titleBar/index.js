@@ -1,5 +1,5 @@
 import React from 'react';
-import { X } from 'react-feather';
+import { ReactComponent as X } from 'feather-icons/dist/icons/x.svg';
 import videojs from 'video.js';
 import cl from 'classnames';
 import * as ReactDOMServer from 'react-dom/server';

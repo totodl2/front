@@ -2,7 +2,10 @@ import React, { PureComponent } from 'react';
 import cl from 'classnames';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import Modal from 'reactstrap/lib/Modal';
+import ModalBody from 'reactstrap/lib/ModalBody';
+import ModalFooter from 'reactstrap/lib/ModalFooter';
+import ModalHeader from 'reactstrap/lib/ModalHeader';
 
 import ModalTitle from './modalTitle';
 import styles from './styles.module.scss';

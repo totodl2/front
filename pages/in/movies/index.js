@@ -16,7 +16,7 @@ import withRedirectTo from '../../../lib/withRedirectTo';
 import redirectUnlogged from '../../../lib/redirection/redirectUnlogged';
 import ErrorPage from '../../../components/site/error';
 import Page from '../../../components/layouts/page';
-import withUser from '../../../lib/user/withUser';
+import withUserPreloading from '../../../lib/user/withUserPreloading';
 import Loader from '../../../components/presentationals/loader';
 
 class Movie extends PureComponent {
@@ -178,5 +178,5 @@ export default compose(
     }),
     dispatch => bindActionCreators({ getMoviesList: getListAction }, dispatch),
   ),
-  withUser,
+  withUserPreloading,
 )(Movie);

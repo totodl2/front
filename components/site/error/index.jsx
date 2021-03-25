@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ChevronLeft } from 'react-feather';
+import { ReactComponent as ChevronLeft } from 'feather-icons/dist/icons/chevron-left.svg';
 import Link from 'next/link';
 
 import ErrorCard from '../../presentationals/errorCard';

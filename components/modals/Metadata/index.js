@@ -1,7 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { /* CheckCircle, */ Info } from 'react-feather';
+import Modal from 'reactstrap/lib/Modal';
+import ModalBody from 'reactstrap/lib/ModalBody';
+import ModalFooter from 'reactstrap/lib/ModalFooter';
+import ModalHeader from 'reactstrap/lib/ModalHeader';
+
+// import { /* CheckCircle, */ Info } from 'react-feather';
+import { ReactComponent as Info } from 'feather-icons/dist/icons/info.svg';
 import cl from 'classnames';
 import { bindActionCreators, compose } from 'redux';
 import get from 'lodash/get';

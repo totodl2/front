@@ -1,14 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cl from 'classnames';
-import {
-  Play,
-  Info,
-  MoreVertical,
-  Trash,
-  Download,
-  Edit2,
-} from 'react-feather';
+import { ReactComponent as Play } from 'feather-icons/dist/icons/play.svg';
+import { ReactComponent as Info } from 'feather-icons/dist/icons/info.svg';
+import { ReactComponent as MoreVertical } from 'feather-icons/dist/icons/more-vertical.svg';
+import { ReactComponent as Trash } from 'feather-icons/dist/icons/trash.svg';
+import { ReactComponent as Download } from 'feather-icons/dist/icons/download.svg';
+import { ReactComponent as Edit2 } from 'feather-icons/dist/icons/edit-2.svg';
+
 import Link from 'next/link';
 import Dropdown from 'reactstrap/lib/Dropdown';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';

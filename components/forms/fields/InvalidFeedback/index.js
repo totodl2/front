@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cl from 'classnames';
 
-import './style.scss';
+import styles from './style.module.scss';
 
 export const InvalidFeedback = ({ meta }) => {
   const isInvalid =
@@ -11,9 +12,10 @@ export const InvalidFeedback = ({ meta }) => {
 
   return (
     <div
-      className={`invalid-feedback ${
-        isInvalid ? 'invalid-feedback--visible' : 'invalid-feedback--hidden'
-      }`}
+      className={cl(styles.invalidFeedback, {
+        [styles.invalidFeedbackVisible]: isInvalid,
+        [styles.invalidFeedbackHidden]: !isInvalid,
+      })}
     >
       {Array.isArray(meta.error) ? (
         meta.error.map((e, key) => <div key={key.toString()}>{e}</div>)

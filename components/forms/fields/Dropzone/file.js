@@ -1,6 +1,6 @@
 import React from 'react';
 import { fieldPropTypes } from 'redux-form';
-import { X } from 'react-feather';
+import { ReactComponent as X } from 'feather-icons/dist/icons/x.svg';
 import cl from 'classnames';
 
 import withFieldWrapper from '../FieldWrapper/withFieldWrapper';

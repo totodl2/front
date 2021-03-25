@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ChevronUp } from 'react-feather';
+import { ReactComponent as ChevronUp } from 'feather-icons/dist/icons/chevron-up.svg';
+
 import cl from 'classnames';
 
 import { FILES_KEY, MAX_FILES_TO_DEFAULT_OPEN } from './files/constants';

@@ -1,6 +1,6 @@
 import placeholder from './placholder.svg';
 
-export default (configuration, type, size, path) => {
+const getImdbSrc = (configuration, type, size, path) => {
   if (!path) {
     return placeholder;
   }
@@ -13,3 +13,5 @@ export default (configuration, type, size, path) => {
 
   return `${baseUrl}${sizes[size]}${path}`;
 };
+
+export default getImdbSrc;

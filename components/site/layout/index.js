@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react';
 import cl from 'classnames';
 import PropTypes from 'prop-types';
-import { Activity, Plus, Film } from 'react-feather';
+import { ReactComponent as Activity } from 'feather-icons/dist/icons/activity.svg';
+import { ReactComponent as Plus } from 'feather-icons/dist/icons/plus.svg';
+import { ReactComponent as Film } from 'feather-icons/dist/icons/film.svg';
+
 import Router from 'next/router';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';

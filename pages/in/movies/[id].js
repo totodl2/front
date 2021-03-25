@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import { Play } from 'react-feather';
+import { ReactComponent as Play } from 'feather-icons/dist/icons/play.svg';
 
 import { getConfiguration } from '../../../redux/actions/metadataConfiguration';
 import { getCurrent } from '../../../redux/actions/moviesCurrent';
@@ -20,7 +20,7 @@ import createTracks from '../../../lib/file/createTracks';
 import Actor from '../../../components/presentationals/actor';
 import ErrorPage from '../../../components/site/error';
 import WaveLoader from '../../../components/presentationals/waveLoader';
-import withUser from '../../../lib/user/withUser';
+import withUserPreloading from '../../../lib/user/withUserPreloading';
 import { hasRole, ROLE_ADMIN } from '../../../lib/roles';
 import withToken from '../../../lib/token/withToken';
 import Token from '../../../lib/token/token';
@@ -272,5 +272,5 @@ export default compose(
     //   ),
   ),
   connectModals({ PlayerModal, MetadataModal }),
-  withUser,
+  withUserPreloading,
 )(Movie);

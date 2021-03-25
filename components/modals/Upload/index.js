@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import Modal from 'reactstrap/lib/Modal';
+import ModalBody from 'reactstrap/lib/ModalBody';
+import ModalFooter from 'reactstrap/lib/ModalFooter';
+import ModalHeader from 'reactstrap/lib/ModalHeader';
 import { connect } from 'react-redux';
 import { resetSection, arrayRemove, SubmissionError } from 'redux-form';
 import get from 'lodash/get';

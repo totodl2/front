@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, Field } from 'redux-form';
-import { Search } from 'react-feather';
+import { ReactComponent as Search } from 'feather-icons/dist/icons/search.svg';
 import cl from 'classnames';
 
 import scrollToInvalidField from '../../../lib/dom/scrollToInvalidField';

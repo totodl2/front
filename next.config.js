@@ -1,69 +1,105 @@
 require('dotenv').config();
-const withSass = require('@zeit/next-sass');
 const path = require('path');
-const {
-  getLocalIdent: defaultGetLocalIdent,
-} = require('css-loader/dist/utils');
 
 module.exports = {
   target: 'serverless',
-  ...withSass({
-    cssModules: true,
-    cssLoaderOptions: {
-      camelCase: true,
-      getLocalIdent: (loaderContext, localIdentName, localName, options) => {
-        const fileName = path.basename(loaderContext.resourcePath);
-        const shouldTransform = /.module.(scss|sass)+$/i.test(fileName);
-
-        if (!shouldTransform) {
-          return localName;
-        }
-
-        return defaultGetLocalIdent(
-          loaderContext,
-          localIdentName,
-          localName,
-          options,
-        );
-      },
-    },
-    webpack: config => {
-      config.module.rules.forEach(rule => {
-        if (
-          (!rule.test.toString().includes('scss') &&
-            !rule.test.toString().includes('sass')) ||
-          !Array.isArray(rule.use)
-        ) {
-          return;
-        }
-
-        rule.use.push({
-          loader: '@epegzz/sass-vars-loader',
-          options: {
-            syntax: 'scss',
-            files: [path.resolve(__dirname, 'styles/variables.json')],
-          },
-        });
-
-        rule.use.push({
-          loader: require.resolve('sass-resources-loader'),
-          options: {
-            resources: [path.resolve(__dirname, 'styles/_variables.scss')],
-          },
-        });
-      });
-      config.module.rules.push({
-        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-        use: {
-          loader: 'url-loader',
-          options: { limit: 10000 },
-        },
-      });
-      return config;
-    },
-  }),
   env: {
     API_URL: process.env.API_URL,
+  },
+  webpack: webpackConf => {
+    const {
+      module: { rules },
+    } = webpackConf;
+
+    const newRules = rules.map(rule => {
+      if (!rule.oneOf) {
+        return rule;
+      }
+
+      return {
+        ...rule,
+        oneOf: rule.oneOf.map(crule => {
+          if (
+            !crule.test ||
+            (!crule.test.toString().includes('scss') &&
+              !crule.test.toString().includes('sass')) ||
+            !Array.isArray(crule.use)
+          ) {
+            return crule;
+          }
+
+          return {
+            ...crule,
+            use: [
+              ...crule.use.map(use => {
+                // add camel case value to exported class name
+                if (
+                  typeof use === 'object' &&
+                  use.loader &&
+                  use.loader.includes('/css-loader/') &&
+                  use.options.modules
+                ) {
+                  return {
+                    ...use,
+                    options: {
+                      ...use.options,
+                      modules: {
+                        ...use.options.modules,
+                        exportLocalsConvention: 'camelCase',
+                      },
+                    },
+                  };
+                }
+                return use;
+              }),
+              {
+                loader: '@epegzz/sass-vars-loader',
+                options: {
+                  syntax: 'scss',
+                  files: [path.resolve(__dirname, 'styles/variables.js')],
+                },
+              },
+              {
+                loader: require.resolve('sass-resources-loader'),
+                options: {
+                  resources: [path.resolve(__dirname, 'styles/variables.scss')],
+                },
+              },
+            ],
+          };
+        }),
+      };
+    });
+
+    newRules.push({
+      test: /\.svg$/,
+      use: [
+        {
+          loader: require.resolve('@svgr/webpack'),
+          options: {
+            svgo: false,
+            titleProp: true,
+            ref: true,
+          },
+        },
+      ],
+    });
+
+    newRules.push({
+      test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+      use: {
+        loader: 'url-loader',
+        options: { limit: 10000 },
+      },
+    });
+
+    return {
+      ...webpackConf,
+      module: {
+        ...webpackConf.module,
+        rules: newRules,
+      },
+    };
   },
   poweredByHeader: false,
 };
