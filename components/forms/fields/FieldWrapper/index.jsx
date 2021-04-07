@@ -29,10 +29,6 @@ class FieldWrapper extends PureComponent {
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   };
 
-  componentWillUnmount() {
-    console.log('NTM ', this.props);
-  }
-
   processProps = () => {
     const {
       children,

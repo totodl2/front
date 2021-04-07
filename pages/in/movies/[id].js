@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { ReactComponent as Play } from 'feather-icons/dist/icons/play.svg';
+import { ReactComponent as Download } from 'feather-icons/dist/icons/download.svg';
 
 import { getConfiguration } from '../../../redux/actions/metadataConfiguration';
 import { getCurrent } from '../../../redux/actions/moviesCurrent';
@@ -191,6 +192,16 @@ class Movie extends PureComponent {
                         <Play className="mr-2" />
                         Watch
                       </button>
+                    )}
+                    {streamableFiles.length <= 0 && files.length > 0 && (
+                      <a
+                        href={files[0].url}
+                        target="_blank"
+                        className="mt-3 btn btn-primary"
+                      >
+                        <Download className="mr-2" />
+                        Download
+                      </a>
                     )}
                   </div>
                 </div>
