@@ -74,7 +74,7 @@ class UploadModal extends PureComponent {
         }, Promise.resolve());
       }
 
-      this.props.close();
+      this.props.close((data.files && data.files.length > 0) || !!data.magnet);
       return null;
     } catch (e) {
       if (e instanceof UploadError) {

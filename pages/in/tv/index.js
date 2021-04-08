@@ -10,7 +10,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 import ImdbCard from '../../../components/presentationals/imdbCard';
 import { getConfiguration } from '../../../redux/actions/metadataConfiguration';
-import { getList as getListAction } from '../../../redux/actions/moviesList';
+import { getList as getTvListAction } from '../../../redux/actions/tvList';
 import compose from '../../../lib/compose';
 import withRedirectTo from '../../../lib/withRedirectTo';
 import redirectUnlogged from '../../../lib/redirection/redirectUnlogged';
@@ -19,13 +19,13 @@ import Page from '../../../components/layouts/page';
 import withUserPreloading from '../../../lib/user/withUserPreloading';
 import Loader from '../../../components/presentationals/loader';
 
-class Movie extends PureComponent {
+class Tv extends PureComponent {
   static propTypes = {
     configuration: PropTypes.object.isRequired,
     router: PropTypes.shape({
       query: PropTypes.object,
     }).isRequired,
-    getMoviesList: PropTypes.func.isRequired,
+    getTvList: PropTypes.func.isRequired,
     genreId: PropTypes.number,
     list: PropTypes.shape({
       loading: PropTypes.bool,
@@ -61,7 +61,7 @@ class Movie extends PureComponent {
     let genreId = get(appContext, 'query.id');
     genreId = genreId !== undefined ? parseInt(genreId, 10) : genreId;
     await appContext.reduxStore.dispatch(getConfiguration());
-    await appContext.reduxStore.dispatch(getListAction({ genreId }));
+    await appContext.reduxStore.dispatch(getTvListAction({ genreId }));
     return { genreId };
   }
 
@@ -69,12 +69,12 @@ class Movie extends PureComponent {
     const {
       genreId,
       list: { data, loading, hasMore },
-      getMoviesList,
+      getTvList,
     } = this.props;
     if (loading || !hasMore) {
       return;
     }
-    getMoviesList({ genreId, from: data.length });
+    getTvList({ genreId, from: data.length });
   };
 
   render() {
@@ -94,7 +94,7 @@ class Movie extends PureComponent {
       <Page>
         <div className="mt-5 mb-4">
           <h2>Genres</h2>
-          <Link href="/in/movies">
+          <Link href="/in/tv">
             <a
               className={cl('btn btn-sm mb-2 mr-2', {
                 'btn-outline-dark': currentGenreId !== null,
@@ -106,8 +106,8 @@ class Movie extends PureComponent {
           </Link>
           {genres.map(genre => (
             <Link
-              href="/in/movies/genres/[id]"
-              as={`/in/movies/genres/${genre.id}`}
+              href="/in/tv/genres/[id]"
+              as={`/in/tv/genres/${genre.id}`}
               key={genre.id}
             >
               <a
@@ -131,24 +131,22 @@ class Movie extends PureComponent {
             <div className="mb-4">
               <h2>Last added</h2>
               <div className="row">
-                {data.map(movie => (
+                {data.map(tv => (
                   <div
                     className="col-xl-2 col-lg-3 col-md-4 col-6 mb-3"
-                    key={movie.id}
+                    key={tv.id}
                   >
                     <Link
                       passHref
-                      href="/in/movies/[id]"
-                      as={`/in/movies/${encodeURIComponent(
-                        movie.id.toString(),
-                      )}`}
+                      href="/in/tv/[id]"
+                      as={`/in/tv/${encodeURIComponent(tv.id.toString())}`}
                     >
                       <ImdbCard
                         view="a"
                         configuration={configuration}
-                        title={movie.title}
-                        posterPath={movie.posterPath}
-                        releaseDate={movie.releaseDate}
+                        title={tv.name}
+                        posterPath={tv.posterPath}
+                        releaseDate={tv.releaseDate}
                         hoverable
                       />
                     </Link>
@@ -174,9 +172,9 @@ export default compose(
   connect(
     state => ({
       configuration: get(state, 'metadataConfiguration', {}),
-      list: get(state, 'movies.list', {}),
+      list: get(state, 'tv.list', {}),
     }),
-    dispatch => bindActionCreators({ getMoviesList: getListAction }, dispatch),
+    dispatch => bindActionCreators({ getTvList: getTvListAction }, dispatch),
   ),
   withUserPreloading,
-)(Movie);
+)(Tv);

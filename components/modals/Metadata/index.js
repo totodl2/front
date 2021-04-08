@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import Form from '../../forms/metadata';
 import WaveLoader from '../../presentationals/waveLoader';
 import MetadataContainer from '../../containers/MetadataContainer';
-import Movie from '../../presentationals/movie';
+import ImdbCard from '../../presentationals/imdbCard';
 import { getConfiguration } from '../../../redux/actions/metadataConfiguration';
 import withContainer from '../../../lib/withContainer';
 import styles from './styles.module.scss';
@@ -101,7 +101,7 @@ class MetadataModal extends PureComponent {
             {search.results &&
               search.results.map(media => (
                 <div className="col-lg-3 col-6 mb-3" key={media.id}>
-                  <Movie
+                  <ImdbCard
                     className={cl(styles.movie, {
                       // [styles.movieSelected]: selected === media.id,
                     })}
@@ -118,7 +118,7 @@ class MetadataModal extends PureComponent {
                         <CheckCircle />
                       </div>
                     )} */}
-                  </Movie>
+                  </ImdbCard>
                 </div>
               ))}
             {search.results && search.results.length <= 0 && (

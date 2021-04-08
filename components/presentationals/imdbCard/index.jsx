@@ -5,13 +5,14 @@ import ImdbImage from '../imdbImage';
 
 import styles from './style.module.scss';
 
-const Movie = React.forwardRef(
+const ImdbCard = React.forwardRef(
   (
     {
       view: View = 'div',
       title,
       configuration,
       posterPath,
+      stillPath,
       className,
       hoverable,
       children,
@@ -32,10 +33,10 @@ const Movie = React.forwardRef(
       >
         <ImdbImage
           className={styles.movieImage}
-          path={posterPath}
+          path={stillPath || posterPath}
           alt={title}
           configuration={configuration}
-          type="poster"
+          type={stillPath ? 'still' : 'poster'}
           size={2}
         />
         <div className={styles.movieFooter}>
@@ -50,7 +51,7 @@ const Movie = React.forwardRef(
   },
 );
 
-Movie.propTypes = {
+ImdbCard.propTypes = {
   children: PropTypes.any,
   view: PropTypes.any,
   releaseDate: PropTypes.string,
@@ -59,6 +60,7 @@ Movie.propTypes = {
   posterPath: PropTypes.string,
   title: PropTypes.string.isRequired,
   hoverable: PropTypes.bool,
+  stillPath: PropTypes.string,
 };
 
-export default Movie;
+export default ImdbCard;

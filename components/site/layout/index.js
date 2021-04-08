@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { ReactComponent as Activity } from 'feather-icons/dist/icons/activity.svg';
 import { ReactComponent as Plus } from 'feather-icons/dist/icons/plus.svg';
 import { ReactComponent as Film } from 'feather-icons/dist/icons/film.svg';
+import { ReactComponent as Tv } from 'feather-icons/dist/icons/tv.svg';
 
 import Router from 'next/router';
 import { bindActionCreators, compose } from 'redux';
@@ -104,6 +105,9 @@ export class Layout extends PureComponent {
               </MenuItemLink>
               <MenuItemLink href="/in/movies" icon={<Film />}>
                 Movies
+              </MenuItemLink>
+              <MenuItemLink href="/in/tv" icon={<Tv />}>
+                Tv shows
               </MenuItemLink>
               {process.env.NODE_ENV === 'development' && (
                 <MenuItemLink href="/demo" icon={<Activity />}>

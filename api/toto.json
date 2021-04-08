@@ -83,6 +83,20 @@
       "path": "/movies/genres/{genre}"
     }
   },
+  "tv": {
+    "get": {
+      "method": "GET",
+      "path": "/tv/{tv}"
+    },
+    "getAll": {
+      "method": "GET",
+      "path": "/tv/"
+    },
+    "getByGenre": {
+      "method": "GET",
+      "path": "/tv/genres/{genre}"
+    }
+  },
   "transcoders": {
     "queue": {
       "method": "POST",

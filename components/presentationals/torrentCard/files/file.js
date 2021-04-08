@@ -74,6 +74,7 @@ class File extends PureComponent {
     const { confirmRemoveMetadata } = this.state;
     const {
       movieId,
+      tvId,
       transcodingQueuedAt,
       transcodedAt,
       transcodingFailedAt,
@@ -81,7 +82,7 @@ class File extends PureComponent {
     const completed = file.bytesCompleted === file.length;
     const transcoded = (file.transcoded || []).filter(f => f.type === 'media');
 
-    const hasMetadata = !!movieId;
+    const hasMetadata = !!movieId || !!tvId;
     const content = (
       <>
         {!completed && (
