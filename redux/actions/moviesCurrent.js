@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import createRandom from '../../lib/createRandom';
 import handleApiError from '../../lib/utils/handleApiError';
 export const TYPE_SET_CURRENT = 'movies/current/set';
@@ -32,7 +33,16 @@ export const setCurrentError = error => ({
   error,
 });
 
-export const getCurrent = id => async (dispatch, getState, api) => {
+export const getCurrent = (id, forceReload = false) => async (
+  dispatch,
+  getState,
+  api,
+) => {
+  const current = get(getState(), 'movies.current.data');
+  if (!forceReload && get(current, 'id') === id) {
+    return current;
+  }
+
   const loadingKey = createRandom(12);
   dispatch(startLoadingCurrent(loadingKey));
   try {

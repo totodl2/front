@@ -58,11 +58,15 @@ class Tv extends PureComponent {
   };
 
   static async getInitialProps(appContext) {
-    let genreId = get(appContext, 'query.id');
-    genreId = genreId !== undefined ? parseInt(genreId, 10) : genreId;
+    const genreId = get(appContext, 'query.id');
+    const props = {
+      genreId: genreId !== undefined ? parseInt(genreId, 10) : genreId,
+    };
     await appContext.reduxStore.dispatch(getConfiguration());
-    await appContext.reduxStore.dispatch(getTvListAction({ genreId }));
-    return { genreId };
+    await appContext.reduxStore.dispatch(
+      getTvListAction({ genreId: props.genreId }),
+    );
+    return props;
   }
 
   loadMore = () => {
@@ -106,6 +110,7 @@ class Tv extends PureComponent {
           </Link>
           {genres.map(genre => (
             <Link
+              prefetch={false}
               href="/in/tv/genres/[id]"
               as={`/in/tv/genres/${genre.id}`}
               key={genre.id}
@@ -138,6 +143,7 @@ class Tv extends PureComponent {
                   >
                     <Link
                       passHref
+                      prefetch={false}
                       href="/in/tv/[id]"
                       as={`/in/tv/${encodeURIComponent(tv.id.toString())}`}
                     >

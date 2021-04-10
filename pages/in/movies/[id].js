@@ -2,8 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
+import Link from 'next/link';
 import { ReactComponent as Play } from 'feather-icons/dist/icons/play.svg';
 import { ReactComponent as Download } from 'feather-icons/dist/icons/download.svg';
+import { ReactComponent as ChevronLeft } from 'feather-icons/dist/icons/chevron-left.svg';
 
 import { getConfiguration } from '../../../redux/actions/metadataConfiguration';
 import { getCurrent } from '../../../redux/actions/moviesCurrent';
@@ -44,9 +46,10 @@ class Movie extends PureComponent {
   };
 
   static async getInitialProps(appContext) {
+    const props = { movieId: parseInt(appContext.query.id, 10) };
     await appContext.reduxStore.dispatch(getConfiguration());
-    await appContext.reduxStore.dispatch(getCurrent(appContext.query.id));
-    return { movieId: parseInt(appContext.query.id, 10) };
+    await appContext.reduxStore.dispatch(getCurrent(props.movieId));
+    return props;
   }
 
   onPlay = file => {
@@ -106,6 +109,12 @@ class Movie extends PureComponent {
             >
               <Page>
                 <div className="mb-4">
+                  <Link href="/in/movies">
+                    <a className="align-items-center d-flex text-muted">
+                      <ChevronLeft />
+                      All genres
+                    </a>
+                  </Link>
                   <h1 className="mb-0">
                     {data.title}
                     {` `}
@@ -212,7 +221,9 @@ class Movie extends PureComponent {
                 <TranscoderContainer>
                   {({ transcode, loading: transcodeLoading }) => (
                     <div className="mb-5">
-                      <h3 className="mb-0">Files</h3>
+                      <h3 className="mb-0" id="files">
+                        Files
+                      </h3>
                       {files.map(file => (
                         <File
                           file={file}
@@ -271,17 +282,10 @@ class Movie extends PureComponent {
 export default compose(
   withRedirectTo(redirectUnlogged),
   withToken(),
-  connect(
-    state => ({
-      configuration: get(state, 'metadataConfiguration', {}),
-      movie: get(state, 'movies.current', {}),
-    }),
-    // dispatch =>
-    //   bindActionCreators(
-    //     { getTorrent, getMe, remove, pause, start, searchTorrent: search },
-    //     dispatch,
-    //   ),
-  ),
+  connect(state => ({
+    configuration: get(state, 'metadataConfiguration', {}),
+    movie: get(state, 'movies.current', {}),
+  })),
   connectModals({ PlayerModal, MetadataModal }),
   withUserPreloading,
 )(Movie);

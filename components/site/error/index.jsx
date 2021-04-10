@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ReactComponent as ChevronLeft } from 'feather-icons/dist/icons/chevron-left.svg';
-import Link from 'next/link';
+import Router from 'next/router';
 
 import ErrorCard from '../../presentationals/errorCard';
 
@@ -10,12 +10,14 @@ const ErrorPage = ({ status, title, message }) => (
     <div className="row">
       <div className="col-xxl-4 col-xl-5 col-lg-6 col-md-7 col-sm-9 mx-auto">
         <ErrorCard status={status} title={title} message={message}>
-          <Link href="/in" className="mt-4">
-            <a className="btn btn-primary">
-              <ChevronLeft className="mr-2 icon" />
-              Back
-            </a>
-          </Link>
+          <button
+            type="button"
+            onClick={() => Router.back()}
+            className="btn btn-primary"
+          >
+            <ChevronLeft className="mr-2 icon" />
+            Back
+          </button>
         </ErrorCard>
       </div>
     </div>

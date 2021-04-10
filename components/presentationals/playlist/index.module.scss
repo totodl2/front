@@ -1,0 +1,44 @@
+.playlist {
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: $border-radius;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba($white, 0.15);
+
+  &-item {
+    color: $white !important;
+    display: block;
+    border-left: 3px solid transparent;
+    transition: all $transition-presentational-timing ease-in-out;
+    padding: map-get($spacers, 3) map-get($spacers, 4);
+    background-color: rgba($white, 0.1);
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &--hoverable {
+      cursor: pointer;
+
+      &:hover,
+      &-active {
+        background-color: transparent;
+        border-left-color: $primary;
+      }
+    }
+
+    &--disabled {
+      color: rgba($white-muted, 0.4) !important;
+      background-color: rgba($white, 0.1);
+
+      :global .text-muted {
+        color: rgba($white-muted, 0.4) !important;
+      }
+    }
+  }
+
+  &-item-placeholder {
+    flex-grow: 1;
+  }
+}

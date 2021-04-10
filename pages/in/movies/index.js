@@ -58,11 +58,15 @@ class Movie extends PureComponent {
   };
 
   static async getInitialProps(appContext) {
-    let genreId = get(appContext, 'query.id');
-    genreId = genreId !== undefined ? parseInt(genreId, 10) : genreId;
+    const genreId = get(appContext, 'query.id');
+    const props = {
+      genreId: genreId !== undefined ? parseInt(genreId, 10) : genreId,
+    };
     await appContext.reduxStore.dispatch(getConfiguration());
-    await appContext.reduxStore.dispatch(getListAction({ genreId }));
-    return { genreId };
+    await appContext.reduxStore.dispatch(
+      getListAction({ genreId: props.genreId }),
+    );
+    return props;
   }
 
   loadMore = () => {
@@ -106,6 +110,7 @@ class Movie extends PureComponent {
           </Link>
           {genres.map(genre => (
             <Link
+              prefetch={false}
               href="/in/movies/genres/[id]"
               as={`/in/movies/genres/${genre.id}`}
               key={genre.id}
@@ -137,6 +142,7 @@ class Movie extends PureComponent {
                     key={movie.id}
                   >
                     <Link
+                      prefetch={false}
                       passHref
                       href="/in/movies/[id]"
                       as={`/in/movies/${encodeURIComponent(

@@ -1,0 +1,37 @@
+@mixin generate-scrollbar($trackColor, $backgroundColor, $size: 0.5rem) {
+  scrollbar-color: $trackColor $backgroundColor;
+  scrollbar-width: thin;
+
+  /* width */
+  &::-webkit-scrollbar {
+    width: $size;
+    height: $size;
+    //background-color: $background;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: $backgroundColor;
+    border-radius: $size;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background-color: $trackColor;
+    border-radius: $size;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: $trackColor;
+  }
+}
+.scrollbar {
+  &-white {
+    @include generate-scrollbar(rgba($white, 0.7), rgba($white, 0.1));
+  }
+
+  &-dark {
+    @include generate-scrollbar(rgba($dark, 0.7), rgba($dark, 0.1));
+  }
+}

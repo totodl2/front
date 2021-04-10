@@ -1,0 +1,35 @@
+.tv {
+  &-card-missing {
+    @include transition($btn-transition);
+
+    &-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      color: $white;
+      background-color: rgba($primary, 0.5);
+      -webkit-backdrop-filter: blur(0.1rem) !important;
+      backdrop-filter: blur(0.1rem) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      @include transition($btn-transition);
+    }
+
+    &--hoverable {
+      cursor: pointer;
+      &:hover .tv-card-missing-content {
+        background-color: rgba($primary, 0.6);
+      }
+
+      &:active,
+      &:focus {
+        box-shadow: 0 0 0 $btn-focus-width rgba($primary, 0.5);
+      }
+    }
+  }
+}

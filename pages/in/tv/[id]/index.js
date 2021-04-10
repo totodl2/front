@@ -4,38 +4,41 @@ import { connect } from 'react-redux';
 import cl from 'classnames';
 import get from 'lodash/get';
 import Router from 'next/router';
+import Link from 'next/link';
 import { ReactComponent as Play } from 'feather-icons/dist/icons/play.svg';
-import { ReactComponent as Download } from 'feather-icons/dist/icons/download.svg';
 import { ReactComponent as UploadCloud } from 'feather-icons/dist/icons/upload-cloud.svg';
+import { ReactComponent as ChevronLeft } from 'feather-icons/dist/icons/chevron-left.svg';
 
-import { getConfiguration } from '../../../redux/actions/metadataConfiguration';
-import { getCurrent } from '../../../redux/actions/tvCurrent';
-import compose from '../../../lib/compose';
-import withRedirectTo from '../../../lib/withRedirectTo';
-import redirectUnlogged from '../../../lib/redirection/redirectUnlogged';
-import ImdbImage from '../../../components/presentationals/imdbImage';
-import BackdropImage from '../../../components/presentationals/backdropImage';
-import Page from '../../../components/layouts/page';
-import File from '../../../components/presentationals/torrentCard/files/file';
-import connectModals from '../../../lib/connectModals';
-import PlayerModal from '../../../components/modals/Player';
-import createSources from '../../../lib/file/createSources';
-import createTracks from '../../../lib/file/createTracks';
-import Actor from '../../../components/presentationals/actor';
-import ErrorPage from '../../../components/site/error';
-import WaveLoader from '../../../components/presentationals/waveLoader';
-import withUserPreloading from '../../../lib/user/withUserPreloading';
-import { hasRole, ROLE_ADMIN, ROLE_UPLOADER } from '../../../lib/roles';
-import withToken from '../../../lib/token/withToken';
-import Token from '../../../lib/token/token';
-import MetadataModal from '../../../components/modals/Metadata';
-import MetadataContainer from '../../../components/containers/MetadataContainer';
-import TranscoderContainer from '../../../components/containers/TranscoderContainer';
-import ImdbCard from '../../../components/presentationals/imdbCard';
+import { getConfiguration } from '../../../../redux/actions/metadataConfiguration';
+import { getCurrent } from '../../../../redux/actions/tvCurrent';
+import compose from '../../../../lib/compose';
+import withRedirectTo from '../../../../lib/withRedirectTo';
+import redirectUnlogged from '../../../../lib/redirection/redirectUnlogged';
+import ImdbImage from '../../../../components/presentationals/imdbImage';
+import BackdropImage from '../../../../components/presentationals/backdropImage';
+import Page from '../../../../components/layouts/page';
+import File from '../../../../components/presentationals/torrentCard/files/file';
+import connectModals from '../../../../lib/connectModals';
+import PlayerModal from '../../../../components/modals/Player';
+import createSources from '../../../../lib/file/createSources';
+import createTracks from '../../../../lib/file/createTracks';
+import Actor from '../../../../components/presentationals/actor';
+import ErrorPage from '../../../../components/site/error';
+import WaveLoader from '../../../../components/presentationals/waveLoader';
+import withUserPreloading from '../../../../lib/user/withUserPreloading';
+import { hasRole, ROLE_ADMIN, ROLE_UPLOADER } from '../../../../lib/roles';
+import withToken from '../../../../lib/token/withToken';
+import Token from '../../../../lib/token/token';
+import MetadataModal from '../../../../components/modals/Metadata';
+import MetadataContainer from '../../../../components/containers/MetadataContainer';
+import TranscoderContainer from '../../../../components/containers/TranscoderContainer';
+import ImdbCard from '../../../../components/presentationals/imdbCard';
+import UploadModal from '../../../../components/modals/Upload';
+import withApi from '../../../../lib/api/withApi';
+import findEpisode from '../../../../lib/episode/findEpisode';
+import getEpisodeNumberLabel from '../../../../lib/episode/getEpisodeNumberLabel';
 
 import styles from './tv.module.scss';
-import UploadModal from '../../../components/modals/Upload';
-import withApi from '../../../lib/api/withApi';
 
 class Tv extends PureComponent {
   static propTypes = {
@@ -54,9 +57,10 @@ class Tv extends PureComponent {
   };
 
   static async getInitialProps(appContext) {
+    const props = { tvId: parseInt(appContext.query.id, 10) };
     await appContext.reduxStore.dispatch(getConfiguration());
-    await appContext.reduxStore.dispatch(getCurrent(appContext.query.id));
-    return { tvId: parseInt(appContext.query.id, 10) };
+    await appContext.reduxStore.dispatch(getCurrent(props.tvId));
+    return props;
   }
 
   onUpload = () =>
@@ -82,7 +86,7 @@ class Tv extends PureComponent {
 
   render() {
     const {
-      tv: { loading, data = {}, error },
+      tv: { loading, data: tv = {}, error },
       configuration,
       token,
       tvId,
@@ -98,18 +102,17 @@ class Tv extends PureComponent {
 
     const isSiteAdmin = hasRole(token.roles, ROLE_ADMIN);
     const isUploader = hasRole(token.roles, ROLE_UPLOADER);
-    const releaseDate = data.releaseDate && new Date(data.releaseDate);
-    const trailers = data.videos.filter(
+    const trailers = tv.videos.filter(
       video =>
         video.type === 'TRAILER' && video.site.toLowerCase() === 'youtube',
     );
-    const files = data.files || [];
-    const streamableFiles = files.filter(
-      file =>
-        (file.transcoded || []).filter(f => f.type === 'media').length > 0,
+    const firstAirDate = tv.firstAirDate && new Date(tv.firstAirDate);
+    const firstFound = findEpisode(
+      tv.seasons,
+      episode => episode.files && episode.files.length > 0,
     );
 
-    const cast = get(data, 'credits.cast', []).slice(0, 12);
+    const cast = get(tv, 'credits.cast', []).slice(0, 12);
 
     return (
       <MetadataContainer>
@@ -117,29 +120,35 @@ class Tv extends PureComponent {
           <>
             <BackdropImage
               className="mb-5"
-              path={data.backdropPath}
+              path={tv.backdropPath}
               configuration={configuration}
               type="backdrop"
               size={2}
             >
               <Page>
                 <div className="mb-4">
+                  <Link href="/in/tv">
+                    <a className="align-items-center d-flex text-muted">
+                      <ChevronLeft />
+                      All genres
+                    </a>
+                  </Link>
                   <h1 className="mb-0">
-                    {data.name}
+                    {tv.name}
                     {` `}
-                    {releaseDate && (
+                    {firstAirDate && (
                       <span className="text-muted">
-                        ({releaseDate.getFullYear()})
+                        ({firstAirDate.getFullYear()})
                       </span>
                     )}
                   </h1>
-                  <h6 className="mb-0">{data.originalName}</h6>
+                  <h6 className="mb-0">{tv.originalName}</h6>
                 </div>
                 <div className="row">
                   <div className="col-md-3 text-center mb-3 mb-md-0">
                     <ImdbImage
-                      path={data.posterPath}
-                      alt={data.name}
+                      path={tv.posterPath}
+                      alt={tv.name}
                       configuration={configuration}
                       type="poster"
                       size={4}
@@ -148,39 +157,23 @@ class Tv extends PureComponent {
                     />
                   </div>
                   <div className="col-md-8">
-                    {data.genres && data.genres.length > 0 && (
+                    {tv.genres && tv.genres.length > 0 && (
                       <>
                         <h6 className="mb-0">Genres</h6>
                         <p>
-                          {data.genres.map((genre, i) => (
+                          {tv.genres.map((genre, i) => (
                             <span key={genre.id}>
                               <span>{genre.name}</span>
-                              {i + 1 < data.genres.length ? ', ' : ''}
+                              {i + 1 < tv.genres.length ? ', ' : ''}
                             </span>
                           ))}
                         </p>
                       </>
                     )}
-                    {data.productionCountries &&
-                      data.productionCountries.length > 0 && (
-                        <>
-                          <h6 className="mb-0">Country</h6>
-                          <p>
-                            {data.productionCountries.map((country, i) => (
-                              <span key={country.iso31661}>
-                                <span>{country.name}</span>
-                                {i + 1 < data.productionCountries.length
-                                  ? ', '
-                                  : ''}
-                              </span>
-                            ))}
-                          </p>
-                        </>
-                      )}
-                    {data.overview && (
+                    {tv.overview && (
                       <>
                         <h6 className="mb-0">Overview</h6>
-                        <p>{data.overview}</p>
+                        <p>{tv.overview}</p>
                       </>
                     )}
                     {trailers && trailers.length > 0 && (
@@ -201,88 +194,88 @@ class Tv extends PureComponent {
                         </p>
                       </>
                     )}
-                    {streamableFiles.length > 0 && (
-                      <button
-                        type="button"
-                        onClick={() => this.onPlay(streamableFiles[0])}
-                        className="mt-3 btn btn-primary"
+                    {firstFound && (
+                      <Link
+                        passHref
+                        prefetch={false}
+                        href="/in/tv/[id]/[season]/[episode]"
+                        as={`/in/tv/${tvId}/${firstFound.season.seasonNumber}/${firstFound.episode.episodeNumber}`}
                       >
-                        <Play className="mr-2" />
-                        Watch
-                      </button>
-                    )}
-                    {streamableFiles.length <= 0 && files.length > 0 && (
-                      <a
-                        href={files[0].url}
-                        target="_blank"
-                        className="mt-3 btn btn-primary"
-                      >
-                        <Download className="mr-2" />
-                        Download
-                      </a>
+                        <a className="mt-3 btn btn-primary">
+                          <Play className="mr-2" />
+                          Watch{' '}
+                          {getEpisodeNumberLabel(
+                            firstFound.season.seasonNumber,
+                            firstFound.episode.episodeNumber,
+                          )}
+                        </a>
+                      </Link>
                     )}
                   </div>
                 </div>
               </Page>
             </BackdropImage>
             <Page>
-              {data.seasons
-                .filter(
-                  season =>
-                    season.seasonNumber !== 0 && season.episodes.length > 0,
-                )
-                .map(season => (
-                  <div key={season.seasonNumber}>
-                    <h3 id={`season-${season.seasonNumber}`}>{season.name}</h3>
-                    <div className="mb-5 row">
-                      {season.episodes.map(episode => {
-                        const hasFiles = episode.files.length > 0;
-                        return (
-                          <div
-                            className="mb-3 col-xl-3 col-lg-4 col-6"
-                            key={episode.episodeNumber}
-                          >
+              {tv.seasons.map(season => (
+                <div key={season.seasonNumber}>
+                  <h3 id={`season-${season.seasonNumber}`}>{season.name}</h3>
+                  <div className="mb-5 row">
+                    {season.episodes.map(episode => {
+                      const hasFiles = episode.files.length > 0;
+                      return (
+                        <div
+                          className="mb-3 col-xl-3 col-lg-4 col-6"
+                          key={episode.episodeNumber}
+                        >
+                          {hasFiles ? (
+                            <Link
+                              passHref
+                              prefetch={false}
+                              href="/in/tv/[id]/[season]/[episode]"
+                              as={`/in/tv/${tvId}/${season.seasonNumber}/${episode.episodeNumber}`}
+                            >
+                              <ImdbCard
+                                view="a"
+                                configuration={configuration}
+                                stillPath={episode.stillPath}
+                                title={`${episode.episodeNumber} - ${episode.name}`}
+                                hoverable
+                              />
+                            </Link>
+                          ) : (
                             <ImdbCard
                               configuration={configuration}
                               stillPath={episode.stillPath}
                               title={`${episode.episodeNumber} - ${episode.name}`}
-                              hoverable={hasFiles}
-                              className={cl({
-                                [styles.tvCardMissing]: !hasFiles,
-                                [styles.tvCardMissingHoverable]:
-                                  !hasFiles && isUploader,
+                              className={cl(styles.tvCardMissing, {
+                                [styles.tvCardMissingHoverable]: isUploader,
                               })}
-                              onClick={
-                                !hasFiles && isUploader
-                                  ? this.onUpload
-                                  : undefined
-                              }
+                              onClick={isUploader ? this.onUpload : undefined}
                             >
-                              {!hasFiles && (
-                                <div className={styles.tvCardMissingContent}>
-                                  {isUploader ? (
-                                    <>
-                                      <UploadCloud className="d-block mb-2" />
-                                      Upload missing files
-                                    </>
-                                  ) : (
-                                    <>Episode not available</>
-                                  )}
-                                </div>
-                              )}
+                              <div className={styles.tvCardMissingContent}>
+                                {isUploader ? (
+                                  <>
+                                    <UploadCloud className="d-block mb-2" />
+                                    Upload missing files
+                                  </>
+                                ) : (
+                                  <>Episode not available</>
+                                )}
+                              </div>
                             </ImdbCard>
-                          </div>
-                        );
-                      })}
-                    </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
-                ))}
-              {data.lost && data.lost.length > 0 && (
+                </div>
+              ))}
+              {tv.lost && tv.lost.length > 0 && (
                 <TranscoderContainer>
                   {({ transcode, loading: transcodeLoading }) => (
                     <div className="mb-5">
                       <h3 className="mb-0">Lost files</h3>
-                      {data.lost.map(file => (
+                      {tv.lost.map(file => (
                         <File
                           file={file}
                           key={file.id}
@@ -312,7 +305,7 @@ class Tv extends PureComponent {
               {cast.length > 0 && (
                 <>
                   <h3>Actors</h3>
-                  <div className="overflow-auto w-100 mb-5">
+                  <div className="overflow-auto w-100 mb-5 scrollbar-dark">
                     <div className="d-flex flex-row flex-nowrap row">
                       {cast.map(({ character, id, person }) => (
                         <div

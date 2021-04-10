@@ -5,7 +5,7 @@ import {
   TYPE_START_LOADING_LIST,
 } from '../../actions/tvList';
 
-export default (state = { genres: [] }, action) => {
+const tvListReducer = (state = { genres: [] }, action) => {
   if (action.type === TYPE_START_LOADING_LIST) {
     return {
       ...state,
@@ -49,3 +49,5 @@ export default (state = { genres: [] }, action) => {
   }
   return state;
 };
+
+export default tvListReducer;

@@ -9,7 +9,7 @@ import {
   TYPE_UPDATE_CURRENT_FILE,
 } from '../../actions/moviesCurrent';
 
-export default (state = {}, action) => {
+const moviesCurrentReducer = (state = {}, action) => {
   if (action.type === TYPE_START_LOADING_CURRENT) {
     const { data, ...oldState } = state;
     return {
@@ -61,3 +61,5 @@ export default (state = {}, action) => {
   }
   return state;
 };
+
+export default moviesCurrentReducer;

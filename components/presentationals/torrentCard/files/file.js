@@ -75,6 +75,8 @@ class File extends PureComponent {
     const {
       movieId,
       tvId,
+      episodeNumber,
+      seasonNumber,
       transcodingQueuedAt,
       transcodedAt,
       transcodingFailedAt,
@@ -172,6 +174,22 @@ class File extends PureComponent {
             <Link
               href="/in/movies/[id]"
               as={`/in/movies/${encodeURIComponent(movieId.toString())}`}
+            >
+              <a
+                className={cl(
+                  'btn btn-sm btn-outline-primary',
+                  styles.fileMediaInfo,
+                )}
+              >
+                <Info className="mr-2" />
+                Info
+              </a>
+            </Link>
+          )}
+          {tvId && !hideInfo && (
+            <Link
+              href="/in/tv/[id]/[season]/[episode]"
+              as={`/in/tv/${tvId}/${seasonNumber}/${episodeNumber}`}
             >
               <a
                 className={cl(

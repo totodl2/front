@@ -12,9 +12,10 @@
   top: 0;
   left: 0;
   right: 0;
-  padding: map-get($spacers, 3) map-get($spacers, 5) map-get($spacers, 5)
-    map-get($spacers, 3);
-  margin-right: map-get($spacers, 3);
+  padding: map-get($spacers, 3) #{map-get($spacers, 5) + map-get($spacers, 3)} map-get(
+      $spacers,
+      5
+    ) map-get($spacers, 3);
 
   &-title {
     font-size: $h2-font-size;
@@ -22,7 +23,7 @@
 
   &-close {
     position: absolute;
-    right: 0px;
+    right: map-get($spacers, 3);
     top: map-get($spacers, 3);
     font-size: 1rem !important;
     border: $border-width solid $white !important;
