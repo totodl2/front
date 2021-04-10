@@ -110,36 +110,41 @@ class GenericDetector {
   isDetected = () => this.detected;
 
   onWatch = () => {
-    const { width, height } = this.canvas;
-    const time = this.video.currentTime;
-    this.ctx.drawImage(this.video, 0, 0, width, height);
-    const frame = this.ctx.getImageData(0, 0, width, height);
+    try {
+      const { width, height } = this.canvas;
+      const time = this.video.currentTime;
+      this.ctx.drawImage(this.video, 0, 0, width, height);
+      const frame = this.ctx.getImageData(0, 0, width, height);
 
-    const luminances = [];
-    for (let i = 0, sz = frame.data.length / 4; i < sz; i++) {
-      const offset = i * 4;
-      const r = frame.data[offset];
-      const g = frame.data[offset + 1];
-      const b = frame.data[offset + 2];
-      luminances.push(luminance(r, g, b));
+      const luminances = [];
+      for (let i = 0, sz = frame.data.length / 4; i < sz; i++) {
+        const offset = i * 4;
+        const r = frame.data[offset];
+        const g = frame.data[offset + 1];
+        const b = frame.data[offset + 2];
+        luminances.push(luminance(r, g, b));
+      }
+
+      const repartition = {};
+      luminances.forEach(l => {
+        const impreciseLuminance = parseInt(l, 10);
+        repartition[impreciseLuminance] =
+          (repartition[impreciseLuminance] || 0) + 1;
+      });
+
+      const repartitionPc = Object.entries(repartition)
+        .map(([, value]) => value / luminances.length)
+        .sort((a, b) => b - a);
+
+      const top = repartitionPc
+        .slice(0, 3)
+        .reduce((prev, current) => prev + current, 0);
+
+      this.addFrame({ top, time });
+    } catch (e) {
+      console.warn(e);
+      this.disable();
     }
-
-    const repartition = {};
-    luminances.forEach(l => {
-      const impreciseLuminance = parseInt(l, 10);
-      repartition[impreciseLuminance] =
-        (repartition[impreciseLuminance] || 0) + 1;
-    });
-
-    const repartitionPc = Object.entries(repartition)
-      .map(([, value]) => value / luminances.length)
-      .sort((a, b) => b - a);
-
-    const top = repartitionPc
-      .slice(0, 3)
-      .reduce((prev, current) => prev + current, 0);
-
-    this.addFrame({ top, time });
   };
 
   addFrame = frame => {
