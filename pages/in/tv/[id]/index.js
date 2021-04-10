@@ -109,7 +109,7 @@ class Tv extends PureComponent {
     const firstAirDate = tv.firstAirDate && new Date(tv.firstAirDate);
     const firstFound = findEpisode(
       tv.seasons,
-      episode => episode.files && episode.files.length > 0,
+      ({ episode }) => episode.files && episode.files.length > 0,
     );
 
     const cast = get(tv, 'credits.cast', []).slice(0, 12);

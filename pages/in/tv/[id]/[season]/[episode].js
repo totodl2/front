@@ -39,6 +39,7 @@ import PlaylistItem from '../../../../../components/presentationals/playlist/pla
 import getEpisodeNumberLabel from '../../../../../lib/episode/getEpisodeNumberLabel';
 
 import styles from './episode.module.scss';
+import findEpisode from '../../../../../lib/episode/findEpisode';
 
 const getStreamableFiles = episode => {
   const files = episode.files || [];
@@ -128,6 +129,31 @@ class TvEpisode extends PureComponent {
     });
   };
 
+  gotoNextEpisode = () => {
+    const {
+      tv: {
+        data: { seasons },
+      },
+      tvId,
+      episode,
+    } = this.props;
+
+    const next = findEpisode(
+      seasons,
+      (current, previous) => previous && previous.episode.id === episode.id,
+    );
+
+    if (!next) {
+      return;
+    }
+
+    Router.push(
+      '/in/tv/[id]/[season]/[episode]',
+      `/in/tv/${tvId}/${next.season.seasonNumber}/${next.episode.episodeNumber}`,
+      { scroll: false },
+    );
+  };
+
   render() {
     const {
       tv: { loading, data: tv = {}, error },
@@ -210,6 +236,8 @@ class TvEpisode extends PureComponent {
                           {...this.state}
                           title={`${episode.name} - ${seasonEpisode}`}
                           videoClassName={styles.episodePlayer}
+                          onGenericDetected={this.gotoNextEpisode}
+                          onEnded={this.gotoNextEpisode}
                         />
                       )}
                       {!isStreamable && hasFiles && (

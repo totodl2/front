@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 import cl from 'classnames';
 
 import TitleBar from './components/titleBar';
+import GenericDetector from './genericDetector';
+
+const REMAINING_WATCH = 5 * 60; // 5 minutes before the end
+
+const noop = () => {};
 
 const getSelectedTrackAttributes = (tracks, type) => {
   for (let i = 0, sz = tracks.length; i < sz; i++) {
@@ -53,6 +58,8 @@ class Player extends React.Component {
     title: PropTypes.string,
     onClose: PropTypes.func,
     onTimeUpdate: PropTypes.func,
+    onEnded: PropTypes.func,
+    onGenericDetected: PropTypes.func,
     sources: PropTypes.arrayOf(
       PropTypes.shape({
         src: PropTypes.string.isRequired,
@@ -72,6 +79,7 @@ class Player extends React.Component {
   constructor(props) {
     super(props);
     this.videoRef = React.createRef();
+    this.genericDetector = new GenericDetector(this.onGenericDetected);
   }
 
   componentDidMount() {
@@ -89,6 +97,7 @@ class Player extends React.Component {
         this.player.audioTracks(),
         'audio',
       );
+      this.genericDetector.disable();
       this.player.src(this.props.sources);
     }
 
@@ -133,15 +142,42 @@ class Player extends React.Component {
         title: this.props.title,
       });
     }
+
+    if (prevProps.onGenericDetected && !this.props.onGenericDetected) {
+      this.genericDetector.disable();
+    }
   }
 
   // destroy player on unmount
   componentWillUnmount() {
     this.clearPlayer();
+    this.genericDetector.destruct();
   }
 
   onTimeUpdate = () => {
-    const { onTimeUpdate } = this.props;
+    const { onTimeUpdate, onGenericDetected } = this.props;
+    const remainingTime = this.player.remainingTime();
+
+    if (
+      onGenericDetected &&
+      !this.genericDetector.isDetected() &&
+      !this.genericDetector.isEnabled() &&
+      remainingTime <= REMAINING_WATCH
+    ) {
+      this.genericDetector.setVideoElement(
+        this.player.el().querySelector('video'),
+      );
+      this.genericDetector.enable();
+    }
+
+    if (
+      onGenericDetected &&
+      this.genericDetector.isEnabled() &&
+      remainingTime > REMAINING_WATCH
+    ) {
+      this.genericDetector.disable();
+    }
+
     if (!onTimeUpdate) {
       return null;
     }
@@ -149,14 +185,35 @@ class Player extends React.Component {
     return onTimeUpdate({
       duration: this.player.duration(),
       currentTime: this.player.currentTime(),
-      remainingTime: this.player.remainingTime(),
+      remainingTime,
     });
+  };
+
+  onPause = () => {
+    this.genericDetector.stopWatch();
+  };
+
+  onPlay = () => {
+    this.genericDetector.startWatch();
+  };
+
+  onEnded = () => {
+    this.genericDetector.disable();
+    (this.props.onEnded || noop)();
+  };
+
+  onGenericDetected = () => {
+    this.props.onGenericDetected();
   };
 
   clearPlayer = () => {
     if (this.player) {
       this.player.dispose();
       this.player.off('timeupdate', this.onTimeUpdate);
+      // this.player.off('playerresize', this.onPlayerResize);
+      this.player.off('pause', this.onPause);
+      this.player.off('play', this.onPlay);
+      this.player.off('ended', this.onEnded);
       this.player = null;
     }
   };
@@ -193,6 +250,10 @@ class Player extends React.Component {
     });
 
     this.player.on('timeupdate', this.onTimeUpdate);
+    // this.player.on('playerresize', this.onPlayerResize);
+    this.player.on('pause', this.onPause);
+    this.player.on('play', this.onPlay);
+    this.player.on('ended', this.onEnded);
     this.player.on('error', e => {
       console.warn(e);
     });

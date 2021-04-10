@@ -75,8 +75,6 @@ class File extends PureComponent {
     const {
       movieId,
       tvId,
-      episodeNumber,
-      seasonNumber,
       transcodingQueuedAt,
       transcodedAt,
       transcodingFailedAt,
@@ -187,10 +185,7 @@ class File extends PureComponent {
             </Link>
           )}
           {tvId && !hideInfo && (
-            <Link
-              href="/in/tv/[id]/[season]/[episode]"
-              as={`/in/tv/${tvId}/${seasonNumber}/${episodeNumber}`}
-            >
+            <Link href="/in/tv/[id]" as={`/in/tv/${tvId}`}>
               <a
                 className={cl(
                   'btn btn-sm btn-outline-primary',
