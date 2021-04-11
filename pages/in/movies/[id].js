@@ -27,9 +27,10 @@ import withUserPreloading from '../../../lib/user/withUserPreloading';
 import { hasRole, ROLE_ADMIN } from '../../../lib/roles';
 import withToken from '../../../lib/token/withToken';
 import Token from '../../../lib/token/token';
-import MetadataModal from '../../../components/modals/Metadata';
+import MovieMetadataModal from '../../../components/modals/Metadata/movie';
 import MetadataContainer from '../../../components/containers/MetadataContainer';
 import TranscoderContainer from '../../../components/containers/TranscoderContainer';
+import TvMetadataModal from '../../../components/modals/Metadata/tv';
 
 class Movie extends PureComponent {
   static propTypes = {
@@ -42,7 +43,8 @@ class Movie extends PureComponent {
       error: PropTypes.object,
     }),
     token: PropTypes.instanceOf(Token),
-    openMetadataModal: PropTypes.func.isRequired,
+    openMovieMetadataModal: PropTypes.func.isRequired,
+    openTvMetadataModal: PropTypes.func.isRequired,
   };
 
   static async getInitialProps(appContext) {
@@ -60,10 +62,12 @@ class Movie extends PureComponent {
     });
   };
 
-  onChangeMetadata = file => {
-    this.props.openMetadataModal({
-      file,
-    });
+  onChangeMovieMetadata = file => {
+    this.props.openMovieMetadataModal({ file });
+  };
+
+  onChangeTvMetadata = files => {
+    this.props.openTvMetadataModal({ files });
   };
 
   render() {
@@ -224,25 +228,27 @@ class Movie extends PureComponent {
                       <h3 className="mb-0" id="files">
                         Files
                       </h3>
-                      {files.map(file => (
-                        <File
-                          file={file}
-                          key={file.id}
-                          onPlay={this.onPlay}
-                          hideInfo={file.movieId === movieId}
-                          onRemoveMetadata={
-                            isSiteAdmin || token.id === file.userId
-                              ? onRemoveMetadata
-                              : undefined
-                          }
-                          onChangeMetadata={
-                            isSiteAdmin || token.id === file.userId
-                              ? this.onChangeMetadata
-                              : undefined
-                          }
-                          onTranscode={isSiteAdmin ? transcode : undefined}
-                        />
-                      ))}
+                      {files.map(file => {
+                        const isOwner = isSiteAdmin || token.id === file.userId;
+                        return (
+                          <File
+                            file={file}
+                            key={file.id}
+                            onPlay={this.onPlay}
+                            hideInfo={file.movieId === movieId}
+                            onRemoveMetadata={
+                              isOwner ? onRemoveMetadata : undefined
+                            }
+                            onChangeMovieMetadata={
+                              isOwner ? this.onChangeMovieMetadata : undefined
+                            }
+                            onChangeTvMetadata={
+                              isOwner ? this.onChangeTvMetadata : undefined
+                            }
+                            onTranscode={isSiteAdmin ? transcode : undefined}
+                          />
+                        );
+                      })}
                       <WaveLoader
                         fill="page"
                         visible={remove.loading || transcodeLoading}
@@ -286,6 +292,6 @@ export default compose(
     configuration: get(state, 'metadataConfiguration', {}),
     movie: get(state, 'movies.current', {}),
   })),
-  connectModals({ PlayerModal, MetadataModal }),
+  connectModals({ PlayerModal, MovieMetadataModal, TvMetadataModal }),
   withUserPreloading,
 )(Movie);

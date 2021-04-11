@@ -33,8 +33,9 @@ import createSources from '../../lib/file/createSources';
 import createTracks from '../../lib/file/createTracks';
 import withUserPreloading from '../../lib/user/withUserPreloading';
 import MetadataContainer from '../../components/containers/MetadataContainer';
-import MetadataModal from '../../components/modals/Metadata';
+import MovieMetadataModal from '../../components/modals/Metadata/movie';
 import TranscoderContainer from '../../components/containers/TranscoderContainer';
+import TvMetadataModal from '../../components/modals/Metadata/tv';
 
 const PAGE_SIZE = 50;
 
@@ -48,7 +49,8 @@ class Index extends PureComponent {
     start: PropTypes.func.isRequired,
     openUploadModal: PropTypes.func.isRequired,
     openPlayerModal: PropTypes.func.isRequired,
-    openMetadataModal: PropTypes.func.isRequired,
+    openMovieMetadataModal: PropTypes.func.isRequired,
+    openTvMetadataModal: PropTypes.func.isRequired,
     api: PropTypes.object,
     searchTorrent: PropTypes.func.isRequired,
     openTrackersModal: PropTypes.func.isRequired,
@@ -113,10 +115,12 @@ class Index extends PureComponent {
     });
   };
 
-  onChangeMetadata = file => {
-    this.props.openMetadataModal({
-      file,
-    });
+  onChangeMovieMetadata = file => {
+    this.props.openMovieMetadataModal({ file });
+  };
+
+  onChangeTvMetadata = (files, onClosed) => {
+    this.props.openTvMetadataModal({ files }, onClosed);
   };
 
   getTorrents = () => {
@@ -185,7 +189,8 @@ class Index extends PureComponent {
                         onOpenTrackers={this.onOpenTrackers}
                         onPlayFile={this.onPlayFile}
                         onRemoveMetadata={onRemoveMetadata}
-                        onChangeMetadata={this.onChangeMetadata}
+                        onChangeMovieMetadata={this.onChangeMovieMetadata}
+                        onChangeTvMetadata={this.onChangeTvMetadata}
                         onTranscode={transcode}
                       />
                     )}
@@ -218,6 +223,12 @@ export default compose(
       ),
   ),
   withApi(),
-  connectModals({ UploadModal, TrackersModal, PlayerModal, MetadataModal }),
+  connectModals({
+    UploadModal,
+    TrackersModal,
+    PlayerModal,
+    MovieMetadataModal,
+    TvMetadataModal,
+  }),
   withUserPreloading,
 )(Index);

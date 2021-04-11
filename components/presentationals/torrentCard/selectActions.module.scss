@@ -1,0 +1,17 @@
+.select-actions {
+  position: sticky;
+  position: -webkit-sticky;
+  z-index: 2;
+  text-align: center;
+
+  padding: map-get($spacers, 2) map-get($spacers, 3);
+  margin-left: -#{map-get($spacers, 3)};
+  margin-right: -#{map-get($spacers, 3)};
+
+  top: 0px;
+  left: 0px;
+  right: 0px;
+
+  -webkit-backdrop-filter: blur(0.15rem) !important;
+  backdrop-filter: blur(0.15rem) !important;
+}

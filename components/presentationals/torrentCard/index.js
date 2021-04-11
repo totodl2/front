@@ -7,6 +7,7 @@ import { ReactComponent as Pause } from 'feather-icons/dist/icons/pause.svg';
 import { ReactComponent as Play } from 'feather-icons/dist/icons/play.svg';
 import { ReactComponent as Trash } from 'feather-icons/dist/icons/trash.svg';
 import { ReactComponent as Compass } from 'feather-icons/dist/icons/compass.svg';
+import { ReactComponent as ChevronUp } from 'feather-icons/dist/icons/chevron-up.svg';
 
 import cl from 'classnames';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
@@ -37,7 +38,7 @@ import ETA from '../eta';
 import styles from './index.module.scss';
 import WaveLoader from '../waveLoader';
 import ToggleContainer from '../../containers/ToggleContainer';
-import Details from './details';
+import FilesDetail from './filesDetail';
 
 const noop = () => {};
 
@@ -55,7 +56,8 @@ class TorrentCard extends PureComponent {
     onStart: PropTypes.func,
     onRemove: PropTypes.func,
     onOpen: PropTypes.func.isRequired,
-    onChangeMetadata: PropTypes.func,
+    onChangeMovieMetadata: PropTypes.func,
+    onChangeTvMetadata: PropTypes.func,
     onRemoveMetadata: PropTypes.func,
     onTranscode: PropTypes.func,
   };
@@ -109,7 +111,8 @@ class TorrentCard extends PureComponent {
       toggle,
       onOpenTrackers,
       onPlayFile,
-      onChangeMetadata,
+      onChangeMovieMetadata,
+      onChangeTvMetadata,
       onRemoveMetadata,
       onTranscode,
     } = this.props;
@@ -273,19 +276,30 @@ class TorrentCard extends PureComponent {
           leave={{ animation: 'slideUp', duration: 200 }}
         >
           {isOpen && (
-            <Details
-              className="px-3"
-              files={get(torrent, 'files', [])}
-              toggle={toggle}
-              onPlayFile={onPlayFile}
-              onChangeMetadata={
-                isOwner || isAdmin ? onChangeMetadata : undefined
-              }
-              onRemoveMetadata={
-                isOwner || isAdmin ? onRemoveMetadata : undefined
-              }
-              onTranscode={isAdmin ? onTranscode : undefined}
-            />
+            <div className="px-3">
+              <h6 className="mb-0 mt-2">Files</h6>
+              <FilesDetail
+                files={get(torrent, 'files', [])}
+                onPlayFile={onPlayFile}
+                onChangeMovieMetadata={
+                  isOwner || isAdmin ? onChangeMovieMetadata : undefined
+                }
+                onChangeTvMetadata={
+                  isOwner || isAdmin ? onChangeTvMetadata : undefined
+                }
+                onRemoveMetadata={
+                  isOwner || isAdmin ? onRemoveMetadata : undefined
+                }
+                onTranscode={isAdmin ? onTranscode : undefined}
+                selectable={isOwner || isAdmin}
+              />
+              <div
+                className={cl('w-100 py-2 text-center', styles.cardToggle)}
+                onClick={toggle}
+              >
+                <ChevronUp />
+              </div>
+            </div>
           )}
         </VelocityTransitionGroup>
         <WaveLoader className="border-radius" visible={isLoading} />

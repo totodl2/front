@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import MenuItem from './menuItem';
 
-const MenuItemLink = ({ router, href, as, children, ...props }) => (
+const MenuItemLink = ({ router, href, onClick, as, children, ...props }) => (
   <MenuItem
     {...props}
     type={Link}
@@ -15,7 +15,11 @@ const MenuItemLink = ({ router, href, as, children, ...props }) => (
     active={router.asPath === as || router.pathname === href}
     hoverable
   >
-    {({ wrap, ...childProps }) => <a {...childProps}>{wrap(children)}</a>}
+    {({ wrap, ...childProps }) => (
+      <a {...childProps} onClick={onClick}>
+        {wrap(children)}
+      </a>
+    )}
   </MenuItem>
 );
 
@@ -24,6 +28,7 @@ MenuItemLink.propTypes = {
   href: PropTypes.any,
   as: PropTypes.any,
   children: PropTypes.node,
+  onClick: PropTypes.func,
 };
 
 export default withRouter(MenuItemLink);

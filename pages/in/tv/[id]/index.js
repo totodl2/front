@@ -29,7 +29,7 @@ import withUserPreloading from '../../../../lib/user/withUserPreloading';
 import { hasRole, ROLE_ADMIN, ROLE_UPLOADER } from '../../../../lib/roles';
 import withToken from '../../../../lib/token/withToken';
 import Token from '../../../../lib/token/token';
-import MetadataModal from '../../../../components/modals/Metadata';
+import MovieMetadataModal from '../../../../components/modals/Metadata/movie';
 import MetadataContainer from '../../../../components/containers/MetadataContainer';
 import TranscoderContainer from '../../../../components/containers/TranscoderContainer';
 import ImdbCard from '../../../../components/presentationals/imdbCard';
@@ -39,6 +39,7 @@ import findEpisode from '../../../../lib/episode/findEpisode';
 import getEpisodeNumberLabel from '../../../../lib/episode/getEpisodeNumberLabel';
 
 import styles from './tv.module.scss';
+import TvMetadataModal from '../../../../components/modals/Metadata/tv';
 
 class Tv extends PureComponent {
   static propTypes = {
@@ -51,7 +52,8 @@ class Tv extends PureComponent {
       error: PropTypes.object,
     }),
     token: PropTypes.instanceOf(Token),
-    openMetadataModal: PropTypes.func.isRequired,
+    openMovieMetadataModal: PropTypes.func.isRequired,
+    openTvMetadataModal: PropTypes.func.isRequired,
     openUploadModal: PropTypes.func.isRequired,
     api: PropTypes.object,
   };
@@ -78,10 +80,12 @@ class Tv extends PureComponent {
     });
   };
 
-  onChangeMetadata = file => {
-    this.props.openMetadataModal({
-      file,
-    });
+  onChangeMovieMetadata = file => {
+    this.props.openMovieMetadataModal({ file });
+  };
+
+  onChangeTvMetadata = files => {
+    this.props.openTvMetadataModal({ files });
   };
 
   render() {
@@ -275,25 +279,27 @@ class Tv extends PureComponent {
                   {({ transcode, loading: transcodeLoading }) => (
                     <div className="mb-5">
                       <h3 className="mb-0">Lost files</h3>
-                      {tv.lost.map(file => (
-                        <File
-                          file={file}
-                          key={file.id}
-                          onPlay={this.onPlay}
-                          hideInfo={file.tvId === tvId}
-                          onRemoveMetadata={
-                            isSiteAdmin || token.id === file.userId
-                              ? onRemoveMetadata
-                              : undefined
-                          }
-                          onChangeMetadata={
-                            isSiteAdmin || token.id === file.userId
-                              ? this.onChangeMetadata
-                              : undefined
-                          }
-                          onTranscode={isSiteAdmin ? transcode : undefined}
-                        />
-                      ))}
+                      {tv.lost.map(file => {
+                        const isOwner = isSiteAdmin || token.id === file.userId;
+                        return (
+                          <File
+                            file={file}
+                            key={file.id}
+                            onPlay={this.onPlay}
+                            hideInfo={file.tvId === tvId}
+                            onRemoveMetadata={
+                              isOwner ? onRemoveMetadata : undefined
+                            }
+                            onChangeMovieMetadata={
+                              isOwner ? this.onChangeMovieMetadata : undefined
+                            }
+                            onChangeTvMetadata={
+                              isOwner ? this.onChangeTvMetadata : undefined
+                            }
+                            onTranscode={isSiteAdmin ? transcode : undefined}
+                          />
+                        );
+                      })}
                       <WaveLoader
                         fill="page"
                         visible={remove.loading || transcodeLoading}
@@ -336,17 +342,15 @@ export default compose(
   withRedirectTo(redirectUnlogged),
   withToken(),
   withApi(),
-  connect(
-    state => ({
-      configuration: get(state, 'metadataConfiguration', {}),
-      tv: get(state, 'tv.current', {}),
-    }),
-    // dispatch =>
-    //   bindActionCreators(
-    //     { getTorrent, getMe, remove, pause, start, searchTorrent: search },
-    //     dispatch,
-    //   ),
-  ),
-  connectModals({ PlayerModal, MetadataModal, UploadModal }),
+  connect(state => ({
+    configuration: get(state, 'metadataConfiguration', {}),
+    tv: get(state, 'tv.current', {}),
+  })),
+  connectModals({
+    PlayerModal,
+    MovieMetadataModal,
+    TvMetadataModal,
+    UploadModal,
+  }),
   withUserPreloading,
 )(Tv);

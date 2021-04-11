@@ -28,7 +28,8 @@ import withUserPreloading from '../../../../../lib/user/withUserPreloading';
 import { hasRole, ROLE_ADMIN, ROLE_UPLOADER } from '../../../../../lib/roles';
 import withToken from '../../../../../lib/token/withToken';
 import Token from '../../../../../lib/token/token';
-import MetadataModal from '../../../../../components/modals/Metadata';
+import MovieMetadataModal from '../../../../../components/modals/Metadata/movie';
+import TvMetadataModal from '../../../../../components/modals/Metadata/tv';
 import MetadataContainer from '../../../../../components/containers/MetadataContainer';
 import TranscoderContainer from '../../../../../components/containers/TranscoderContainer';
 import UploadModal from '../../../../../components/modals/Upload';
@@ -82,7 +83,8 @@ class TvEpisode extends PureComponent {
       files: PropTypes.arrayOf(PropTypes.object),
     }),
     token: PropTypes.instanceOf(Token),
-    openMetadataModal: PropTypes.func.isRequired,
+    openMovieMetadataModal: PropTypes.func.isRequired,
+    openTvMetadataModal: PropTypes.func.isRequired,
     openUploadModal: PropTypes.func.isRequired,
     api: PropTypes.object,
   };
@@ -123,10 +125,12 @@ class TvEpisode extends PureComponent {
       }
     });
 
-  onChangeMetadata = file => {
-    this.props.openMetadataModal({
-      file,
-    });
+  onChangeMovieMetadata = file => {
+    this.props.openMovieMetadataModal({ file });
+  };
+
+  onChangeTvMetadata = files => {
+    this.props.openTvMetadataModal({ files });
   };
 
   gotoNextEpisode = () => {
@@ -244,7 +248,7 @@ class TvEpisode extends PureComponent {
                         <div
                           className={cl(
                             styles.episodePlayer,
-                            'd-flex align-items-center justify-content-center flex-column',
+                            'd-flex align-items-center justify-content-center flex-column text-center',
                           )}
                         >
                           This file is not available for streaming, but you can
@@ -264,7 +268,7 @@ class TvEpisode extends PureComponent {
                         <div
                           className={cl(
                             styles.episodePlayer,
-                            'd-flex align-items-center justify-content-center flex-column',
+                            'd-flex align-items-center justify-content-center flex-column text-center',
                           )}
                         >
                           This episode is not yet available on totodl
@@ -325,24 +329,26 @@ class TvEpisode extends PureComponent {
                   {({ transcode, loading: transcodeLoading }) => (
                     <div className="mb-5">
                       <h3 className="mb-0">Files</h3>
-                      {files.map(file => (
-                        <File
-                          file={file}
-                          key={file.id}
-                          hideInfo={file.tvId === tvId}
-                          onRemoveMetadata={
-                            isSiteAdmin || token.id === file.userId
-                              ? onRemoveMetadata
-                              : undefined
-                          }
-                          onChangeMetadata={
-                            isSiteAdmin || token.id === file.userId
-                              ? this.onChangeMetadata
-                              : undefined
-                          }
-                          onTranscode={isSiteAdmin ? transcode : undefined}
-                        />
-                      ))}
+                      {files.map(file => {
+                        const isOwner = isSiteAdmin || token.id === file.userId;
+                        return (
+                          <File
+                            file={file}
+                            key={file.id}
+                            hideInfo={file.tvId === tvId}
+                            onRemoveMetadata={
+                              isOwner ? onRemoveMetadata : undefined
+                            }
+                            onChangeMovieMetadata={
+                              isOwner ? this.onChangeMovieMetadata : undefined
+                            }
+                            onChangeTvMetadata={
+                              isOwner ? this.onChangeTvMetadata : undefined
+                            }
+                            onTranscode={isSiteAdmin ? transcode : undefined}
+                          />
+                        );
+                      })}
                       <WaveLoader
                         fill="page"
                         visible={remove.loading || transcodeLoading}
@@ -400,6 +406,11 @@ export default compose(
       season,
     };
   }),
-  connectModals({ PlayerModal, MetadataModal, UploadModal }),
+  connectModals({
+    PlayerModal,
+    TvMetadataModal,
+    MovieMetadataModal,
+    UploadModal,
+  }),
   withUserPreloading,
 )(TvEpisode);

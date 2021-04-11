@@ -3,24 +3,15 @@ import PropTypes from 'prop-types';
 import cl from 'classnames';
 import { ReactComponent as Play } from 'feather-icons/dist/icons/play.svg';
 import { ReactComponent as Info } from 'feather-icons/dist/icons/info.svg';
-import { ReactComponent as MoreVertical } from 'feather-icons/dist/icons/more-vertical.svg';
-import { ReactComponent as Trash } from 'feather-icons/dist/icons/trash.svg';
-import { ReactComponent as Download } from 'feather-icons/dist/icons/download.svg';
-import { ReactComponent as Edit2 } from 'feather-icons/dist/icons/edit-2.svg';
-
 import Link from 'next/link';
-import Dropdown from 'reactstrap/lib/Dropdown';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import DropdownItem from 'reactstrap/lib/DropdownItem';
 
 import ExtensionIcon from './extensionIcon';
 
 import styles from './file.module.scss';
 import PrettyBytes from '../../prettyBytes';
 import TranscoderStatus from './transcoderStatus';
-import ToggleContainer from '../../../containers/ToggleContainer';
-import TranscoderIcon from '../../icons/TranscoderIcon';
+import FileDropdown from './fileDropdown';
+import CheckboxGroup from '../../../forms/fields/Checkbox/CheckboxGroup';
 
 class File extends PureComponent {
   static propTypes = {
@@ -28,37 +19,44 @@ class File extends PureComponent {
     className: PropTypes.string,
     onPlay: PropTypes.func,
     hideInfo: PropTypes.bool,
-    onChangeMetadata: PropTypes.func,
+    onChangeMovieMetadata: PropTypes.func,
+    onChangeTvMetadata: PropTypes.func,
     onRemoveMetadata: PropTypes.func,
     onTranscode: PropTypes.func,
+    selectable: PropTypes.bool,
+    isSelected: PropTypes.bool,
+    onSelect: PropTypes.func,
+    onUnSelect: PropTypes.func,
+    showSelect: PropTypes.bool,
   };
 
-  state = {
-    confirmRemoveMetadata: false,
-  };
-
-  onConfirmMetadataDiscard = () =>
-    this.setState({ confirmRemoveMetadata: false });
-
-  onRemoveMetadata = evt => {
-    if (!this.state.confirmRemoveMetadata) {
-      this.setState({ confirmRemoveMetadata: true });
-      evt.stopPropagation();
-      return;
-    }
-
+  onRemoveMetadata = () => {
     const { file, onRemoveMetadata } = this.props;
     onRemoveMetadata(file.id);
   };
 
-  onChangeMetadata = () => {
-    const { file, onChangeMetadata } = this.props;
-    return onChangeMetadata(file);
+  onChangeMovieMetadata = () => {
+    const { file, onChangeMovieMetadata } = this.props;
+    return onChangeMovieMetadata(file);
+  };
+
+  onChangeTvMetadata = () => {
+    const { file, onChangeTvMetadata } = this.props;
+    return onChangeTvMetadata([file]);
   };
 
   onTranscode = () => {
     const { file, onTranscode } = this.props;
     return onTranscode(file.id);
+  };
+
+  toggleSelect = () => {
+    const { file, onSelect, onUnSelect, isSelected } = this.props;
+    if (isSelected) {
+      onUnSelect(file);
+    } else {
+      onSelect(file);
+    }
   };
 
   render() {
@@ -67,11 +65,14 @@ class File extends PureComponent {
       className,
       onPlay,
       hideInfo,
-      onChangeMetadata,
+      onChangeMovieMetadata,
+      onChangeTvMetadata,
       onRemoveMetadata,
       onTranscode,
+      selectable,
+      isSelected,
+      showSelect,
     } = this.props;
-    const { confirmRemoveMetadata } = this.state;
     const {
       movieId,
       tvId,
@@ -82,7 +83,6 @@ class File extends PureComponent {
     const completed = file.bytesCompleted === file.length;
     const transcoded = (file.transcoded || []).filter(f => f.type === 'media');
 
-    const hasMetadata = !!movieId || !!tvId;
     const content = (
       <>
         {!completed && (
@@ -96,70 +96,41 @@ class File extends PureComponent {
           />
         )}
         <div className={styles.fileLabel}>
+          {selectable && showSelect && (
+            <span className={styles.fileSelect}>
+              <CheckboxGroup
+                id={file.id}
+                onChange={this.toggleSelect}
+                value={isSelected}
+                type="checkbox"
+              />
+            </span>
+          )}
           <span className={styles.fileIcon}>
             <ExtensionIcon ext={file.extension} />
           </span>
           <span className={styles.fileLabelSpan}>
             {completed ? <a href={file.url}>{file.basename}</a> : file.basename}
           </span>
-          {(transcoded.length > 0 ||
-            onChangeMetadata ||
-            (hasMetadata && onRemoveMetadata) ||
-            (onTranscode && transcodingQueuedAt)) &&
-            completed && (
-              <ToggleContainer
-                view={Dropdown}
-                direction="left"
-                onToggle={this.onConfirmMetadataDiscard}
-                className="float-right"
-              >
-                <DropdownToggle
-                  tag="button"
-                  className="btn btn-round shadow-none btn-sm"
-                  aria-haspopup
-                  aria-expanded={false}
-                >
-                  <MoreVertical />
-                </DropdownToggle>
-                <DropdownMenu>
-                  {transcoded.length > 0 &&
-                    transcoded.map(media => (
-                      <DropdownItem
-                        tag="a"
-                        href={media.url}
-                        key={media.preset}
-                        className={styles.fileTranscoded}
-                      >
-                        <Download className="mr-2" />
-                        {media.preset}
-                      </DropdownItem>
-                    ))}
-                  {onChangeMetadata && (
-                    <DropdownItem onClick={this.onChangeMetadata}>
-                      <Edit2 className="mr-2" />
-                      {hasMetadata ? 'Change metadata' : 'Set metadata'}
-                    </DropdownItem>
-                  )}
-                  {onRemoveMetadata && hasMetadata && (
-                    <DropdownItem
-                      className={confirmRemoveMetadata ? 'text-danger' : ''}
-                      onClick={this.onRemoveMetadata}
-                    >
-                      <Trash className="mr-2" />
-                      {confirmRemoveMetadata
-                        ? 'Click again to confirm'
-                        : 'Remove metadata'}
-                    </DropdownItem>
-                  )}
-                  {onTranscode && transcodingQueuedAt && (
-                    <DropdownItem onClick={this.onTranscode}>
-                      <TranscoderIcon className="mr-2" />
-                      Transcode
-                    </DropdownItem>
-                  )}
-                </DropdownMenu>
-              </ToggleContainer>
-            )}
+          <FileDropdown
+            onTranscode={
+              onTranscode && transcodingQueuedAt ? this.onTranscode : undefined
+            }
+            onRemoveMetadata={
+              onRemoveMetadata ? this.onRemoveMetadata : undefined
+            }
+            onChangeMovieMetadata={
+              onChangeMovieMetadata ? this.onChangeMovieMetadata : undefined
+            }
+            onChangeTvMetadata={
+              onChangeTvMetadata ? this.onChangeTvMetadata : undefined
+            }
+            transcoded={transcoded}
+            toggleSelect={selectable ? this.toggleSelect : undefined}
+            isSelected={isSelected}
+            movieId={movieId}
+            tvId={tvId}
+          />
           <span className={styles.fileSize}>
             {!completed && (
               <>

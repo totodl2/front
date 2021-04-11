@@ -60,9 +60,17 @@
       "method": "GET",
       "path": "/metadata/movies"
     },
-    "set": {
+    "searchTv": {
+      "method": "GET",
+      "path": "/metadata/tv"
+    },
+    "setMovie": {
       "method": "POST",
-      "path": "/metadata/files/{file}"
+      "path": "/metadata/files/movie/{file}"
+    },
+    "setTv": {
+      "method": "POST",
+      "path": "/metadata/files/tv/{tvId}"
     },
     "remove": {
       "method": "DELETE",

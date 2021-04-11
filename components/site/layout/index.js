@@ -76,6 +76,8 @@ export class Layout extends PureComponent {
     return this.props.token.logout();
   };
 
+  onMenuItemClick = () => {};
+
   render() {
     const { children, token, user, userLoading } = this.props;
     const isUploader = hasRole(token.roles, ROLE_UPLOADER);
@@ -85,7 +87,7 @@ export class Layout extends PureComponent {
     }
     return (
       <MenuContainer>
-        {({ opened, toggle, type }) => (
+        {({ opened, toggle, type, close }) => (
           <>
             <Menu
               opened={opened}
@@ -100,17 +102,33 @@ export class Layout extends PureComponent {
                 logout={this.logout}
                 menuOpened={opened}
               />
-              <MenuItemLink href="/in" icon={<Activity />}>
+              <MenuItemLink
+                href="/in"
+                icon={<Activity />}
+                onClick={type === TYPE_MOBILE ? close : null}
+              >
                 Torrents
               </MenuItemLink>
-              <MenuItemLink href="/in/movies" icon={<Film />}>
+              <MenuItemLink
+                href="/in/movies"
+                icon={<Film />}
+                onClick={type === TYPE_MOBILE ? close : null}
+              >
                 Movies
               </MenuItemLink>
-              <MenuItemLink href="/in/tv" icon={<Tv />}>
+              <MenuItemLink
+                href="/in/tv"
+                icon={<Tv />}
+                onClick={type === TYPE_MOBILE ? close : null}
+              >
                 Tv shows
               </MenuItemLink>
               {process.env.NODE_ENV === 'development' && (
-                <MenuItemLink href="/demo" icon={<Activity />}>
+                <MenuItemLink
+                  href="/demo"
+                  icon={<Activity />}
+                  onClick={type === TYPE_MOBILE ? close : null}
+                >
                   Démo
                 </MenuItemLink>
               )}

@@ -35,9 +35,16 @@ export const Directory = ({
   isOpen,
   toggle,
   onPlayFile,
-  onChangeMetadata,
+  onChangeMovieMetadata,
+  onChangeTvMetadata,
   onRemoveMetadata,
   onTranscode,
+  selected,
+  selectable,
+  onSelect,
+  onUnSelect,
+  isSelected,
+  showSelect,
 }) => {
   const filesList = get(files, FILES_KEY, []);
   const directories = Object.entries(files);
@@ -96,9 +103,16 @@ export const Directory = ({
                   files={value}
                   onPlayFile={onPlayFile}
                   defaultOpened={count < MAX_FILES_TO_DEFAULT_OPEN}
-                  onChangeMetadata={onChangeMetadata}
+                  onChangeMovieMetadata={onChangeMovieMetadata}
+                  onChangeTvMetadata={onChangeTvMetadata}
                   onRemoveMetadata={onRemoveMetadata}
                   onTranscode={onTranscode}
+                  selected={selected}
+                  selectable={selectable}
+                  onSelect={onSelect}
+                  onUnSelect={onUnSelect}
+                  isSelected={isSelected}
+                  showSelect={showSelect}
                 />
               );
             })}
@@ -109,9 +123,15 @@ export const Directory = ({
                     key={file.id}
                     file={file}
                     onPlay={onPlayFile}
-                    onChangeMetadata={onChangeMetadata}
+                    onChangeMovieMetadata={onChangeMovieMetadata}
+                    onChangeTvMetadata={onChangeTvMetadata}
                     onRemoveMetadata={onRemoveMetadata}
                     onTranscode={onTranscode}
+                    selectable={selectable}
+                    isSelected={selectable && isSelected(file, selected)}
+                    onSelect={onSelect}
+                    onUnSelect={onUnSelect}
+                    showSelect={showSelect}
                   />
                 ))}
               </div>
@@ -134,9 +154,16 @@ Directory.propTypes = {
   isOpen: PropTypes.bool,
   toggle: PropTypes.func,
   onPlayFile: PropTypes.func,
-  onChangeMetadata: PropTypes.func,
+  onChangeMovieMetadata: PropTypes.func,
+  onChangeTvMetadata: PropTypes.func,
   onRemoveMetadata: PropTypes.func,
   onTranscode: PropTypes.func,
+  selectable: PropTypes.bool,
+  selected: PropTypes.array,
+  onSelect: PropTypes.func,
+  onUnSelect: PropTypes.func,
+  isSelected: PropTypes.func,
+  showSelect: PropTypes.bool,
 };
 
 export default ToggleDirectory;

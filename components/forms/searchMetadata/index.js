@@ -8,17 +8,19 @@ import FieldWrapper from '../fields/FieldWrapper';
 import withContainer from '../../../lib/withContainer';
 import SearchInput from './searchInput';
 
-class Metadata extends PureComponent {
+class SearchMetadataForm extends PureComponent {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     className: PropTypes.string,
     error: PropTypes.any,
     submitError: PropTypes.any,
     children: PropTypes.func,
+    label: PropTypes.string,
+    placeholder: PropTypes.string,
   };
 
   renderFormContent() {
-    const { submitError, error } = this.props;
+    const { submitError, error, placeholder, label } = this.props;
 
     return (
       <>
@@ -26,8 +28,8 @@ class Metadata extends PureComponent {
           <Field
             component={FieldWrapper}
             controlComponent={SearchInput}
-            placeholder="Rambo V"
-            label="Media's name"
+            placeholder={placeholder}
+            label={label}
             name="query"
             type="text"
             validate={validateRequired}
@@ -49,4 +51,4 @@ class Metadata extends PureComponent {
   }
 }
 
-export default withContainer(Form, null, 'component')(Metadata);
+export default withContainer(Form, null, 'component')(SearchMetadataForm);

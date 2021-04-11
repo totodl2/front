@@ -1,0 +1,35 @@
+.tv {
+  cursor: pointer;
+
+  &--selected {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 200px;
+    position: relative;
+    box-shadow: 0 0 0 $btn-focus-width rgba($primary, 0.5);
+
+    &::after {
+      content: ' ';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba($primary, 0.5);
+      z-index: 1;
+    }
+  }
+
+  &-check {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    color: $white;
+  }
+}

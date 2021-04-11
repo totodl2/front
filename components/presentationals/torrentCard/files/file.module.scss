@@ -19,6 +19,15 @@
   bottom: -1px;
 }
 
+.file-select {
+  display: inline-block;
+  align-self: center;
+
+  :global .custom-control {
+    line-height: 1.25rem;
+  }
+}
+
 .file-icon {
   display: inline-block;
   color: lighten($body-color, 20%);
@@ -39,7 +48,6 @@
   margin-left: map-get($spacers, 2);
 }
 
-//.file-transcoded,
 .file-play {
   display: inline-block;
   float: right;

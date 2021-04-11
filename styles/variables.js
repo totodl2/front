@@ -40,6 +40,8 @@ const mapping = {
   h6FontSize: 'h6-font-size',
 };
 
+const customCheckboxIndicatorBorderRadius = '0.35rem';
+
 const variables = {
   primary,
   secondary,
@@ -69,6 +71,7 @@ const variables = {
   borderRadius,
   borderRadiusLg,
   borderRadiusSm,
+  customCheckboxIndicatorBorderRadius,
 };
 
 module.exports = {
