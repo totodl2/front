@@ -5,6 +5,13 @@ export const TYPE_SET_CURRENT = 'tv/current/set';
 export const TYPE_START_LOADING_CURRENT = 'tv/current/startLoading';
 export const TYPE_STOP_LOADING_CURRENT = 'tv/current/stopLoading';
 export const TYPE_SET_CURRENT_ERROR = 'tv/current/error';
+export const TYPE_UPDATE_CURRENT_FILE = 'tv/current/file/update';
+
+export const updateCurrentFile = (fileId, data) => ({
+  type: TYPE_UPDATE_CURRENT_FILE,
+  fileId,
+  data,
+});
 
 const startLoadingCurrent = loadingKey => ({
   loadingKey,

@@ -27,7 +27,7 @@ const ErrorPage = ({ status, title, message }) => (
 ErrorPage.propTypes = {
   title: PropTypes.element,
   status: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  message: PropTypes.element,
+  message: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
 };
 
 export default ErrorPage;

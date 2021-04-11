@@ -13,6 +13,7 @@ import {
   createFile,
 } from '../../redux/actions/torrents';
 import { updateCurrentFile as updateMovieFile } from '../../redux/actions/moviesCurrent';
+import { updateCurrentFile as updateTvFile } from '../../redux/actions/tvCurrent';
 
 import { updateMe } from '../../redux/actions/me';
 import isServer from '../../lib/isServer';
@@ -28,6 +29,7 @@ class SSE extends PureComponent {
     updateFile: PropTypes.func.isRequired,
     createFile: PropTypes.func.isRequired,
     updateMovieFile: PropTypes.func.isRequired,
+    updateTvFile: PropTypes.func.isRequired,
     updateMe: PropTypes.func.isRequired,
     token: PropTypes.instanceOf(Token),
   };
@@ -100,6 +102,7 @@ class SSE extends PureComponent {
     const data = JSON.parse(jsonData);
     this.props.updateFile(data.hash, data.id, data.changes);
     this.props.updateMovieFile(data.id, data.changes);
+    this.props.updateTvFile(data.id, data.changes);
   };
 
   onTorrentUpdated = ({ data: jsonData }) => {
@@ -147,6 +150,7 @@ export default compose(
           createFile,
           updateMe,
           updateMovieFile,
+          updateTvFile,
         },
         dispatch,
       ),

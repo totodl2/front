@@ -49,7 +49,7 @@ const getStreamableFiles = episode => {
   );
 };
 
-const defaultState = { sources: [], tracks: [], id: null };
+const defaultState = { sources: [], tracks: [], fileId: null };
 
 class TvEpisode extends PureComponent {
   static propTypes = {
@@ -103,16 +103,17 @@ class TvEpisode extends PureComponent {
   }
 
   static getDerivedStateFromProps({ episode = {} }, state) {
-    if (state.id === episode.id) {
-      return state;
-    }
-
     const files = getStreamableFiles(episode);
     if (files.length <= 0) {
-      return { ...defaultState, id: episode.id };
+      return defaultState;
+    }
+
+    if (files[0].id === state.fileId) {
+      return null;
     }
 
     return {
+      fileId: files[0].id,
       sources: createSources(files[0]),
       tracks: createTracks(files[0]),
     };
