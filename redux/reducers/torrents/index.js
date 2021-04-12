@@ -7,7 +7,7 @@ const initialState = {
   search: { searching: false, results: [] },
 };
 
-export default (state = initialState, action) => {
+const torrentsReducers = (state = initialState, action) => {
   const data = torrentsDataReducers(state.data, action);
 
   let newState = state;
@@ -21,3 +21,5 @@ export default (state = initialState, action) => {
 
   return torrentsSearchReducers(newState, action);
 };
+
+export default torrentsReducers;

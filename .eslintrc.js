@@ -7,14 +7,12 @@ const defaultRules = {
   'comma-dangle': [2, 'always-multiline'],
   'import/imports-first': 0,
   'import/newline-after-import': 0,
-  'import/no-dynamic-require': 0,
-  'import/no-extraneous-dependencies': 0,
+  'import/no-dynamic-require': 2,
   'import/no-named-as-default': 0,
   'import/no-named-as-default-member': 0,
   'import/no-unresolved': 2,
-  'import/no-webpack-loader-syntax': 0,
   'import/prefer-default-export': 0,
-  'no-underscore-dangle': 0,
+  'import/no-anonymous-default-export': 1, // @todo: fix then error
   'jsx-a11y/anchor-is-valid': 0,
   'jsx-a11y/aria-props': 2,
   'jsx-a11y/click-events-have-key-events': 0,
@@ -25,7 +23,6 @@ const defaultRules = {
   'jsx-a11y/no-static-element-interactions': 0,
   'jsx-a11y/role-has-required-aria-props': 2,
   'jsx-a11y/role-supports-aria-props': 2,
-  'max-len': 0,
   'newline-per-chained-call': 0,
   'no-confusing-arrow': 0,
   'no-console': [isProd ? 'error' : 'warn', { allow: ['warn', 'error'] }],
@@ -43,12 +40,16 @@ const defaultRules = {
   'react/jsx-one-expression-per-line': 0,
   'react/jsx-props-no-spreading': 0,
   'react/require-default-props': 0,
-  'react/require-extension': 0,
-  'react/self-closing-comp': 0,
+  'react/self-closing-comp': [
+    'warn', // @todo: fix then error
+    {
+      component: true,
+      html: true,
+    },
+  ],
   'react/static-property-placement': [1, 'static public field'],
   'react/state-in-constructor': 0,
   'react/react-in-jsx-scope': 0,
-  'require-yield': 0,
 };
 
 module.exports = {
@@ -77,6 +78,7 @@ module.exports = {
         'no-unused-vars': 0,
         'react/display-name': 0,
         'react/prop-types': 0,
+        'react/forbid-prop-types': 1,
         '@typescript-eslint/explicit-function-return-type': 0,
         '@typescript-eslint/explicit-member-accessibility': 0,
         '@typescript-eslint/indent': 0,

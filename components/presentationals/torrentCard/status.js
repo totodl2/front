@@ -6,7 +6,7 @@ export const DOWNLOAD = 4;
 export const SEED_WAIT = 5;
 export const SEED = 6;
 
-export default {
+const STATUS = {
   STOPPED,
   CHECK_WAIT,
   CHECK,
@@ -21,3 +21,5 @@ export const isDownloading = status =>
   status === DOWNLOAD_WAIT || status === DOWNLOAD;
 export const isChecking = status => status === CHECK || status === CHECK_WAIT;
 export const isStopped = status => status === STOPPED;
+
+export default STATUS;

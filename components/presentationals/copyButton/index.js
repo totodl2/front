@@ -84,7 +84,7 @@ class CopyButton extends PureComponent {
           defaultValue={copy}
           readOnly
           ref={this.ref}
-        ></textarea>
+        />
       </>
     );
   }

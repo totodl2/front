@@ -5,7 +5,7 @@ import {
 } from '../actions/metadataConfiguration';
 
 const initialState = {};
-export default (state = initialState, action) => {
+const metadataConfigurationReducer = (state = initialState, action) => {
   if (action.type === TYPE_START_LOADING_CONFIGURATION) {
     return {
       ...state,
@@ -29,3 +29,5 @@ export default (state = initialState, action) => {
 
   return state;
 };
+
+export default metadataConfigurationReducer;

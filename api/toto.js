@@ -2,7 +2,7 @@ import { resolve } from 'url';
 import createApi from './createApi';
 import endpoints from './toto.json';
 
-export default token => {
+const createTotoApi = token => {
   const defaultHeaders = {};
   const conf = {
     endpoints,
@@ -39,3 +39,5 @@ export default token => {
   api.setToken(token);
   return api;
 };
+
+export default createTotoApi;
