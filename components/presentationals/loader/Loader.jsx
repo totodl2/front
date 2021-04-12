@@ -5,6 +5,7 @@ import cl from 'classnames';
 import styles from './loader.module.scss';
 
 export default class Loader extends Component {
+  // eslint-disable-next-line react/sort-comp
   static sizes = {
     md: 'md',
     sm: 'sm',

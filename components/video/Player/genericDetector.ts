@@ -4,29 +4,34 @@ const DEFAULT_FPS = 5;
 const DEFAULT_ANALYZED_WIDTH = 120;
 const DEFAULT_TIME_BEFORE_NOTIFICATION = 3; // in s
 
-const luminance = (r, g, b) => 0.2126 * r + 0.7152 * g + 0.0722 * b;
+const luminance = (r: number, g: number, b: number) =>
+  0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+type onDetectedCallback = () => void;
+
+type FrameTopType = { top: number; time: number };
 
 class GenericDetector {
   /**
    * @type {HTMLCanvasElement}
    */
-  canvas = null;
+  private canvas: HTMLCanvasElement | null = null;
 
   /**
    * @type {CanvasRenderingContext2D}
    */
-  ctx = null;
+  ctx: CanvasRenderingContext2D | null = null;
 
   /**
    * @type {HTMLVideoElement|null}
    */
-  video = null;
+  video: HTMLVideoElement | null = null;
 
-  interval = null;
+  interval: ReturnType<typeof setInterval> | null = null;
 
   enabled = false;
 
-  frames = [];
+  frames: FrameTopType[] = [];
 
   fps = DEFAULT_FPS;
 
@@ -36,10 +41,10 @@ class GenericDetector {
 
   detected = false;
 
-  onDetected = null;
+  onDetected: onDetectedCallback | null;
 
   constructor(
-    onDetected,
+    onDetected: onDetectedCallback,
     fps = DEFAULT_FPS,
     analyzedWidth = DEFAULT_ANALYZED_WIDTH,
     timeBeforeNotification = DEFAULT_TIME_BEFORE_NOTIFICATION,
@@ -53,15 +58,17 @@ class GenericDetector {
     }
   }
 
-  destruct() {
+  destruct(): void {
     this.onDetected = null;
-    this.canvas.remove();
+    if (this.canvas) {
+      this.canvas.remove();
+    }
     if (this.interval) {
       this.stopWatch();
     }
   }
 
-  setCanvas = canvas => {
+  setCanvas = (canvas: HTMLCanvasElement): void => {
     if (this.canvas) {
       this.canvas.remove();
     }
@@ -80,37 +87,42 @@ class GenericDetector {
    * @param {HTMLVideoElement} video
    * @returns {GenericDetector}
    */
-  setVideoElement = video => {
+  setVideoElement = (video: HTMLVideoElement): void => {
     this.video = video;
     const ratio = this.video.videoHeight / this.video.videoWidth;
-    this.canvas.width = this.analyzedWidth;
-    this.canvas.height = Math.floor(this.analyzedWidth * ratio);
-    return this;
+    if (this.canvas) {
+      this.canvas.width = this.analyzedWidth;
+      this.canvas.height = Math.floor(this.analyzedWidth * ratio);
+    }
   };
 
-  reset = () => {
+  reset = (): void => {
     this.frames = [];
     this.detected = false;
     this.stopWatch();
   };
 
-  enable = () => {
+  enable = (): void => {
     this.reset();
     this.enabled = true;
     this.startWatch();
   };
 
-  disable = () => {
+  disable = (): void => {
     this.reset();
     this.enabled = false;
   };
 
-  isEnabled = () => this.enabled;
+  isEnabled = (): boolean => this.enabled;
 
-  isDetected = () => this.detected;
+  isDetected = (): boolean => this.detected;
 
-  onWatch = () => {
+  onWatch = (): void => {
     try {
+      if (!this.canvas || !this.video || !this.ctx) {
+        return;
+      }
+
       const { width, height } = this.canvas;
       const time = this.video.currentTime;
       this.ctx.drawImage(this.video, 0, 0, width, height);
@@ -125,9 +137,9 @@ class GenericDetector {
         luminances.push(luminance(r, g, b));
       }
 
-      const repartition = {};
+      const repartition: { [key: number]: number } = {};
       luminances.forEach(l => {
-        const impreciseLuminance = parseInt(l, 10);
+        const impreciseLuminance = Math.floor(l);
         repartition[impreciseLuminance] =
           (repartition[impreciseLuminance] || 0) + 1;
       });
@@ -147,7 +159,7 @@ class GenericDetector {
     }
   };
 
-  addFrame = frame => {
+  addFrame = (frame: FrameTopType): void => {
     const { top, time } = frame;
     if (top <= 0.85) {
       this.frames = []; // reset similar frames history
@@ -172,7 +184,7 @@ class GenericDetector {
     }
   };
 
-  startWatch = () => {
+  startWatch = (): void => {
     if (!this.enabled) {
       return;
     }
@@ -181,19 +193,16 @@ class GenericDetector {
     this.interval = setInterval(this.onWatch, 1000 / this.fps);
   };
 
-  /**
-   * @returns {GenericDetector}
-   */
-  stopWatch = () => {
+  stopWatch = (): void => {
     if (this.interval === null) {
-      return this;
+      return;
     }
+
     clearInterval(this.interval);
     this.interval = null;
-    return this;
   };
 
-  isWatching = () => !!this.interval;
+  isWatching = (): boolean => !!this.interval;
 }
 
 export default GenericDetector;

@@ -29,7 +29,7 @@ class PlaylistItem extends PureComponent {
     this.focus();
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps) {
     if (
       !this.ref.current ||
       !this.props.active ||
