@@ -29,8 +29,6 @@ import withApi from '../../lib/api/withApi';
 import { getMe } from '../../redux/actions/me';
 import Input from '../../components/forms/fields/Input';
 import Page from '../../components/layouts/page';
-import createSources from '../../lib/file/createSources';
-import createTracks from '../../lib/file/createTracks';
 import withUserPreloading from '../../lib/user/withUserPreloading';
 import MetadataContainer from '../../components/containers/MetadataContainer';
 import MovieMetadataModal from '../../components/modals/Metadata/movie';
@@ -109,8 +107,7 @@ class Index extends PureComponent {
 
   onPlayFile = file => {
     this.props.openPlayerModal({
-      sources: createSources(file),
-      tracks: createTracks(file),
+      file,
       title: file.basename,
     });
   };

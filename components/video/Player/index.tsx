@@ -1,37 +1,23 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { ReactNode, RefObject } from 'react';
 import videojs from 'video.js';
 import cl from 'classnames';
 
+import { AudioTrack, MediaSource, TextTrack, VideJsPlayerType } from './types';
 import TitleBar from './components/titleBar';
 import GenericDetector from './genericDetector';
 import noop from '../../../lib/noop';
+import { FileType } from '../../../types/FileType';
+import createSources from './file/createSources';
+import createTracks from './file/createTracks';
+import { Maybe } from '../../../types/Maybe';
 
 const REMAINING_WATCH = 5 * 60; // 5 minutes before the end
 
 type SelectedAttribute = {
   label: string;
   kind: string;
-  language: string;
+  language?: string;
 };
-
-type Track = {
-  kind: string;
-  id: string;
-  label: string;
-  language: string;
-};
-
-type TextTrack = {
-  mode: string;
-  srclang: string;
-  src: string;
-  default: boolean;
-} & Track;
-
-type AudioTrack = {
-  enabled: boolean;
-} & Track;
 
 const getSelectedAudioTrackAttributes = (
   tracks: AudioTrack[],
@@ -112,41 +98,18 @@ const selectTextTrack = (
 };
 
 type TitleBarComponentOptions = {
-  title?: string;
-  onClose?: () => void;
+  title: Maybe<string>;
+  onClose: Maybe<() => void>;
 };
 
 type TitleBarComponent = {
   updateContent: TitleBarComponentOptions;
 };
 
-type VideJsPlayerType = {
-  audioTracks: () => AudioTrack[];
-  src: (src?: string | object | []) => void;
-  remoteTextTracks: () => TextTrack[];
-  removeRemoteTextTrack: (track: TextTrack) => void;
-  addRemoteTextTrack: (
-    track: TextTrack,
-    manualCleanup?: boolean,
-  ) => HTMLTrackElement;
-  ready: (callback: () => void, sync?: boolean) => void;
-  on: (event: string, callback: (evt?: any) => void) => void;
-  one: (event: string, callback: (evt?: any) => void) => void;
-  off: (event: string, callback: (evt?: any) => void) => void;
-  play: () => void;
-  getChild: <T>(element: string) => T;
-  addChild: <T, O>(element: string, options: O) => T;
-  remainingTime: () => number;
-  el: () => HTMLVideoElement;
-  duration: () => number;
-  currentTime: () => number;
-  dispose: () => void;
-};
-
 export type PlayerProps = {
   className?: string;
   videoClassName?: string;
-  title?: string;
+  title?: string | null;
   onClose?: () => void;
   onTimeUpdate?: (data: {
     duration: number;
@@ -155,16 +118,22 @@ export type PlayerProps = {
   }) => void;
   onEnded?: () => void;
   onGenericDetected?: () => void;
-  sources: videojs.Tech.SourceObject[];
+  file: FileType;
+};
+
+export type PlayerState = {
+  sources: MediaSource[];
   tracks: TextTrack[];
 };
 
-class Player extends React.Component<PlayerProps> {
+class Player extends React.Component<PlayerProps, PlayerState> {
   private readonly videoRef: RefObject<HTMLVideoElement>;
 
   private readonly genericDetector: GenericDetector;
 
   private player: VideJsPlayerType | null = null;
+
+  state = { sources: [], tracks: [] };
 
   constructor(props: PlayerProps) {
     super(props);
@@ -172,13 +141,23 @@ class Player extends React.Component<PlayerProps> {
     this.genericDetector = new GenericDetector(this.onGenericDetected);
   }
 
+  static getDerivedStateFromProps(props: PlayerProps): PlayerState {
+    return {
+      sources: createSources(props.file),
+      tracks: createTracks(props.file),
+    };
+  }
+
   componentDidMount(): void {
     this.createPlayer();
   }
 
-  componentDidUpdate(prevProps: PlayerProps): void {
-    const hasNewSrc = prevProps.sources !== this.props.sources;
-    const hasNewTracks = prevProps.tracks !== this.props.tracks;
+  componentDidUpdate(
+    prevProps: PlayerProps,
+    prevState: Readonly<PlayerState>,
+  ): void {
+    const hasNewSrc = prevState.sources !== this.state.sources;
+    const hasNewTracks = prevState.tracks !== this.state.tracks;
     let selectedAudioAttributes: SelectedAttribute | null = null;
     let selectedSubAttributes: SelectedAttribute | null = null;
 
@@ -187,7 +166,7 @@ class Player extends React.Component<PlayerProps> {
         this.player!.audioTracks(),
       );
       this.genericDetector.disable();
-      this.player!.src(this.props.sources);
+      this.player!.src(this.state.sources);
     }
 
     if (hasNewTracks) {
@@ -198,7 +177,7 @@ class Player extends React.Component<PlayerProps> {
         this.player!.removeRemoteTextTrack(oldTracks[i]);
       }
 
-      this.props.tracks.forEach(track => {
+      this.state.tracks.forEach(track => {
         this.player!.addRemoteTextTrack(track, false);
       });
     }
@@ -304,7 +283,8 @@ class Player extends React.Component<PlayerProps> {
   };
 
   createPlayer = (): void => {
-    const { onClose, sources, tracks, title } = this.props;
+    const { onClose, title } = this.props;
+    const { sources, tracks } = this.state;
     // instantiate video.js
     this.player = (videojs(this.videoRef.current, {
       controls: true,
@@ -322,10 +302,7 @@ class Player extends React.Component<PlayerProps> {
 
     this.player.addChild<TitleBarComponent, TitleBarComponentOptions>(
       TitleBar,
-      {
-        title: `${title}`,
-        onClose,
-      },
+      { title, onClose },
     );
 
     this.player.on('timeupdate', this.onTimeUpdate);

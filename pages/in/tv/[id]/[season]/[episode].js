@@ -19,8 +19,6 @@ import Page from '../../../../../components/layouts/page';
 import File from '../../../../../components/presentationals/torrentCard/files/file';
 import connectModals from '../../../../../lib/connectModals';
 import PlayerModal from '../../../../../components/modals/Player';
-import createSources from '../../../../../lib/file/createSources';
-import createTracks from '../../../../../lib/file/createTracks';
 import Actor from '../../../../../components/presentationals/actor';
 import ErrorPage from '../../../../../components/site/error';
 import WaveLoader from '../../../../../components/presentationals/waveLoader';
@@ -49,13 +47,10 @@ const getStreamableFiles = episode => {
   );
 };
 
-const defaultState = { sources: [], tracks: [], fileId: null };
-
 class TvEpisode extends PureComponent {
   static propTypes = {
     tvId: PropTypes.number.isRequired,
     configuration: PropTypes.object.isRequired,
-    openPlayerModal: PropTypes.func.isRequired,
     tv: PropTypes.shape({
       loading: PropTypes.bool,
       data: PropTypes.object,
@@ -89,8 +84,6 @@ class TvEpisode extends PureComponent {
     api: PropTypes.object,
   };
 
-  state = defaultState;
-
   static async getInitialProps(appContext) {
     const props = {
       tvId: parseInt(appContext.query.id, 10),
@@ -100,23 +93,6 @@ class TvEpisode extends PureComponent {
     await appContext.reduxStore.dispatch(getConfiguration());
     await appContext.reduxStore.dispatch(getCurrent(props.tvId));
     return props;
-  }
-
-  static getDerivedStateFromProps({ episode = {} }, state) {
-    const files = getStreamableFiles(episode);
-    if (files.length <= 0) {
-      return defaultState;
-    }
-
-    if (files[0].id === state.fileId) {
-      return null;
-    }
-
-    return {
-      fileId: files[0].id,
-      sources: createSources(files[0]),
-      tracks: createTracks(files[0]),
-    };
   }
 
   onUpload = () =>
@@ -238,7 +214,7 @@ class TvEpisode extends PureComponent {
                     >
                       {isStreamable && (
                         <Player
-                          {...this.state}
+                          file={streamableFiles[0]}
                           title={`${episode.name} - ${seasonEpisode}`}
                           videoClassName={styles.episodePlayer}
                           onGenericDetected={this.gotoNextEpisode}

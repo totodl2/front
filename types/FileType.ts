@@ -1,6 +1,6 @@
-import TranscodedElementType from './TranscodedElementType';
+import { TranscodedElementType } from './TranscodedElementType';
 
-type FileType = {
+export type FileType = {
   id: string;
   torrentHash: string;
   name: string;
@@ -30,5 +30,3 @@ type FileType = {
   userId?: number | null;
   vodUrl: string | null;
 };
-
-export default FileType;

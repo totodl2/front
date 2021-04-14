@@ -20,8 +20,6 @@ import Page from '../../../../components/layouts/page';
 import File from '../../../../components/presentationals/torrentCard/files/file';
 import connectModals from '../../../../lib/connectModals';
 import PlayerModal from '../../../../components/modals/Player';
-import createSources from '../../../../lib/file/createSources';
-import createTracks from '../../../../lib/file/createTracks';
 import Actor from '../../../../components/presentationals/actor';
 import ErrorPage from '../../../../components/site/error';
 import WaveLoader from '../../../../components/presentationals/waveLoader';
@@ -74,9 +72,8 @@ class Tv extends PureComponent {
 
   onPlay = file => {
     this.props.openPlayerModal({
-      sources: createSources(file),
-      tracks: createTracks(file),
-      name: this.props.tv.data.name,
+      file,
+      title: this.props.tv.data.name,
     });
   };
 

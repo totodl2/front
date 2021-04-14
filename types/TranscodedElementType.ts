@@ -3,11 +3,9 @@ export enum TranscodedElementTypes {
   MEDIA = 'media',
 }
 
-type TranscodedElementType = {
+export type TranscodedElementType = {
   lang?: string;
   title: string;
   type: TranscodedElementTypes;
   url: string;
 };
-
-export default TranscodedElementType;

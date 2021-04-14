@@ -1,4 +1,7 @@
-const createTracks = file =>
+import { FileType } from '../../../../types/FileType';
+import { TextTrack } from '../types';
+
+const createTracks = (file: FileType): TextTrack[] =>
   (file.transcoded || [])
     .filter(el => el.type === 'sub')
     .map(sub => ({

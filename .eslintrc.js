@@ -12,7 +12,7 @@ const defaultRules = {
   'import/no-named-as-default-member': 0,
   'import/no-unresolved': 2,
   'import/prefer-default-export': 0,
-  'import/no-anonymous-default-export': 1, // @todo: fix then error
+  'import/no-anonymous-default-export': 2,
   'jsx-a11y/anchor-is-valid': 0,
   'jsx-a11y/aria-props': 2,
   'jsx-a11y/click-events-have-key-events': 0,
@@ -41,7 +41,7 @@ const defaultRules = {
   'react/jsx-props-no-spreading': 0,
   'react/require-default-props': 0,
   'react/self-closing-comp': [
-    'warn', // @todo: fix then error
+    'error',
     {
       component: true,
       html: true,
@@ -78,7 +78,7 @@ module.exports = {
         'no-unused-vars': 0,
         'react/display-name': 0,
         'react/prop-types': 0,
-        'react/forbid-prop-types': 1,
+        'react/forbid-prop-types': 2,
         '@typescript-eslint/explicit-function-return-type': 0,
         '@typescript-eslint/explicit-member-accessibility': 0,
         '@typescript-eslint/indent': 0,
@@ -90,6 +90,7 @@ module.exports = {
         '@typescript-eslint/ban-types': 0,
         '@typescript-eslint/ban-ts-comment': 0,
         '@typescript-eslint/no-use-before-define': 0,
+        '@typescript-eslint/no-non-null-assertion': 0,
       },
       settings: {
         react: {
