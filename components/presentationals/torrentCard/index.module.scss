@@ -22,7 +22,10 @@
 }
 
 .card-header {
-  cursor: pointer;
   display: flex;
   width: 100%;
+
+  &--openable {
+    cursor: pointer;
+  }
 }

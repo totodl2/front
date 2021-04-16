@@ -8,7 +8,9 @@ import { ReactComponent as Play } from 'feather-icons/dist/icons/play.svg';
 import { ReactComponent as Trash } from 'feather-icons/dist/icons/trash.svg';
 import { ReactComponent as Compass } from 'feather-icons/dist/icons/compass.svg';
 import { ReactComponent as ChevronUp } from 'feather-icons/dist/icons/chevron-up.svg';
+import { ReactComponent as LinkIcon } from 'feather-icons/dist/icons/link.svg';
 
+import Link from 'next/link';
 import cl from 'classnames';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
@@ -44,12 +46,12 @@ const noop = () => {};
 
 class TorrentCard extends PureComponent {
   static propTypes = {
+    isOpen: PropTypes.bool,
+    toggle: PropTypes.func.isRequired,
     torrent: PropTypes.object.isRequired,
     isAdmin: PropTypes.bool,
     isOwner: PropTypes.bool,
     isLoading: PropTypes.bool,
-    isOpen: PropTypes.bool,
-    toggle: PropTypes.func.isRequired,
     onOpenTrackers: PropTypes.func,
     onPlayFile: PropTypes.func,
     onPause: PropTypes.func,
@@ -83,11 +85,17 @@ class TorrentCard extends PureComponent {
   onPause = evt => (this.props.onPause || noop)(evt, this.props.torrent);
 
   onOpen = async evt => {
-    if (!this.props.isOpen) {
+    const { isOpen, onOpen, toggle, torrent } = this.props;
+    if (!isOpen) {
       evt.persist();
-      await this.props.onOpen(evt, this.props.torrent);
+      if (onOpen) {
+        await this.props.onOpen(evt, torrent);
+      }
     }
-    this.props.toggle(evt);
+
+    if (toggle) {
+      this.props.toggle(evt);
+    }
   };
 
   onDropdownToggle = opened => {
@@ -107,7 +115,7 @@ class TorrentCard extends PureComponent {
       isAdmin,
       isOwner,
       isLoading,
-      isOpen,
+      isOpen: givenIsOpen,
       toggle,
       onOpenTrackers,
       onPlayFile,
@@ -122,6 +130,7 @@ class TorrentCard extends PureComponent {
     const stopped = isStopped(torrent.status);
     const checking = isChecking(torrent.status);
     const finished = torrent.isFinished;
+    const isOpen = givenIsOpen || !toggle;
 
     return (
       <Card
@@ -133,7 +142,12 @@ class TorrentCard extends PureComponent {
           },
         )}
       >
-        <div className={cl('p-3', styles.cardHeader)} onClick={this.onOpen}>
+        <div
+          className={cl('p-3', styles.cardHeader, {
+            [styles.cardHeaderOpenable]: !!toggle,
+          })}
+          onClick={this.onOpen}
+        >
           {isOwner && (
             <div className={cl(styles.moreButton, 'ml-auto')}>
               <ToggleContainer
@@ -167,6 +181,12 @@ class TorrentCard extends PureComponent {
                       Trackers
                     </DropdownItem>
                   )}
+                  <Link passHref href="/in/[hash]" as={`/in/${torrent.hash}`}>
+                    <DropdownItem tag="a">
+                      <LinkIcon className="mr-2" />
+                      Link
+                    </DropdownItem>
+                  </Link>
                   <DropdownItem
                     className={confirmRemove ? 'text-danger' : ''}
                     onClick={this.onRemove}
@@ -293,12 +313,14 @@ class TorrentCard extends PureComponent {
                 onTranscode={isAdmin ? onTranscode : undefined}
                 selectable={isOwner || isAdmin}
               />
-              <div
-                className={cl('w-100 py-2 text-center', styles.cardToggle)}
-                onClick={toggle}
-              >
-                <ChevronUp />
-              </div>
+              {toggle && (
+                <div
+                  className={cl('w-100 py-2 text-center', styles.cardToggle)}
+                  onClick={toggle}
+                >
+                  <ChevronUp />
+                </div>
+              )}
             </div>
           )}
         </VelocityTransitionGroup>
