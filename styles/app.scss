@@ -1,8 +1,8 @@
 @import 'bootstrap';
 @import 'nprogress';
-@import '~video.js/src/css/vjs.scss';
-@import 'videojs';
 @import 'scrollbar';
+
+@import '../components/video/Player/videojs';
 
 .border-radius {
   border-radius: $border-radius;

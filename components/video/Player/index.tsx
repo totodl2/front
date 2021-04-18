@@ -310,6 +310,9 @@ class Player extends React.Component<PlayerProps, PlayerState> {
       },
       sources,
       tracks: tracks as videojs.TextTrackOptions[],
+      controlBar: {
+        remainingTimeDisplay: false,
+      },
     }) as unknown) as VideJsPlayerType;
 
     this.player.addChild<TitleBarComponent, TitleBarComponentOptions>(
