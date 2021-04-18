@@ -38,6 +38,13 @@ class Movie extends PureComponent {
           count: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         }),
       ),
+      watchStatus: PropTypes.arrayOf(
+        PropTypes.shape({
+          movieId: PropTypes.number,
+          position: PropTypes.number,
+          length: PropTypes.number,
+        }),
+      ),
       data: PropTypes.arrayOf(
         PropTypes.shape({
           type: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -79,6 +86,13 @@ class Movie extends PureComponent {
       return;
     }
     getMoviesList({ genreId, from: data.length });
+  };
+
+  findWatchStatus = movieId => {
+    const {
+      list: { watchStatus = [] },
+    } = this.props;
+    return watchStatus.find(status => status.movieId === movieId);
   };
 
   render() {
@@ -136,30 +150,35 @@ class Movie extends PureComponent {
             <div className="mb-4">
               <h2>Last added</h2>
               <div className="row">
-                {data.map(movie => (
-                  <div
-                    className="col-xl-2 col-lg-3 col-md-4 col-6 mb-3"
-                    key={movie.id}
-                  >
-                    <Link
-                      prefetch={false}
-                      passHref
-                      href="/in/movies/[id]"
-                      as={`/in/movies/${encodeURIComponent(
-                        movie.id.toString(),
-                      )}`}
+                {data.map(movie => {
+                  const watchStatus = this.findWatchStatus(movie.id);
+                  return (
+                    <div
+                      className="col-xl-2 col-lg-3 col-md-4 col-6 mb-3"
+                      key={movie.id}
                     >
-                      <ImdbCard
-                        view="a"
-                        configuration={configuration}
-                        title={movie.title}
-                        posterPath={movie.posterPath}
-                        releaseDate={movie.releaseDate}
-                        hoverable
-                      />
-                    </Link>
-                  </div>
-                ))}
+                      <Link
+                        prefetch={false}
+                        passHref
+                        href="/in/movies/[id]"
+                        as={`/in/movies/${encodeURIComponent(
+                          movie.id.toString(),
+                        )}`}
+                      >
+                        <ImdbCard
+                          view="a"
+                          configuration={configuration}
+                          title={movie.title}
+                          posterPath={movie.posterPath}
+                          releaseDate={movie.releaseDate}
+                          position={watchStatus && watchStatus.position}
+                          length={watchStatus && watchStatus.length}
+                          hoverable
+                        />
+                      </Link>
+                    </div>
+                  );
+                })}
                 {loading && (
                   <div className="d-flex justify-content-center mt-3 w-100">
                     <Loader visible fill="none" />

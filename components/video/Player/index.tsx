@@ -1,6 +1,7 @@
 import React, { ReactNode, RefObject } from 'react';
 import videojs from 'video.js';
 import cl from 'classnames';
+import isEqual from 'lodash/isEqual';
 
 import { AudioTrack, MediaSource, TextTrack, VideJsPlayerType } from './types';
 import TitleBar from './components/titleBar';
@@ -106,19 +107,22 @@ type TitleBarComponent = {
   updateContent: TitleBarComponentOptions;
 };
 
+export type PlayerTimeUpdateCallbackArgs = (data: {
+  duration: number;
+  currentTime: number;
+  remainingTime: number;
+}) => void;
+
 export type PlayerProps = {
   className?: string;
   videoClassName?: string;
   title?: string | null;
   onClose?: () => void;
-  onTimeUpdate?: (data: {
-    duration: number;
-    currentTime: number;
-    remainingTime: number;
-  }) => void;
+  onTimeUpdate?: PlayerTimeUpdateCallbackArgs;
   onEnded?: () => void;
   onGenericDetected?: () => void;
   file: FileType;
+  watchStatus?: { position: number; length: number } | null;
 };
 
 export type PlayerState = {
@@ -156,8 +160,8 @@ class Player extends React.Component<PlayerProps, PlayerState> {
     prevProps: PlayerProps,
     prevState: Readonly<PlayerState>,
   ): void {
-    const hasNewSrc = prevState.sources !== this.state.sources;
-    const hasNewTracks = prevState.tracks !== this.state.tracks;
+    const hasNewSrc = !isEqual(prevState.sources, this.state.sources);
+    const hasNewTracks = !isEqual(prevState.tracks, this.state.tracks);
     let selectedAudioAttributes: SelectedAttribute | null = null;
     let selectedSubAttributes: SelectedAttribute | null = null;
 
@@ -191,6 +195,7 @@ class Player extends React.Component<PlayerProps, PlayerState> {
             selectedSubAttributes,
           );
         });
+        this.setWatchPosition();
       });
       this.player!.play();
     }
@@ -217,6 +222,13 @@ class Player extends React.Component<PlayerProps, PlayerState> {
     this.clearPlayer();
     this.genericDetector.destruct();
   }
+
+  setWatchPosition = () => {
+    const { watchStatus } = this.props;
+    if (watchStatus) {
+      this.player!.currentTime(watchStatus.position);
+    }
+  };
 
   onTimeUpdate = (): void => {
     const { onTimeUpdate, onGenericDetected } = this.props;
@@ -305,6 +317,9 @@ class Player extends React.Component<PlayerProps, PlayerState> {
       { title, onClose },
     );
 
+    this.player.ready(() => {
+      this.setWatchPosition();
+    });
     this.player.on('timeupdate', this.onTimeUpdate);
     // this.player.on('playerresize', this.onPlayerResize);
     this.player.on('pause', this.onPause);

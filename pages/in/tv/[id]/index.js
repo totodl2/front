@@ -38,6 +38,8 @@ import getEpisodeNumberLabel from '../../../../lib/episode/getEpisodeNumberLabel
 
 import styles from './tv.module.scss';
 import TvMetadataModal from '../../../../components/modals/Metadata/tv';
+import findLastWatched from '../../../../lib/watchStatus/findLastWatched';
+import isAllWatched from '../../../../lib/watchStatus/isAllWatched';
 
 class Tv extends PureComponent {
   static propTypes = {
@@ -85,6 +87,49 @@ class Tv extends PureComponent {
     this.props.openTvMetadataModal({ files });
   };
 
+  findWatchStatus = (tvId, seasonNumber, episodeNumber) => {
+    const {
+      tv: { data: { watchStatus } = {} },
+    } = this.props;
+    return watchStatus.find(
+      status =>
+        status.tvId === tvId &&
+        status.seasonNumber === seasonNumber &&
+        status.episodeNumber === episodeNumber,
+    );
+  };
+
+  getNextEpisodeToWatch = () => {
+    const {
+      tv: { data: { seasons, watchStatus } = {} },
+    } = this.props;
+    const lastSeen = findLastWatched(watchStatus);
+
+    if (!lastSeen) {
+      return findEpisode(
+        seasons,
+        ({ episode }) => episode.files && episode.files.length > 0,
+      );
+    }
+
+    if (!isAllWatched(lastSeen)) {
+      return findEpisode(
+        seasons,
+        ({ episode, season }) =>
+          episode.episodeNumber === lastSeen.episodeNumber &&
+          season.seasonNumber === lastSeen.seasonNumber,
+      );
+    }
+
+    return findEpisode(
+      seasons,
+      (currentEpisode, previous) =>
+        previous &&
+        previous.episode.episodeNumber === lastSeen.episodeNumber &&
+        previous.season.seasonNumber === lastSeen.seasonNumber,
+    );
+  };
+
   render() {
     const {
       tv: { loading, data: tv = {}, error },
@@ -108,10 +153,7 @@ class Tv extends PureComponent {
         video.type === 'TRAILER' && video.site.toLowerCase() === 'youtube',
     );
     const firstAirDate = tv.firstAirDate && new Date(tv.firstAirDate);
-    const firstFound = findEpisode(
-      tv.seasons,
-      ({ episode }) => episode.files && episode.files.length > 0,
-    );
+    const nextEpisodeToWatch = this.getNextEpisodeToWatch();
 
     const cast = get(tv, 'credits.cast', []).slice(0, 12);
 
@@ -195,19 +237,19 @@ class Tv extends PureComponent {
                         </p>
                       </>
                     )}
-                    {firstFound && (
+                    {nextEpisodeToWatch && (
                       <Link
                         passHref
                         prefetch={false}
                         href="/in/tv/[id]/[season]/[episode]"
-                        as={`/in/tv/${tvId}/${firstFound.season.seasonNumber}/${firstFound.episode.episodeNumber}`}
+                        as={`/in/tv/${tvId}/${nextEpisodeToWatch.season.seasonNumber}/${nextEpisodeToWatch.episode.episodeNumber}`}
                       >
                         <a className="mt-3 btn btn-primary">
                           <Play className="mr-2" />
                           Watch{' '}
                           {getEpisodeNumberLabel(
-                            firstFound.season.seasonNumber,
-                            firstFound.episode.episodeNumber,
+                            nextEpisodeToWatch.season.seasonNumber,
+                            nextEpisodeToWatch.episode.episodeNumber,
                           )}
                         </a>
                       </Link>
@@ -223,6 +265,11 @@ class Tv extends PureComponent {
                   <div className="mb-5 row">
                     {season.episodes.map(episode => {
                       const hasFiles = episode.files.length > 0;
+                      const watchStatus = this.findWatchStatus(
+                        tv.id,
+                        season.seasonNumber,
+                        episode.episodeNumber,
+                      );
                       return (
                         <div
                           className="mb-3 col-xl-3 col-lg-4 col-6"
@@ -240,6 +287,8 @@ class Tv extends PureComponent {
                                 configuration={configuration}
                                 stillPath={episode.stillPath}
                                 title={`${episode.episodeNumber} - ${episode.name}`}
+                                position={watchStatus && watchStatus.position}
+                                length={watchStatus && watchStatus.length}
                                 hoverable
                               />
                             </Link>
@@ -251,6 +300,8 @@ class Tv extends PureComponent {
                               className={cl(styles.tvCardMissing, {
                                 [styles.tvCardMissingHoverable]: isUploader,
                               })}
+                              position={watchStatus && watchStatus.position}
+                              length={watchStatus && watchStatus.length}
                               onClick={isUploader ? this.onUpload : undefined}
                             >
                               <div className={styles.tvCardMissingContent}>

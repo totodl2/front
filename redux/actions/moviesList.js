@@ -40,6 +40,7 @@ export const getList = ({ genreId = null, from = 0, forceReload }) => async (
   if (currentGenreId === genreId && !forceReload && from === lastFrom) {
     return {
       data: get(state, 'movies.list.data'),
+      watchStatus: get(state, 'movies.list.watchStatus'),
       genres: get(state, 'movies.list.genres'),
     };
   }

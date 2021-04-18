@@ -5,6 +5,7 @@ import {
   TYPE_STOP_LOADING_CURRENT,
   TYPE_START_LOADING_CURRENT,
   TYPE_UPDATE_CURRENT_FILE,
+  TYPE_UPDATE_WATCH_STATUS,
 } from '../../actions/tvCurrent';
 
 const findFilePath = (seasons = [], fileId) => {
@@ -55,6 +56,22 @@ const tvCurrentReducer = (state = {}, action) => {
       ...oldState,
       error: action.error,
     };
+  }
+  if (action.type === TYPE_UPDATE_WATCH_STATUS) {
+    const { data, ...oldState } = state;
+    if (!data) {
+      return state;
+    }
+    const watchStatus = (data || {}).watchStatus || [];
+    const offset = watchStatus.findIndex(ws => ws.id === action.data.id);
+    if (offset === -1) {
+      return {
+        ...oldState,
+        data: { ...data, watchStatus: [...watchStatus, action.data] },
+      };
+    }
+
+    return setFp(`data.watchStatus[${offset}]`, action.data, state);
   }
   if (action.type === TYPE_UPDATE_CURRENT_FILE && state.data) {
     const {

@@ -110,5 +110,15 @@
       "method": "POST",
       "path": "/transcoders/queue/{file}"
     }
+  },
+  "watchStatus": {
+    "getFileStatus": {
+      "method": "GET",
+      "path": "/watch-status/files/{file}"
+    },
+    "setPosition": {
+      "method": "POST",
+      "path": "/watch-status/files/{file}/{position}/{length}"
+    }
   }
 }

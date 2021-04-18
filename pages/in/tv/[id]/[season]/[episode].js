@@ -7,10 +7,14 @@ import Router from 'next/router';
 import { ReactComponent as ChevronLeft } from 'feather-icons/dist/icons/chevron-left.svg';
 import { ReactComponent as Download } from 'feather-icons/dist/icons/download.svg';
 import { ReactComponent as UploadCloud } from 'feather-icons/dist/icons/upload-cloud.svg';
+import { bindActionCreators } from 'redux';
 import Link from 'next/link';
 
 import { getConfiguration } from '../../../../../redux/actions/metadataConfiguration';
-import { getCurrent } from '../../../../../redux/actions/tvCurrent';
+import {
+  getCurrent,
+  updateWatchStatus,
+} from '../../../../../redux/actions/tvCurrent';
 import compose from '../../../../../lib/compose';
 import withRedirectTo from '../../../../../lib/withRedirectTo';
 import redirectUnlogged from '../../../../../lib/redirection/redirectUnlogged';
@@ -36,9 +40,14 @@ import Player from '../../../../../components/video/Player';
 import Playlist from '../../../../../components/presentationals/playlist/playlist';
 import PlaylistItem from '../../../../../components/presentationals/playlist/playlistItem';
 import getEpisodeNumberLabel from '../../../../../lib/episode/getEpisodeNumberLabel';
+import findEpisode from '../../../../../lib/episode/findEpisode';
+import withContainer from '../../../../../lib/withContainer';
+import WatchStatusContainer from '../../../../../components/containers/WatchStatusContainer';
 
 import styles from './episode.module.scss';
-import findEpisode from '../../../../../lib/episode/findEpisode';
+import isAllWatched from '../../../../../lib/watchStatus/isAllWatched';
+
+const SAVE_INTERVAL = 5000;
 
 const getStreamableFiles = episode => {
   const files = episode.files || [];
@@ -77,10 +86,17 @@ class TvEpisode extends PureComponent {
       ),
       files: PropTypes.arrayOf(PropTypes.object),
     }),
+    watchStatus: PropTypes.shape({
+      movieId: PropTypes.number,
+      position: PropTypes.number,
+      length: PropTypes.number,
+    }),
     token: PropTypes.instanceOf(Token),
     openMovieMetadataModal: PropTypes.func.isRequired,
     openTvMetadataModal: PropTypes.func.isRequired,
     openUploadModal: PropTypes.func.isRequired,
+    updateFileWatchStatus: PropTypes.func.isRequired,
+    reduxUpdateWatchStatus: PropTypes.func.isRequired,
     api: PropTypes.object,
   };
 
@@ -94,6 +110,8 @@ class TvEpisode extends PureComponent {
     await appContext.reduxStore.dispatch(getCurrent(props.tvId));
     return props;
   }
+
+  state = { watchStatusSavedAt: null, finished: false };
 
   onUpload = () =>
     this.props.openUploadModal({ api: this.props.api }, success => {
@@ -110,6 +128,28 @@ class TvEpisode extends PureComponent {
     this.props.openTvMetadataModal({ files });
   };
 
+  onUpdateWatchStatus = ({ duration, currentTime }) => {
+    const { watchStatusSavedAt, finished } = this.state;
+    if (
+      (watchStatusSavedAt && watchStatusSavedAt + SAVE_INTERVAL > Date.now()) ||
+      finished
+    ) {
+      return;
+    }
+    const {
+      episode: { files },
+      updateFileWatchStatus,
+      reduxUpdateWatchStatus,
+    } = this.props;
+
+    this.setState({ watchStatusSavedAt: Date.now() });
+    updateFileWatchStatus(
+      files[0].id,
+      Math.floor(currentTime),
+      Math.floor(duration),
+    ).then(reduxUpdateWatchStatus);
+  };
+
   gotoNextEpisode = () => {
     const {
       tv: {
@@ -117,7 +157,10 @@ class TvEpisode extends PureComponent {
       },
       tvId,
       episode,
+      updateFileWatchStatus,
     } = this.props;
+
+    updateFileWatchStatus(episode.files[0].id, 1, 1);
 
     const next = findEpisode(
       seasons,
@@ -125,6 +168,7 @@ class TvEpisode extends PureComponent {
     );
 
     if (!next) {
+      this.setState({ finished: true });
       return;
     }
 
@@ -133,6 +177,7 @@ class TvEpisode extends PureComponent {
       `/in/tv/${tvId}/${next.season.seasonNumber}/${next.episode.episodeNumber}`,
       { scroll: false },
     );
+    this.setState({ watchStatusSavedAt: null });
   };
 
   render() {
@@ -163,6 +208,9 @@ class TvEpisode extends PureComponent {
       );
     }
 
+    const watchStatus = isAllWatched(this.props.watchStatus)
+      ? null
+      : this.props.watchStatus;
     const isSiteAdmin = hasRole(token.roles, ROLE_ADMIN);
     const isUploader = hasRole(token.roles, ROLE_UPLOADER);
     const files = episode.files || [];
@@ -219,6 +267,8 @@ class TvEpisode extends PureComponent {
                           videoClassName={styles.episodePlayer}
                           onGenericDetected={this.gotoNextEpisode}
                           onEnded={this.gotoNextEpisode}
+                          watchStatus={watchStatus}
+                          onTimeUpdate={this.onUpdateWatchStatus}
                         />
                       )}
                       {!isStreamable && hasFiles && (
@@ -368,21 +418,51 @@ export default compose(
   withRedirectTo(redirectUnlogged),
   withToken(),
   withApi(),
-  connect((state, { episodeNumber, seasonNumber }) => {
-    const tv = get(state, 'tv.current', {});
-    const season = get(tv, 'data.seasons', []).find(
-      s => s.seasonNumber === seasonNumber,
-    );
-    const episode = get(season, 'episodes', []).find(
-      e => e.episodeNumber === episodeNumber,
-    );
-    return {
-      configuration: get(state, 'metadataConfiguration', {}),
-      tv,
-      episode,
-      season,
-    };
-  }),
+  connect(
+    (state, { episodeNumber, seasonNumber }) => {
+      const tv = get(state, 'tv.current', {});
+      const season = get(tv, 'data.seasons', []).find(
+        s => s.seasonNumber === seasonNumber,
+      );
+      const episode = get(season, 'episodes', []).find(
+        e => e.episodeNumber === episodeNumber,
+      );
+      const watchStatus = get(tv, 'data.watchStatus', []).find(
+        status =>
+          status.tvId === tv.data.id &&
+          status.seasonNumber === season.seasonNumber &&
+          status.episodeNumber === episode.episodeNumber,
+      );
+
+      return {
+        configuration: get(state, 'metadataConfiguration', {}),
+        tv,
+        episode,
+        season,
+        watchStatus,
+      };
+    },
+    dispatch =>
+      bindActionCreators(
+        { reduxUpdateWatchStatus: updateWatchStatus },
+        dispatch,
+      ),
+  ),
+  withContainer(
+    WatchStatusContainer,
+    null,
+    'view',
+    ({
+      fileId,
+      fileWatchStatus,
+      watchStatusLoading,
+      watchStatusError,
+      watchStatusUpdateError,
+      watchStatusUpdateLoading,
+      getFileWatchStatus,
+      ...props
+    }) => props,
+  ),
   connectModals({
     PlayerModal,
     TvMetadataModal,

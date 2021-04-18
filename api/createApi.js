@@ -51,7 +51,7 @@ const createCaller = (fetcher, { path: routePath, ...endpoint }, fullName) => {
     let path = routePath;
     for (let i = 0; i < parameters.length; i++) {
       const parameter = routeParams[parameters[i]];
-      if (!parameter) {
+      if (parameter === null || parameter === undefined) {
         throw new Error(
           `Parameter "${parameters[i]}" must be defined for route ${fullName}`,
         );

@@ -53,9 +53,12 @@ class Movie extends PureComponent {
   }
 
   onPlay = file => {
+    const {
+      movie: { data },
+    } = this.props;
     this.props.openPlayerModal({
       file,
-      title: this.props.movie.data.title,
+      title: data.title,
     });
   };
 

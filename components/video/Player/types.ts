@@ -40,6 +40,6 @@ export type VideJsPlayerType = {
   remainingTime: () => number;
   el: () => HTMLVideoElement;
   duration: () => number;
-  currentTime: () => number;
+  currentTime: (time?: number) => number;
   dispose: () => void;
 };

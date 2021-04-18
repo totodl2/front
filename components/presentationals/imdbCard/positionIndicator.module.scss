@@ -1,0 +1,10 @@
+.position-indicator {
+  height: 4px;
+  width: 100%;
+
+  &-progress {
+    height: 4px;
+    border-radius: 4px;
+    background-color: $primary;
+  }
+}

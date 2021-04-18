@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cl from 'classnames';
+
 import ImdbImage from '../imdbImage';
+import PositionIndicator from './positionIndicator';
 
 import styles from './style.module.scss';
 
@@ -17,6 +19,8 @@ const ImdbCard = React.forwardRef(
       hoverable,
       children,
       releaseDate,
+      position,
+      length,
       ...props
     },
     ref,
@@ -46,6 +50,13 @@ const ImdbCard = React.forwardRef(
           </h5>
         </div>
         {children}
+        {position && length && (
+          <PositionIndicator
+            className={styles.movieIndicator}
+            position={position}
+            length={length}
+          />
+        )}
       </View>
     );
   },
@@ -61,6 +72,8 @@ ImdbCard.propTypes = {
   title: PropTypes.string.isRequired,
   hoverable: PropTypes.bool,
   stillPath: PropTypes.string,
+  position: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  length: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default ImdbCard;

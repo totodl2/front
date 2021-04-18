@@ -23,6 +23,11 @@
     }
   }
 
+  &-indicator {
+    position: absolute;
+    bottom: 0px;
+  }
+
   &-year {
     color: rgba($white-muted, 0.6);
   }
