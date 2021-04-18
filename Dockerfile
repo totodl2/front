@@ -10,7 +10,7 @@ USER node
 WORKDIR /home/node/server
 
 RUN touch .env && \
-    npm i && npm run build
+    NODE_ENV=development npm i && npm run build
 
 ENTRYPOINT [ "npm", "run" ]
 
