@@ -1,4 +1,17 @@
+$primary-foreground-color: $white;
+
+// Control backgrounds (control bar, big play, menus)
+$primary-background-color: $black;
+$primary-background-transparency: 0.7;
+
+// Hover states, slider backgrounds
+$secondary-background-color: $gray-800;
+$secondary-background-transparency: 0.3;
+
 @import '~video.js/src/css/vjs.scss';
+.video-js {
+  font-size: 1rem !important;
+}
 
 .vjs-big-play-button {
   position: absolute;
