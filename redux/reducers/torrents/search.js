@@ -14,6 +14,29 @@ const getKeywordRegex = keyword =>
     'ig',
   );
 
+const keywordsSearch = (keywords, torrents) => {
+  const regex = getKeywordRegex(keywords);
+
+  return torrents.reduce((prev, torrent) => {
+    const searchIn = removeAccents
+      .remove(`${torrent.name} ${torrent.user ? torrent.user.nickname : ''}`)
+      .toLowerCase();
+
+    if (searchIn.match(regex)) {
+      prev.push(torrent.hash);
+    }
+
+    return prev;
+  }, []);
+};
+
+const userSearch = (user, torrents) =>
+  torrents
+    .filter(
+      torrent => torrent.user && torrent.user.nickname.toLowerCase() === user,
+    )
+    .map(torrent => torrent.hash);
+
 const torrentsSearchReducers = (state, action) => {
   if (action.type !== TYPE_TORRENTS_SEARCH) {
     return state;
@@ -33,19 +56,13 @@ const torrentsSearchReducers = (state, action) => {
     return state;
   }
 
-  const regex = getKeywordRegex(action.keywords);
-
-  const results = state.data.reduce((prev, torrent) => {
-    const searchIn = removeAccents
-      .remove(`${torrent.name} ${torrent.user ? torrent.user.nickname : ''}`)
-      .toLowerCase();
-
-    if (searchIn.match(regex)) {
-      prev.push(torrent.hash);
-    }
-
-    return prev;
-  }, []);
+  let results = null;
+  const match = action.keywords.match(/^user:(\S*)$/i);
+  if (match) {
+    results = userSearch(match[1].toLowerCase(), state.data);
+  } else {
+    results = keywordsSearch(action.keywords, state.data);
+  }
 
   return {
     ...state,

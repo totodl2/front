@@ -158,9 +158,12 @@ class TvEpisode extends PureComponent {
       tvId,
       episode,
       updateFileWatchStatus,
+      reduxUpdateWatchStatus,
     } = this.props;
 
-    updateFileWatchStatus(episode.files[0].id, 1, 1);
+    updateFileWatchStatus(episode.files[0].id, 1, 1).then(
+      reduxUpdateWatchStatus,
+    );
 
     const next = findEpisode(
       seasons,
@@ -253,7 +256,40 @@ class TvEpisode extends PureComponent {
                   </h1>
                 </div>
                 <div className="row">
-                  <div className="col-md-8 mb-3 mb-md-0">
+                  <div className="col-md-4 order-md-0 order-1">
+                    <Playlist
+                      className={cl(styles.episodePlaylist, 'scrollbar-white')}
+                    >
+                      {tv.seasons.map(({ episodes, ...s }) =>
+                        episodes.map(e => (
+                          <Link
+                            passHref
+                            scroll={false}
+                            prefetch={false}
+                            href="/in/tv/[id]/[season]/[episode]"
+                            as={`/in/tv/${tvId}/${s.seasonNumber}/${e.episodeNumber}`}
+                            key={e.id}
+                          >
+                            <PlaylistItem
+                              as="a"
+                              active={e.id === episode.id}
+                              hoverable
+                              disabled={e.files.length <= 0}
+                            >
+                              <span className="text-muted">
+                                {getEpisodeNumberLabel(
+                                  s.seasonNumber,
+                                  e.episodeNumber,
+                                )}
+                              </span>{' '}
+                              - {e.name}
+                            </PlaylistItem>
+                          </Link>
+                        )),
+                      )}
+                    </Playlist>
+                  </div>
+                  <div className="col-md-8 mb-3 mb-md-0 order-md-1 order-0">
                     <div
                       className={cl(
                         styles.episodePlayerContainer,
@@ -313,39 +349,6 @@ class TvEpisode extends PureComponent {
                         </div>
                       )}
                     </div>
-                  </div>
-                  <div className="col-md-3">
-                    <Playlist
-                      className={cl(styles.episodePlaylist, 'scrollbar-white')}
-                    >
-                      {tv.seasons.map(({ episodes, ...s }) =>
-                        episodes.map(e => (
-                          <Link
-                            passHref
-                            scroll={false}
-                            prefetch={false}
-                            href="/in/tv/[id]/[season]/[episode]"
-                            as={`/in/tv/${tvId}/${s.seasonNumber}/${e.episodeNumber}`}
-                            key={e.id}
-                          >
-                            <PlaylistItem
-                              as="a"
-                              active={e.id === episode.id}
-                              hoverable
-                              disabled={e.files.length <= 0}
-                            >
-                              <span className="text-muted">
-                                {getEpisodeNumberLabel(
-                                  s.seasonNumber,
-                                  e.episodeNumber,
-                                )}
-                              </span>{' '}
-                              - {e.name}
-                            </PlaylistItem>
-                          </Link>
-                        )),
-                      )}
-                    </Playlist>
                   </div>
                 </div>
               </Page>

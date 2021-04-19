@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import get from 'lodash/get';
 import InfiniteScroll from 'react-infinite-scroller';
+import { ReactComponent as Person } from 'feather-icons/dist/icons/user.svg';
+import cl from 'classnames';
 
 import withRedirectTo from '../../lib/withRedirectTo';
 import redirectUnlogged from '../../lib/redirection/redirectUnlogged';
@@ -35,7 +37,7 @@ import MovieMetadataModal from '../../components/modals/Metadata/movie';
 import TranscoderContainer from '../../components/containers/TranscoderContainer';
 import TvMetadataModal from '../../components/modals/Metadata/tv';
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 10;
 
 class Index extends PureComponent {
   static propTypes = {
@@ -53,18 +55,19 @@ class Index extends PureComponent {
     searchTorrent: PropTypes.func.isRequired,
     openTrackersModal: PropTypes.func.isRequired,
     search: PropTypes.object,
+    user: PropTypes.object,
   };
 
   state = {
     page: 1,
-    searching: false,
+    keywords: '',
   };
 
   static getDerivedStateFromProps(props, state) {
-    if (props.search.searching !== state.searching) {
+    if (props.search.keywords !== state.keywords) {
       return {
         page: 1,
-        searching: props.search.searching,
+        keywords: props.search.keywords,
       };
     }
     return null;
@@ -120,6 +123,11 @@ class Index extends PureComponent {
     this.props.openTvMetadataModal({ files }, onClosed);
   };
 
+  onShowMyUploads = () => {
+    const { user } = this.props;
+    this.props.searchTorrent(`user:${user.nickname}`);
+  };
+
   getTorrents = () => {
     const {
       torrents,
@@ -150,9 +158,22 @@ class Index extends PureComponent {
             <div>
               <div className="d-flex flex-wrap align-items-center mb-3">
                 <h2 className="mb-0">Torrents list</h2>
+                {isUploader && (
+                  <button
+                    type="button"
+                    className="ml-auto btn btn-dark d-none d-md-block"
+                    onClick={this.onShowMyUploads}
+                  >
+                    <Person className="mr-2" />
+                    My uploads
+                  </button>
+                )}
                 <Input
                   type="text"
-                  wrapperClassName="ml-auto w-auto"
+                  wrapperClassName={cl('w-auto', {
+                    'ml-auto': !isUploader,
+                    'ml-auto ml-md-2': isUploader,
+                  })}
                   placeholder="Search..."
                   value={keywords || ''}
                   onChange={this.onSearch}
@@ -212,6 +233,7 @@ export default compose(
     state => ({
       torrents: get(state, 'torrents.data', []),
       search: get(state, 'torrents.search', {}),
+      user: get(state, 'me.data', {}),
     }),
     dispatch =>
       bindActionCreators(

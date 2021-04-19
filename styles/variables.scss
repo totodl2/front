@@ -37,8 +37,13 @@ $body-bg: 'transparent';
 $input-color: $gray-900;
 $input-focus-color: $gray-900;
 $input-placeholder-color: $gray-700;
-$input-border-color: $gray-400;
-$input-bg: $gray-100;
+$input-bg: rgba($white, 0.4);
+$input-border-color: rgba($white, 0.7);
+$input-border-width: 1px;
+$input-focus-bg: rgba($white, 0.5);
+$input-focus-border-color: rgba($white, 0.5);
+
+
 
 $label-margin-bottom: 0.1rem;
 
@@ -51,12 +56,6 @@ $transition-contemplative-timing: 0.4s;
 $text-muted: $gray-700;
 $close-font-weight: 300;
 
-$input-bg: rgba($white, 0.2);
-$input-border-color: rgba($white, 0.4);
-$input-border-width: 1px;
-
-$input-focus-bg: rgba($white, 0.3);
-$input-focus-border-color: rgba($white, 0.5);
 
 // cards
 $card-bg: rgba($white, 0.4);

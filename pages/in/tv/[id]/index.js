@@ -38,7 +38,7 @@ import getEpisodeNumberLabel from '../../../../lib/episode/getEpisodeNumberLabel
 
 import styles from './tv.module.scss';
 import TvMetadataModal from '../../../../components/modals/Metadata/tv';
-import findLastWatched from '../../../../lib/watchStatus/findLastWatched';
+import findLastFullyWatched from '../../../../lib/watchStatus/findLastFullyWatched';
 import isAllWatched from '../../../../lib/watchStatus/isAllWatched';
 
 class Tv extends PureComponent {
@@ -103,7 +103,7 @@ class Tv extends PureComponent {
     const {
       tv: { data: { seasons, watchStatus } = {} },
     } = this.props;
-    const lastSeen = findLastWatched(watchStatus);
+    const lastSeen = findLastFullyWatched(watchStatus);
 
     if (!lastSeen) {
       return findEpisode(
