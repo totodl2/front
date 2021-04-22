@@ -168,7 +168,7 @@ class File extends PureComponent {
               </a>
             </Link>
           )}
-          {transcoded.length > 0 && onPlay && (
+          {transcoded.length > 0 && onPlay && !tvId && (
             <span className={styles.filePlay}>
               <button
                 type="button"
@@ -178,6 +178,21 @@ class File extends PureComponent {
                 <Play className="mr-2" />
                 Play
               </button>
+            </span>
+          )}
+          {transcoded.length > 0 && onPlay && tvId && (
+            <span className={styles.filePlay}>
+              <Link
+                passHref
+                prefetch={false}
+                href="/in/tv/[id]/[season]/[episode]"
+                as={`/in/tv/${file.tvId}/${file.seasonNumber}/${file.episodeNumber}`}
+              >
+                <a className="btn btn-sm btn-outline-primary">
+                  <Play className="mr-2" />
+                  Play
+                </a>
+              </Link>
             </span>
           )}
           {transcodingQueuedAt && !transcodedAt && (

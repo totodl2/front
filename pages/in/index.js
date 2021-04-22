@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import get from 'lodash/get';
 import InfiniteScroll from 'react-infinite-scroller';
 import { ReactComponent as Person } from 'feather-icons/dist/icons/user.svg';
+import { ReactComponent as X } from 'feather-icons/dist/icons/x.svg';
 import cl from 'classnames';
 
 import withRedirectTo from '../../lib/withRedirectTo';
@@ -123,9 +124,16 @@ class Index extends PureComponent {
     this.props.openTvMetadataModal({ files }, onClosed);
   };
 
-  onShowMyUploads = () => {
-    const { user } = this.props;
-    this.props.searchTorrent(`user:${user.nickname}`);
+  getMyUploadsKeyword = () => `user:${this.props.user.nickname}`;
+
+  toggleShowMyUploads = () => {
+    const {
+      search: { keywords },
+    } = this.props;
+    const myUploadsKeyword = this.getMyUploadsKeyword();
+    this.props.searchTorrent(
+      keywords === myUploadsKeyword ? '' : myUploadsKeyword,
+    );
   };
 
   getTorrents = () => {
@@ -150,6 +158,8 @@ class Index extends PureComponent {
     const isSiteAdmin = hasRole(token.roles, ROLE_ADMIN);
     const isUploader = hasRole(token.roles, ROLE_UPLOADER);
     const { page } = this.state;
+    const myUploadsKeyword = this.getMyUploadsKeyword();
+    const isSearchingMyUploads = myUploadsKeyword === keywords;
 
     return (
       <MetadataContainer>
@@ -161,10 +171,14 @@ class Index extends PureComponent {
                 {isUploader && (
                   <button
                     type="button"
-                    className="ml-auto btn btn-dark d-none d-md-block"
-                    onClick={this.onShowMyUploads}
+                    className={cl('ml-auto btn d-none d-md-block', {
+                      'btn-dark': isSearchingMyUploads,
+                      'btn-outline-dark': !isSearchingMyUploads,
+                    })}
+                    onClick={this.toggleShowMyUploads}
                   >
-                    <Person className="mr-2" />
+                    {!isSearchingMyUploads && <Person className="mr-2" />}
+                    {isSearchingMyUploads && <X className="mr-2" />}
                     My uploads
                   </button>
                 )}

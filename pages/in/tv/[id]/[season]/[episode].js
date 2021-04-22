@@ -113,6 +113,13 @@ class TvEpisode extends PureComponent {
 
   state = { watchStatusSavedAt: null, finished: false };
 
+  componentDidMount() {
+    const { episode, season, tvId } = this.props;
+    if (!episode || !season) {
+      Router.replace('/in/tv/[id]', `/in/tv/${encodeURIComponent(tvId)}`);
+    }
+  }
+
   onUpload = () =>
     this.props.openUploadModal({ api: this.props.api }, success => {
       if (success === true) {
@@ -433,8 +440,8 @@ export default compose(
       const watchStatus = get(tv, 'data.watchStatus', []).find(
         status =>
           status.tvId === tv.data.id &&
-          status.seasonNumber === season.seasonNumber &&
-          status.episodeNumber === episode.episodeNumber,
+          status.seasonNumber === get(season, 'seasonNumber') &&
+          status.episodeNumber === get(episode, 'episodeNumber'),
       );
 
       return {
