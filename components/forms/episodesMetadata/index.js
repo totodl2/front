@@ -35,7 +35,7 @@ class EpisodesMetadataForm extends PureComponent {
         {files.map(file => (
           <div className="row align-items-center" key={file.id}>
             <div className="col-md-6">
-              <b>{file.basename}</b>
+              <b className="text-break">{file.basename}</b>
             </div>
             <div className="col-md-3">
               <Field

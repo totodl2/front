@@ -112,9 +112,9 @@ class TvMetadataModal extends PureComponent {
         <ModalBody className="pb-0">
           <p>
             Change metadata for{' '}
-            <b>
+            <span className="font-weight-bold text-break">
               {files.length <= 1 ? files[0].basename : `${files.length} files`}
-            </b>
+            </span>
           </p>
           <SearchMetadataForm
             onSubmit={this.onSubmit}
