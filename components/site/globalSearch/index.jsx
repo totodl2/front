@@ -74,6 +74,7 @@ class GlobalSearch extends PureComponent {
             onChange={this.onResultSelected}
             value={null}
             autoFocus
+            isClearable
           />
         )}
       </GlobalSearchContainer>

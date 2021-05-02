@@ -171,7 +171,7 @@ class Index extends PureComponent {
                 {isUploader && (
                   <button
                     type="button"
-                    className={cl('ml-auto btn d-none d-md-block', {
+                    className={cl('ml-auto btn', {
                       'btn-dark': isSearchingMyUploads,
                       'btn-outline-dark': !isSearchingMyUploads,
                     })}
