@@ -40,16 +40,16 @@ class GlobalSearch extends PureComponent {
       return;
     }
 
-    if (data.type === 'file') {
-      window.open(data.url);
-    } else if (data.type === 'movie') {
+    if (data.type === 'movie') {
       Router.replace(
         '/in/movies/[id]',
         `/in/movies/${encodeURIComponent(data.id)}`,
       );
     } else if (data.type === 'tv') {
       Router.replace('/in/tv/[id]', `/in/tv/${encodeURIComponent(data.id)}`);
-    } else if (data.type === 'torrent') {
+    } else if (data.type === 'file' && data.url) {
+      window.open(data.url);
+    } else if (data.type === 'torrent' || data.type === 'file') {
       Router.replace('/in/[hash]', `/in/${encodeURIComponent(data.hash)}`);
     }
   };
@@ -69,7 +69,7 @@ class GlobalSearch extends PureComponent {
             defaultOptions={results}
             metadataConfiguration={metadataConfiguration}
             isLoading={loading}
-            cacheOptions={false}
+            cacheOptions={null}
             loadOptions={search}
             onChange={this.onResultSelected}
             value={null}

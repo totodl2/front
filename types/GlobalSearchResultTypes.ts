@@ -47,7 +47,7 @@ export type FileResultType = GlobalSearchResultType & {
   torrentName: string;
   episodeNumber: Maybe<number>;
   seasonNumber: Maybe<number>;
-  url: string;
+  url: Maybe<string>;
 };
 
 export type AllGlobalSearchResultTypes =

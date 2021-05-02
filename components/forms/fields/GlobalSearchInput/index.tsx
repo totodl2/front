@@ -1,5 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { AsyncProps } from 'react-select/async';
+import { Props } from 'react-select/async';
 import { InnerRef } from 'react-select';
 import SelectAsync from '../Select/async';
 import { AllGlobalSearchResultTypes } from '../../../../types/GlobalSearchResultTypes';
@@ -14,7 +14,7 @@ const components = { Option, Placeholder, Control, IndicatorSeparator: null };
 
 const isOptionSelected = () => false;
 
-type GlobalSearchInputProps = AsyncProps<AllGlobalSearchResultTypes> & {
+type GlobalSearchInputProps = Props<AllGlobalSearchResultTypes, false> & {
   metadataConfiguration?: MetadataConfigurationType | null;
   autoFocus: boolean;
 };
