@@ -7,8 +7,14 @@ const getImdbSrc = (configuration, type, size, path) => {
 
   const baseUrl = configuration.images.secureBaseUrl;
   const sizes = configuration.images[`${type}Sizes`];
-  if (!sizes || sizes.length <= size) {
-    throw new Error(`Invalid size ${size} for ${type}`);
+  if (!sizes || sizes.length <= size || !sizes[size]) {
+    throw new Error(
+      `Invalid size ${size} for ${type}${
+        sizes && sizes.length > 0
+          ? ` (${sizes.map((sz, i) => `${i}: ${sz}`).join(', ')})`
+          : ''
+      }`,
+    );
   }
 
   return `${baseUrl}${sizes[size]}${path}`;

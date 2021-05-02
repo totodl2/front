@@ -31,6 +31,7 @@ import withApi from '../../../lib/api/withApi';
 import { hasRole, ROLE_UPLOADER } from '../../../lib/roles';
 import MenuItemLink from '../../presentationals/menu/menuItemLink';
 import SSE from '../../sse';
+import GlobalSearch from '../globalSearch';
 
 export class Layout extends PureComponent {
   static propTypes = {
@@ -76,8 +77,6 @@ export class Layout extends PureComponent {
     return this.props.token.logout();
   };
 
-  onMenuItemClick = () => {};
-
   render() {
     const { children, token, user, userLoading } = this.props;
     const isUploader = hasRole(token.roles, ROLE_UPLOADER);
@@ -85,6 +84,7 @@ export class Layout extends PureComponent {
     if (!token.isLogged()) {
       return children;
     }
+
     return (
       <MenuContainer>
         {({ opened, toggle, type, close }) => (
@@ -141,15 +141,25 @@ export class Layout extends PureComponent {
               })}
             >
               <Header href="/in">
-                {isUploader && (
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary d-none d-sm-block"
-                    onClick={this.onUpload}
+                <div className="d-flex flex-grow-1">
+                  <div
+                    className={cl(
+                      'mx-auto flex-fill pl-0 pl-sm-4 pl-lg-5 pr-0',
+                      { 'pr-lg-5': isUploader },
+                    )}
                   >
-                    <Plus /> Add torrents
-                  </button>
-                )}
+                    <GlobalSearch />
+                  </div>
+                  {isUploader && (
+                    <button
+                      type="button"
+                      className="ml-auto btn btn-outline-primary d-none d-lg-block"
+                      onClick={this.onUpload}
+                    >
+                      <Plus /> Add torrents
+                    </button>
+                  )}
+                </div>
               </Header>
               {children}
               <WaveLoader fill="page" visible={this.state.pageLoading} />

@@ -93,14 +93,15 @@ class Index extends PureComponent {
         {({ removeMetadata: onRemoveMetadata, remove: removeMetadata }) => (
           <Page className="pt-5">
             <div>
-              <div className="d-flex flex-wrap align-items-center mb-3">
+              <div className="d-flex flex-wrap align-items-center mb-2">
                 <Link passHref prefetch={false} href="/in">
                   <a className="align-items-center d-flex">
                     <ChevronLeft />
-                    Torrents list
+                    Back to torrents list
                   </a>
                 </Link>
               </div>
+              <h2 className="mb-4 text-break">{torrent.name}</h2>
               <TranscoderContainer>
                 {({ loading, transcode }) => (
                   <TorrentCard

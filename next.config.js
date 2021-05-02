@@ -56,7 +56,7 @@ module.exports = {
                 loader: '@epegzz/sass-vars-loader',
                 options: {
                   syntax: 'scss',
-                  files: [path.resolve(__dirname, 'styles/variables.js')],
+                  files: [path.resolve(__dirname, 'styles/sassVariables.js')],
                 },
               },
               {

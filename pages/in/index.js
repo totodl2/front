@@ -30,7 +30,7 @@ import TrackersModal from '../../components/modals/Trackers';
 import PlayerModal from '../../components/modals/Player';
 import withApi from '../../lib/api/withApi';
 import { getMe } from '../../redux/actions/me';
-import Input from '../../components/forms/fields/Input';
+// import Input from '../../components/forms/fields/Input';
 import Page from '../../components/layouts/page';
 import withUserPreloading from '../../lib/user/withUserPreloading';
 import MetadataContainer from '../../components/containers/MetadataContainer';
@@ -97,13 +97,13 @@ class Index extends PureComponent {
 
   loadMore = page => this.setState({ page });
 
-  onSearch = evt => {
-    this.props.searchTorrent(evt.target.value);
-  };
-
-  onClear = () => {
-    this.props.searchTorrent('');
-  };
+  // onSearch = evt => {
+  //   this.props.searchTorrent(evt.target.value);
+  // };
+  //
+  // onClear = () => {
+  //   this.props.searchTorrent('');
+  // };
 
   onOpenTrackers = torrent => {
     this.props.openTrackersModal({ torrent });
@@ -182,17 +182,17 @@ class Index extends PureComponent {
                     My uploads
                   </button>
                 )}
-                <Input
+                {/* <Input
                   type="text"
                   wrapperClassName={cl('w-auto', {
                     'ml-auto': !isUploader,
                     'ml-auto ml-md-2': isUploader,
                   })}
-                  placeholder="Search..."
+                  placeholder="Filter..."
                   value={keywords || ''}
                   onChange={this.onSearch}
                   onClear={this.onClear}
-                />
+                /> */}
               </div>
               <InfiniteScroll
                 pageStart={1}

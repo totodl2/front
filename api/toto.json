@@ -120,5 +120,11 @@
       "method": "POST",
       "path": "/watch-status/files/{file}/{position}/{length}"
     }
+  },
+  "search": {
+    "all": {
+      "method": "GET",
+      "path": "/search"
+    }
   }
 }

@@ -16,12 +16,12 @@ const Header = ({ className, href, children }) => (
     <Page className="d-flex align-items-center">
       <div className={styles.logo}>
         <Link href={href}>
-          <a>
+          <a className="d-sm-block d-none">
             <img src={logo} srcSet={`${logo2x} 2x, ${logo3x} 3x`} alt="logo" />
           </a>
         </Link>
       </div>
-      {children && <div className="ml-auto">{children}</div>}
+      {children}
     </Page>
   </div>
 );

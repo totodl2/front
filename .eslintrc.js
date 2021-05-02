@@ -86,7 +86,10 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/no-var-requires': 0,
         '@typescript-eslint/no-shadow': ['error'],
-        '@typescript-eslint/no-unused-vars': isProd ? 2 : 1,
+        '@typescript-eslint/no-unused-vars': [
+          isProd ? 2 : 1,
+          { ignoreRestSiblings: true },
+        ],
         '@typescript-eslint/ban-types': 0,
         '@typescript-eslint/ban-ts-comment': 0,
         '@typescript-eslint/no-use-before-define': 0,

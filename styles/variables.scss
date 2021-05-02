@@ -8,42 +8,11 @@ $theme-colors: (
 
 $white-muted: rgba($white, 0.85);
 
-$grid-breakpoints: (
-  xxs: 0,
-  xs: 400,
-  sm: 576px,
-  md: 768px,
-  lg: 992px,
-  xl: 1200px,
-  xxl: 1440px,
-);
-
-$container-max-widths: (
-  sm: 540px,
-  md: 720px,
-  lg: 960px,
-  xl: 1140px,
-  xxl: 1200px,
-);
-
 $font-weight-lighter: $font-weight-light;
 $font-weight-bolder: $font-weight-bold;
-
 $headings-font-weight: $font-weight-light;
 
-$dark: $gray-900;
 $body-bg: 'transparent';
-
-$input-color: $gray-900;
-$input-focus-color: $gray-900;
-$input-placeholder-color: $gray-700;
-$input-bg: rgba($white, 0.4);
-$input-border-color: rgba($white, 0.7);
-$input-border-width: 1px;
-$input-focus-bg: rgba($white, 0.5);
-$input-focus-border-color: rgba($white, 0.5);
-
-
 
 $label-margin-bottom: 0.1rem;
 
@@ -55,7 +24,6 @@ $transition-contemplative-timing: 0.4s;
 
 $text-muted: $gray-700;
 $close-font-weight: 300;
-
 
 // cards
 $card-bg: rgba($white, 0.4);
