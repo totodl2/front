@@ -36,6 +36,13 @@ const createTotoApi = token => {
       )}`,
     );
 
+  api.torrents.getMetaLinkHref = hash =>
+    `${
+      process.env.API_URL
+    }/torrents/${hash}/metalink?x-authorization=${encodeURIComponent(
+      defaultHeaders['x-authorization'],
+    )}`;
+
   api.setToken(token);
   return api;
 };

@@ -7,6 +7,7 @@ import { ReactComponent as Pause } from 'feather-icons/dist/icons/pause.svg';
 import { ReactComponent as Play } from 'feather-icons/dist/icons/play.svg';
 import { ReactComponent as Trash } from 'feather-icons/dist/icons/trash.svg';
 import { ReactComponent as Compass } from 'feather-icons/dist/icons/compass.svg';
+import { ReactComponent as DownloadIcon } from 'feather-icons/dist/icons/download.svg';
 import { ReactComponent as ChevronUp } from 'feather-icons/dist/icons/chevron-up.svg';
 import { ReactComponent as LinkIcon } from 'feather-icons/dist/icons/link.svg';
 
@@ -62,6 +63,7 @@ class TorrentCard extends PureComponent {
     onChangeTvMetadata: PropTypes.func,
     onRemoveMetadata: PropTypes.func,
     onTranscode: PropTypes.func,
+    getMetalinkHref: PropTypes.func,
   };
 
   state = {
@@ -123,6 +125,7 @@ class TorrentCard extends PureComponent {
       onChangeTvMetadata,
       onRemoveMetadata,
       onTranscode,
+      getMetalinkHref,
     } = this.props;
     const downloaded = torrent.leftUntilDone <= 0;
     const seeding = isSeeding(torrent.status);
@@ -184,9 +187,19 @@ class TorrentCard extends PureComponent {
                   <Link passHref href="/in/[hash]" as={`/in/${torrent.hash}`}>
                     <DropdownItem tag="a">
                       <LinkIcon className="mr-2" />
-                      Link
+                      Permalink
                     </DropdownItem>
                   </Link>
+                  {downloaded && getMetalinkHref && (
+                    <DropdownItem
+                      tag="a"
+                      href={getMetalinkHref(torrent.hash)}
+                      target="_blank"
+                    >
+                      <DownloadIcon className="mr-2" />
+                      Download Metalink
+                    </DropdownItem>
+                  )}
                   <DropdownItem
                     className={confirmRemove ? 'text-danger' : ''}
                     onClick={this.onRemove}

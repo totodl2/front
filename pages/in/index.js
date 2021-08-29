@@ -153,6 +153,7 @@ class Index extends PureComponent {
     const {
       torrents,
       token,
+      api,
       search: { searching, keywords, results: found },
     } = this.props;
     const isSiteAdmin = hasRole(token.roles, ROLE_ADMIN);
@@ -224,6 +225,7 @@ class Index extends PureComponent {
                         onChangeMovieMetadata={this.onChangeMovieMetadata}
                         onChangeTvMetadata={this.onChangeTvMetadata}
                         onTranscode={transcode}
+                        getMetalinkHref={api.torrents.getMetaLinkHref}
                       />
                     )}
                   </TranscoderContainer>
