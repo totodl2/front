@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import setFp from 'lodash/fp/set';
+import setFpWith from 'lodash/fp/setWith';
 import findIndex from 'lodash/findIndex';
 
 import {
@@ -22,8 +22,8 @@ const processFiles = (files, defaultOut = {}) => {
   files.forEach(file => {
     if (!file.directory) {
       const newFiles = [...(get(out, filesKey) || [])];
-      newFiles.push(file);
-      out = setFp(filesKey, newFiles, out);
+      newFiles.push(file, filesKey);
+      out = setFpWith(Object, filesKey, newFiles, out);
       return;
     }
 
@@ -33,7 +33,7 @@ const processFiles = (files, defaultOut = {}) => {
       directory[filesKey] = [];
     }
     directory[filesKey].push(file);
-    out = setFp(path, directory, out);
+    out = setFpWith(Object, path, directory, out);
   });
   return out;
 };
@@ -88,7 +88,8 @@ const torrentsDataReducers = (state = [], action) => {
     if (idx === -1) {
       return state;
     }
-    return setFp(
+    return setFpWith(
+      Object,
       `[${idx}]`,
       {
         ...action.data,
@@ -103,7 +104,8 @@ const torrentsDataReducers = (state = [], action) => {
     if (idx === -1 || !state[idx] || !state[idx].fullyLoaded) {
       return state;
     }
-    return setFp(
+    return setFpWith(
+      Object,
       `[${idx}].files`,
       processFiles([action.data], get(state, `[${idx}].files`, {})),
       state,
@@ -121,7 +123,8 @@ const torrentsDataReducers = (state = [], action) => {
     }
 
     const path = `[${idx}].files${filePath}`;
-    return setFp(
+    return setFpWith(
+      Object,
       path,
       {
         ...get(state, path, {}),
@@ -135,7 +138,8 @@ const torrentsDataReducers = (state = [], action) => {
     if (idx === -1) {
       return state;
     }
-    return setFp(
+    return setFpWith(
+      Object,
       `[${idx}]`,
       {
         ...(state[idx] || {}),
