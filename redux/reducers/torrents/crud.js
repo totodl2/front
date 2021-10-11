@@ -22,7 +22,7 @@ const processFiles = (files, defaultOut = {}) => {
   files.forEach(file => {
     if (!file.directory) {
       const newFiles = [...(get(out, filesKey) || [])];
-      newFiles.push(file, filesKey);
+      newFiles.push(file);
       out = setFpWith(Object, filesKey, newFiles, out);
       return;
     }
